@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package recordvalidator;
+
+option go_package = "github.com/brotherlogic/recordvalidator/proto";
+
+message Schemes {
+  repeated Scheme schemes = 1;
+}
+
+message Scheme {
+  string name = 1;
+  int64 start_time = 2;
+  repeated int32 instance_ids = 3;
+  repeated int32 completed_ids = 4; 
+}
