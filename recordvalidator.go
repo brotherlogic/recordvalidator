@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/brotherlogic/goserver"
+	"github.com/brotherlogic/goserver/utils"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
@@ -15,8 +16,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	gdpb "github.com/brotherlogic/godiscogs"
 	pbg "github.com/brotherlogic/goserver/proto"
-	"github.com/brotherlogic/goserver/utils"
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 	pb "github.com/brotherlogic/recordvalidator/proto"
 )
@@ -147,6 +148,31 @@ func (s *Server) getAllRecords(ctx context.Context) ([]int32, error) {
 		return nil, err
 	}
 	return r.GetInstanceIds(), nil
+}
+
+func (s *Server) update(ctx context.Context, iid int32) error {
+	if s.test {
+		return nil
+	}
+	conn, err := s.FDialServer(ctx, "recordcollection")
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	client := rcpb.NewRecordCollectionServiceClient(conn)
+	_, err = client.UpdateRecord(ctx, &rcpb.UpdateRecordRequest{
+		Update: &rcpb.Record{
+			Release: &gdpb.Release{
+				InstanceId: iid,
+			},
+			Metadata: &rcpb.ReleaseMetadata{Category: rcpb.ReleaseMetadata_PRE_VALIDATE},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // DoRegister does RPC registration

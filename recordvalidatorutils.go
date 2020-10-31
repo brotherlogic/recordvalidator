@@ -8,7 +8,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func (s *Server) repick(sc *pb.Scheme) {
+func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	ntg := []int32{}
 
 	for _, tg := range sc.GetInstanceIds() {
@@ -24,7 +24,10 @@ func (s *Server) repick(sc *pb.Scheme) {
 	rand.Shuffle(len(sc.InstanceIds), func(i, j int) { sc.InstanceIds[i], sc.InstanceIds[j] = sc.InstanceIds[j], sc.InstanceIds[i] })
 
 	if len(sc.InstanceIds) > 0 {
-		sc.CurrentPick = sc.InstanceIds[0]
+		err := s.update(ctx, sc.InstanceIds[0])
+		if err == nil {
+			sc.CurrentPick = sc.InstanceIds[0]
+		}
 	}
 }
 

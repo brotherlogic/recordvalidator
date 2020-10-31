@@ -36,7 +36,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			_, k := sg.filter(r)
 			if k || scheme.GetCurrentPick() == 0 {
-				s.repick(scheme)
+				s.repick(ctx, scheme)
 				picked = true
 			}
 		}
