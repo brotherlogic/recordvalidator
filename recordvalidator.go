@@ -107,10 +107,10 @@ func (s *Server) loadRecord(ctx context.Context, iid int32) (*rcpb.Record, error
 	}
 	if s.test {
 		if iid == 1 {
-			return &rcpb.Record{Metadata: &rcpb.ReleaseMetadata{GoalFolder: 466902}}, nil
+			return &rcpb.Record{Metadata: &rcpb.ReleaseMetadata{GoalFolder: 2259637}}, nil
 		}
 		if iid == 2 {
-			return &rcpb.Record{Metadata: &rcpb.ReleaseMetadata{GoalFolder: 466902, RecordWidth: 1.2}}, nil
+			return &rcpb.Record{Metadata: &rcpb.ReleaseMetadata{GoalFolder: 2259637, RecordWidth: 1.2}}, nil
 		}
 		return &rcpb.Record{}, nil
 	}
