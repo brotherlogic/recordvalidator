@@ -5,12 +5,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"time"
 
 	"github.com/brotherlogic/goserver"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
 	pbg "github.com/brotherlogic/goserver/proto"
+	"github.com/brotherlogic/goserver/utils"
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 	pb "github.com/brotherlogic/recordvalidator/proto"
 )
@@ -18,6 +22,17 @@ import (
 const (
 	// SCHEMES - Where we store schemes
 	SCHEMES = "/github.com/brotherlogic/recordvalidator/schemes"
+)
+
+var (
+	completion = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "recordvalidator_completion",
+		Help: "The size of the print queue",
+	}, []string{"scheme"})
+	completionDate = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "recordvalidator_completion_date",
+		Help: "The size of the print queue",
+	}, []string{"scheme"})
 )
 
 //Server main server type
@@ -43,6 +58,18 @@ func Init() *Server {
 	return s
 }
 
+func (s *Server) updateMetrics(schemes *pb.Schemes) {
+	for _, sc := range schemes.GetSchemes() {
+		prop := float64(len(sc.GetCompletedIds())) / float64(len(sc.GetInstanceIds())+len(sc.GetCompletedIds()))
+		dur := time.Now().Sub(time.Unix(sc.GetStartTime(), 0)).Seconds()
+		extraDur := dur * (1 - prop)
+		finishTime := time.Now().Add(time.Second * time.Duration(extraDur)).Unix()
+
+		completion.With(prometheus.Labels{"scheme": sc.GetName()}).Set(prop)
+		completionDate.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(finishTime))
+	}
+}
+
 func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	if s.failLoad {
 		return nil, fmt.Errorf("Bad load")
@@ -52,6 +79,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		return nil, err
 	}
 	schemes := data.(*pb.Schemes)
+	s.updateMetrics(schemes)
 	return schemes, nil
 }
 
@@ -154,6 +182,13 @@ func main() {
 	if err != nil {
 		return
 	}
+
+	//Do a load to prepopulate metrics
+	ctx, cancel := utils.ManualContext("rvsu", "rvsu", time.Minute, false)
+	if _, err := server.load(ctx); err != nil {
+		return
+	}
+	cancel()
 
 	fmt.Printf("%v", server.Serve())
 }

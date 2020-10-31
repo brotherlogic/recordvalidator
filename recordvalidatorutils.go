@@ -29,7 +29,7 @@ func (s *Server) repick(sc *pb.Scheme) {
 }
 
 func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme, error) {
-	scheme := &pb.Scheme{Name: sg.name()}
+	scheme := &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix()}
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {
 		return nil, err
