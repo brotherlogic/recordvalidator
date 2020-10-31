@@ -13,7 +13,7 @@ func TestKeeperScheme(t *testing.T) {
 		t.Errorf("Huh")
 	}
 
-	f, p := k.filter(&rcpb.Record{Metadata: &rcpb.ReleaseMetadata{GoalFolder: 466902, RecordWidth: 4.5}})
+	f, p := k.filter(&rcpb.Record{Metadata: &rcpb.ReleaseMetadata{GoalFolder: 2259637, RecordWidth: 4.5}})
 
 	if !f || !p {
 		t.Errorf("Problem filtering: %v and %v", f, p)
