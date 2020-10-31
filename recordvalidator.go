@@ -12,6 +12,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	pbg "github.com/brotherlogic/goserver/proto"
 	"github.com/brotherlogic/goserver/utils"
@@ -75,8 +77,12 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		return nil, fmt.Errorf("Bad load")
 	}
 	data, _, err := s.KSclient.Read(ctx, SCHEMES, &pb.Schemes{})
-	if err != nil {
+
+	if err != nil && status.Convert(err).Code() != codes.InvalidArgument {
 		return nil, err
+	}
+	if err != nil {
+		data = &pb.Schemes{}
 	}
 	schemes := data.(*pb.Schemes)
 	s.updateMetrics(schemes)
