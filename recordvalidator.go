@@ -162,6 +162,7 @@ func (s *Server) update(ctx context.Context, iid int32) error {
 
 	client := rcpb.NewRecordCollectionServiceClient(conn)
 	_, err = client.UpdateRecord(ctx, &rcpb.UpdateRecordRequest{
+		Reason: "Update for validation",
 		Update: &rcpb.Record{
 			Release: &gdpb.Release{
 				InstanceId: iid,
