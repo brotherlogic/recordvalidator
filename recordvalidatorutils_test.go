@@ -3,19 +3,44 @@ package main
 import (
 	"context"
 	"testing"
+
+	keystoreclient "github.com/brotherlogic/keystore/client"
+
+	pb "github.com/brotherlogic/recordvalidator/proto"
 )
 
 func InitTest() *Server {
 	s := Init()
 	s.SkipLog = true
 	s.SkipIssue = true
+	s.test = true
+
+	s.GoServer.KSclient = *keystoreclient.GetTestClient("./testing")
+	s.GoServer.KSclient.Save(context.Background(), SCHEMES, &pb.Schemes{})
+
 	return s
 }
 
-func TestBasic(t *testing.T) {
+func TestInitSchemeFailLoadRecord(t *testing.T) {
 	s := InitTest()
-	err := s.runComputation(context.Background())
-	if err != nil {
-		t.Errorf("Bad run: %v", err)
+	s.failRecordLoad = true
+
+	_, err := s.initScheme(context.Background(), &keeperScheme{})
+	if err == nil {
+		t.Errorf("Should have failed")
+	}
+}
+
+func TestRepick(t *testing.T) {
+	s := InitTest()
+	scheme := &pb.Scheme{
+		InstanceIds: []int32{1, 2, 3},
+		CurrentPick: 2,
+	}
+
+	s.repick(scheme)
+
+	if scheme.CurrentPick == 2 {
+		t.Errorf("Did not do a repick")
 	}
 }
