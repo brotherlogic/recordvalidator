@@ -38,7 +38,7 @@ func TestRepick(t *testing.T) {
 		CurrentPick: 2,
 	}
 
-	s.repick(scheme)
+	s.repick(context.Background(), scheme)
 
 	if scheme.CurrentPick == 2 {
 		t.Errorf("Did not do a repick")
