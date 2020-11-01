@@ -12,7 +12,7 @@ type keeperScheme struct{}
 
 func (ks *keeperScheme) filter(rec *rcpb.Record) (bool, bool) {
 	//Is it a keeper?, doess it have a width?
-	return rec.GetMetadata().GetGoalFolder() == 2259637, rec.GetMetadata().GetRecordWidth() > 0
+	return rec.GetMetadata().GetGoalFolder() == 2259637, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
 
 func (ks *keeperScheme) name() string {
