@@ -62,6 +62,7 @@ func Init() *Server {
 }
 
 func (s *Server) updateMetrics(schemes *pb.Schemes) {
+	time.Sleep(time.Second * 2)
 	for _, sc := range schemes.GetSchemes() {
 		if len(sc.GetCompletedIds()) > 0 {
 			s.Log(fmt.Sprintf("%v from %v for %v (e.g. %v) [%v]", len(sc.GetCompletedIds()), len(sc.GetInstanceIds()), sc.GetName(), sc.GetCompletedIds()[0], sc.GetCurrentPick()))
