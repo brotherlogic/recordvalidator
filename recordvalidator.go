@@ -64,7 +64,7 @@ func Init() *Server {
 func (s *Server) updateMetrics(schemes *pb.Schemes) {
 	for _, sc := range schemes.GetSchemes() {
 		if len(sc.GetCompletedIds()) > 0 {
-			s.Log(fmt.Sprintf("%v from %v for %v (e.g. %v)", len(sc.GetCompletedIds()), len(sc.GetInstanceIds()), sc.GetName(), sc.GetCompletedIds()[0]))
+			s.Log(fmt.Sprintf("%v from %v for %v (e.g. %v) [%v]", len(sc.GetCompletedIds()), len(sc.GetInstanceIds()), sc.GetName(), sc.GetCompletedIds()[0], sc.GetCurrentPick()))
 		} else {
 			s.Log(fmt.Sprintf("No completes for %v -> %v", sc.GetName(), len(sc.GetInstanceIds())))
 		}
