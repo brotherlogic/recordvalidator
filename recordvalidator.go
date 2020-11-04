@@ -57,6 +57,7 @@ func Init() *Server {
 	}
 
 	s.sgs = append(s.sgs, &keeperScheme{})
+	s.sgs = append(s.sgs, &cdScheme{})
 
 	return s
 }
