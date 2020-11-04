@@ -71,7 +71,7 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		}
 		prop := float64(len(sc.GetCompletedIds())) / float64(len(sc.GetInstanceIds())+len(sc.GetCompletedIds()))
 		dur := time.Now().Sub(time.Unix(sc.GetStartTime(), 0)).Seconds()
-		extraDur := dur * (1 - prop)
+		extraDur := dur/prop - dur
 		finishTime := time.Now().Add(time.Second * time.Duration(extraDur)).Unix()
 
 		completion.With(prometheus.Labels{"scheme": sc.GetName()}).Set(prop)
