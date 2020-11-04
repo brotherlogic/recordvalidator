@@ -22,8 +22,8 @@ func (ks *keeperScheme) name() string {
 type cdScheme struct{}
 
 func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool) {
-	//Is it a keeper?, doess it have a width?
-	return rec.GetMetadata().GetGoalFolder() == 242018, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	//Is it a cd?, doess it have a width?
+	return rec.GetRelease().GetFolderId() == 242018, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
 
 func (cds *cdScheme) name() string {
