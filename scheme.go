@@ -16,7 +16,7 @@ func (ks *keeperScheme) filter(rec *rcpb.Record) (bool, bool) {
 }
 
 func (ks *keeperScheme) name() string {
-	return "keeper_width
+	return "keeper_width"
 }
 
 type cdScheme struct{}
