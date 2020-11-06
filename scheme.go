@@ -29,3 +29,14 @@ func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool) {
 func (cds *cdScheme) name() string {
 	return "cd_width"
 }
+
+type twScheme struct{}
+
+func (tw *twScheme) filter(rec *rcpb.Record) (bool, bool) {
+	//Is it a cd?, doess it have a width?
+	return rec.GetRelease().GetFolderId() == 242017, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+}
+
+func (tw *twScheme) name() string {
+	return "cd_width"
+}
