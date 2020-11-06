@@ -38,5 +38,5 @@ func (tw *twScheme) filter(rec *rcpb.Record) (bool, bool) {
 }
 
 func (tw *twScheme) name() string {
-	return "cd_width"
+	return "twelve_width"
 }
