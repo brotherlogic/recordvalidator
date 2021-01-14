@@ -36,11 +36,11 @@ func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool) {
 	}
 
 	// Run this every five years
-	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) > time.Hour*24*365*5
+	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) < time.Hour*24*365*5
 }
 
 func (fs *fullScheme) name() string {
-	return "full_validate"
+	return "full_validate_correct"
 }
 
 type keeperScheme struct{}
