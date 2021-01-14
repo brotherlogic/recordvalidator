@@ -1,11 +1,46 @@
 package main
 
-import rcpb "github.com/brotherlogic/recordcollection/proto"
+import (
+	"time"
+
+	rcpb "github.com/brotherlogic/recordcollection/proto"
+)
 
 type schemeGenerator interface {
 	// Does this record apply to the this filter
 	filter(rec *rcpb.Record) (bool, bool)
 	name() string
+}
+
+type fullScheme struct{}
+
+func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool) {
+	// Can't process these
+	if rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_PARENTS {
+		return false, true
+	}
+
+	// Sold Digital recordings should be included ehre
+	marked := true
+	if rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_LISTED_TO_SELL ||
+		rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_STAGED_TO_SELL ||
+		rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_SOLD_ARCHIVE {
+		for _, f := range rec.Release.GetFormats() {
+			if f.Name == "CD" || f.Name == "File" || f.Name == "CDr" {
+				marked = true
+				break
+			}
+
+			marked = false
+		}
+	}
+
+	// Run this every five years
+	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) > time.Hour*24*365*5
+}
+
+func (fs *fullScheme) name() string {
+	return "full_validate"
 }
 
 type keeperScheme struct{}
