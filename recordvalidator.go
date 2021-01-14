@@ -51,6 +51,7 @@ type Server struct {
 
 // Init builds the server
 func Init() *Server {
+
 	s := &Server{
 		GoServer: &goserver.GoServer{},
 		sgs:      []schemeGenerator{},
