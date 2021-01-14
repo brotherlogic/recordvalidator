@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"golang.org/x/net/context"
 
 	rcpb "github.com/brotherlogic/recordcollection/proto"
@@ -25,7 +23,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 
 		if sg == nil {
-			return nil, fmt.Errorf("Cannot locate scheme %v", scheme.GetName())
+			continue
 		}
 
 		if scheme.GetCurrentPick() == in.GetInstanceId() || scheme.GetCurrentPick() == 0 {
