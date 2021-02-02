@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"golang.org/x/net/context"
 
 	rcpb "github.com/brotherlogic/recordcollection/proto"
@@ -12,7 +14,7 @@ var (
 	current = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "recordvalidator_currentpick",
 		Help: "The size of the print queue",
-	}, []string{"scheme"})
+	}, []string{"scheme", "value"})
 )
 
 //ClientUpdate forces a move
@@ -35,7 +37,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			continue
 		}
 
-		current.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(scheme.GetCurrentPick()))
+		current.With(prometheus.Labels{"scheme": scheme.GetName(), "value": fmt.Sprintf("%v", scheme.GetCurrentPick())}).Set(1)
 
 		if scheme.GetCurrentPick() == in.GetInstanceId() || scheme.GetCurrentPick() == 0 {
 			r, err := s.loadRecord(ctx, in.GetInstanceId())
