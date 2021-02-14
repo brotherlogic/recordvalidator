@@ -12,6 +12,58 @@ type schemeGenerator interface {
 	name() string
 }
 
+type allTwelves struct {
+}
+
+func (fs *allTwelves) filter(rec *rcpb.Record) (bool, bool) {
+	// Can't process these
+	if rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_PARENTS {
+		return false, true
+	}
+
+	marked := false
+	if rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_LISTED_TO_SELL &&
+		rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_STAGED_TO_SELL &&
+		rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE {
+		// This is in play
+		if rec.Metadata.GetGoalFolder() == 242017 ||
+			rec.GetMetadata().GetGoalFolder() == 1435521 ||
+			rec.GetMetadata().GetGoalFolder() == 882359 ||
+			rec.GetMetadata().GetGoalFolder() == 1799161 ||
+			rec.GetMetadata().GetGoalFolder() == 1281012 ||
+			rec.GetMetadata().GetGoalFolder() == 2268734 ||
+			rec.GetMetadata().GetGoalFolder() == 2268731 ||
+			rec.GetMetadata().GetGoalFolder() == 2021660 ||
+			rec.GetMetadata().GetGoalFolder() == 857451 ||
+			rec.GetMetadata().GetGoalFolder() == 2259637 ||
+			rec.GetMetadata().GetGoalFolder() == 1799163 ||
+			rec.GetMetadata().GetGoalFolder() == 1409151 ||
+			rec.GetMetadata().GetGoalFolder() == 1191108 ||
+			rec.GetMetadata().GetGoalFolder() == 823501 ||
+			rec.GetMetadata().GetGoalFolder() == 529723 ||
+			rec.GetMetadata().GetGoalFolder() == 2307240 ||
+			rec.GetMetadata().GetGoalFolder() == 857449 ||
+			rec.GetMetadata().GetGoalFolder() == 2268726 ||
+			rec.GetMetadata().GetGoalFolder() == 681782 ||
+			rec.GetMetadata().GetGoalFolder() == 1642995 ||
+			rec.GetMetadata().GetGoalFolder() == 1456851 ||
+			rec.GetMetadata().GetGoalFolder() == 716318 ||
+			rec.GetMetadata().GetGoalFolder() == 842724 ||
+			rec.GetMetadata().GetGoalFolder() == 1607992 ||
+			rec.GetMetadata().GetGoalFolder() == 681783 ||
+			rec.GetMetadata().GetGoalFolder() == 466902 {
+			marked = true
+		}
+	}
+
+	// Run this every five years
+	return marked, rec.GetMetadata().GetRecordWidth() > 0
+}
+
+func (fs *allTwelves) name() string {
+	return "twelves"
+}
+
 type fullScheme struct{}
 
 func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool) {
