@@ -57,7 +57,7 @@ func (fs *allTwelves) filter(rec *rcpb.Record) (bool, bool) {
 	}
 
 	// Run this every five years
-	return marked, rec.GetMetadata().GetRecordWidth() > 0
+	return marked, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
 
 func (fs *allTwelves) name() string {
