@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -23,10 +24,35 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(sc.InstanceIds), func(i, j int) { sc.InstanceIds[i], sc.InstanceIds[j] = sc.InstanceIds[j], sc.InstanceIds[i] })
 
-	if len(sc.InstanceIds) > 0 {
-		err := s.update(ctx, sc.InstanceIds[0])
-		if err == nil {
-			sc.CurrentPick = sc.InstanceIds[0]
+	var scheme schemeGenerator
+	for _, sch := range s.sgs {
+		if sch.name() == sc.GetName() {
+			scheme = sch
+		}
+	}
+
+	// Find the first instance that is still relevant
+	for _, iid := range sc.InstanceIds {
+		rec, err := s.getRecord(ctx, iid)
+		if err != nil {
+			s.Log(fmt.Sprintf("Repick load failed: %v", err))
+		}
+
+		_, invalid := scheme.filter(rec)
+		if invalid {
+			in := []int32{}
+			for _, tg := range sc.GetInstanceIds() {
+				if tg != iid {
+					in = append(in, tg)
+				}
+			}
+			sc.InstanceIds = in
+			sc.CompletedIds = append(sc.CompletedIds, iid)
+		} else {
+			err := s.update(ctx, sc.InstanceIds[0])
+			if err == nil {
+				sc.CurrentPick = sc.InstanceIds[0]
+			}
 		}
 	}
 }

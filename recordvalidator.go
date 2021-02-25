@@ -161,6 +161,27 @@ func (s *Server) getAllRecords(ctx context.Context) ([]int32, error) {
 	return r.GetInstanceIds(), nil
 }
 
+func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error) {
+	if s.failLoadAll {
+		return nil, fmt.Errorf("Built to fail")
+	}
+	if s.test {
+		return &rcpb.Record{}, nil
+	}
+	conn, err := s.FDialServer(ctx, "recordcollection")
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close()
+
+	client := rcpb.NewRecordCollectionServiceClient(conn)
+	r, err := client.GetRecord(ctx, &rcpb.GetRecordRequest{InstanceId: iid})
+	if err != nil {
+		return nil, err
+	}
+	return r.GetRecord(), nil
+}
+
 func (s *Server) update(ctx context.Context, iid int32) error {
 	if s.test {
 		return nil
