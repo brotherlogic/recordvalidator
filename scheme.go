@@ -88,7 +88,7 @@ func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool) {
 	}
 
 	// Run this every five years
-	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) < time.Hour*24*365*5
+	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) < time.Hour*24*365*5 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
 
 func (fs *fullScheme) name() string {
