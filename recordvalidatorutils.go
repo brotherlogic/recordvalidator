@@ -50,9 +50,10 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				sc.InstanceIds = in
 				sc.CompletedIds = append(sc.CompletedIds, iid)
 			} else {
-				err := s.update(ctx, sc.InstanceIds[0])
+				err := s.update(ctx, iid)
 				if err == nil {
-					sc.CurrentPick = sc.InstanceIds[0]
+					sc.CurrentPick = iid
+					return
 				}
 			}
 		}

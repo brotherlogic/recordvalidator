@@ -73,11 +73,6 @@ func Init() *Server {
 func (s *Server) updateMetrics(schemes *pb.Schemes) {
 	time.Sleep(time.Second * 2)
 	for _, sc := range schemes.GetSchemes() {
-		if len(sc.GetCompletedIds()) > 0 {
-			s.Log(fmt.Sprintf("%v from %v for %v (e.g. %v) [%v]", len(sc.GetCompletedIds()), len(sc.GetInstanceIds()), sc.GetName(), sc.GetCompletedIds()[0], sc.GetCurrentPick()))
-		} else {
-			s.Log(fmt.Sprintf("No completes for %v -> %v", sc.GetName(), len(sc.GetInstanceIds())))
-		}
 		prop := float64(len(sc.GetCompletedIds())) / float64(len(sc.GetInstanceIds())+len(sc.GetCompletedIds()))
 		dur := time.Now().Sub(time.Unix(sc.GetStartTime(), 0)).Seconds()
 		extraDur := dur/prop - dur
@@ -183,6 +178,7 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 }
 
 func (s *Server) update(ctx context.Context, iid int32) error {
+	s.Log(fmt.Sprintf("Updating for %v"))
 	if s.test {
 		return nil
 	}
