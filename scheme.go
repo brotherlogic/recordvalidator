@@ -106,6 +106,17 @@ func (ks *keeperScheme) name() string {
 	return "keeper_width"
 }
 
+type fallScheme struct{}
+
+func (fs *fallScheme) filter(rec *rcpb.Record) (bool, bool) {
+	//Is it a keeper?, doess it have a width?
+	return rec.GetMetadata().GetGoalFolder() == 716318, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+}
+
+func (fs *fallScheme) name() string {
+	return "fall_width"
+}
+
 type cdScheme struct{}
 
 func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool) {
