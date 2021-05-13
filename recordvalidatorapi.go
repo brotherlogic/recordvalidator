@@ -73,6 +73,36 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 	}
 
+	// See if this needs to be added
+	rec, err := s.getRecord(ctx, in.GetInstanceId())
+	if err != nil {
+		return nil, err
+	}
+	for _, sg := range schemes.GetSchemes() {
+		inS := false
+		for _, id := range sg.GetInstanceIds() {
+			if id == in.GetInstanceId() {
+				inS = true
+			}
+		}
+
+		if !inS {
+			for _, scheme := range s.sgs {
+				if scheme.name() == sg.GetName() {
+					app, done := scheme.filter(rec)
+					if app {
+						if done {
+							sg.CompletedIds = append(sg.CompletedIds, in.GetInstanceId())
+						} else {
+							sg.InstanceIds = append(sg.InstanceIds, in.GetInstanceId())
+						}
+						picked = true
+					}
+				}
+			}
+		}
+	}
+
 	var rerr error
 	if picked {
 		rerr = s.save(ctx, schemes)

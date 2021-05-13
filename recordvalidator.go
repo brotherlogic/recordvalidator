@@ -179,7 +179,7 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 }
 
 func (s *Server) update(ctx context.Context, iid int32) error {
-	s.Log(fmt.Sprintf("Updating for %v"))
+	s.Log(fmt.Sprintf("Updating for %v", iid))
 	if s.test {
 		return nil
 	}
