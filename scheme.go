@@ -106,6 +106,26 @@ func (ks *keeperScheme) name() string {
 	return "keeper_width"
 }
 
+type ageScheme struct{}
+
+func (as *ageScheme) filter(rec *rcpb.Record) (bool, bool) {
+	// Sold Digital recordings should be included ehre
+	marked := false
+	if rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_LISTED_TO_SELL &&
+		rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_STAGED_TO_SELL &&
+		rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+		rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_PARENTS {
+		marked = true
+	}
+
+	// Listen to everything every five years
+	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*2 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+}
+
+func (as *ageScheme) name() string {
+	return "age"
+}
+
 type fallScheme struct{}
 
 func (fs *fallScheme) filter(rec *rcpb.Record) (bool, bool) {

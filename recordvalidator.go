@@ -67,6 +67,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &fullScheme{})
 	s.sgs = append(s.sgs, &allTwelves{})
 	s.sgs = append(s.sgs, &fallScheme{})
+	s.sgs = append(s.sgs, &ageScheme{})
 
 	return s
 }
