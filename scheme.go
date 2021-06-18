@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"time"
 
 	rcpb "github.com/brotherlogic/recordcollection/proto"
@@ -157,4 +158,26 @@ func (tw *twScheme) filter(rec *rcpb.Record) (bool, bool) {
 
 func (tw *twScheme) name() string {
 	return "twelve_width"
+}
+
+type tenScheme struct{}
+
+func (tw *tenScheme) filter(rec *rcpb.Record) (bool, bool) {
+	isTen := false
+	for _, format := range rec.GetRelease().GetFormats() {
+		if strings.Contains(format.GetName(), "10") {
+			isTen = true
+		}
+		for _, desc := range format.GetDescriptions() {
+			if strings.Contains(desc, "10") {
+				isTen = true
+			}
+		}
+	}
+	//Is it a cd?, doess it have a width?
+	return isTen, rec.GetMetadata().GetLastValidate() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+}
+
+func (tw *tenScheme) name() string {
+	return "ten_inches"
 }

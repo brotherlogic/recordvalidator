@@ -68,6 +68,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &allTwelves{})
 	s.sgs = append(s.sgs, &fallScheme{})
 	s.sgs = append(s.sgs, &ageScheme{})
+	s.sgs = append(s.sgs, &tenScheme{})
 
 	return s
 }
@@ -252,7 +253,7 @@ func main() {
 	}
 
 	//Do a load to prepopulate metrics
-	ctx, cancel := utils.ManualContext("rvsu", "rvsu", time.Minute, false)
+	ctx, cancel := utils.ManualContext("rvsu", time.Minute)
 	if _, err := server.load(ctx); err != nil {
 		server.Log(fmt.Sprintf("Unable to load: %v", err))
 		time.Sleep(time.Second * 5)
