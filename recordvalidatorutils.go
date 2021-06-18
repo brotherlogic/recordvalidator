@@ -62,7 +62,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 
 func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme, error) {
 	s.Log(fmt.Sprintf("Init shceme: %v", sg.name()))
-	defer s.Log(fmt.Sprintf("Init complete"))
+	defer s.Log(fmt.Sprintf("Init of %v complete", sg.name()))
 	scheme := &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix()}
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {
