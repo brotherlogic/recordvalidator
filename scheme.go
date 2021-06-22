@@ -175,7 +175,7 @@ func (tw *tenScheme) filter(rec *rcpb.Record) (bool, bool) {
 		}
 	}
 	//Is it a cd?, doess it have a width?
-	return isTen, rec.GetMetadata().GetLastValidate() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return isTen, ((rec.GetMetadata().GetSaleId() > 0 || rec.GetMetadata().GetSoldDate() > 0) || rec.GetMetadata().GetLastValidate() > 0) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
 
 func (tw *tenScheme) name() string {
