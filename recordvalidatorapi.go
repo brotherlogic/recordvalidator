@@ -45,10 +45,10 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 				return nil, err
 			}
 
-			_, k := sg.filter(r)
+			marked, k := sg.filter(r)
 
 			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v", in.GetInstanceId(), scheme.GetName(), k))
-			if k || scheme.GetCurrentPick() == 0 {
+			if (!marked || k) || scheme.GetCurrentPick() == 0 {
 				s.repick(ctx, scheme)
 				picked = true
 			} else if r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE {
