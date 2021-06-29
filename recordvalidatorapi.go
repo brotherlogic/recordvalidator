@@ -46,10 +46,14 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 
 			_, k := sg.filter(r)
+
 			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v", in.GetInstanceId(), scheme.GetName(), k))
 			if k || scheme.GetCurrentPick() == 0 {
 				s.repick(ctx, scheme)
 				picked = true
+			} else if r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE {
+				//This should be in pre-valid
+				s.RaiseIssue("Valid miss", fmt.Sprintf("%v should be in prevalidate but it's actually in %v", r.GetRelease().GetInstanceId(), r.GetMetadata().GetCategory()))
 			}
 
 		}
