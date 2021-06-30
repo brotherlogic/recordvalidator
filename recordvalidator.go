@@ -230,8 +230,14 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 
 // GetState gets the state of the server
 func (s *Server) GetState() []*pbg.State {
+	found := false
+	for _, scheme := range s.sgs {
+		if scheme.name() == "library_width" {
+			found = true
+		}
+	}
 	return []*pbg.State{
-		&pbg.State{Key: "magic", Value: int64(12345)},
+		&pbg.State{Key: "magic", Text: fmt.Sprintf("%v", found)},
 	}
 }
 
