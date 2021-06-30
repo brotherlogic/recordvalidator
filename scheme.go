@@ -181,3 +181,22 @@ func (tw *tenScheme) filter(rec *rcpb.Record) (bool, bool) {
 func (tw *tenScheme) name() string {
 	return "ten_inches"
 }
+
+type libScheme struct{}
+
+func (ls *libScheme) filter(rec *rcpb.Record) (bool, bool) {
+	//Is it a cd?, doess it have a width?
+	return rec.GetMetadata().GetGoalFolder() == 882359 ||
+		rec.GetMetadata().GetGoalFolder() == 1281012 ||
+		rec.GetMetadata().GetGoalFolder() == 857451 ||
+		rec.GetMetadata().GetGoalFolder() == 1409151 ||
+		rec.GetMetadata().GetGoalFolder() == 823501 ||
+		rec.GetMetadata().GetGoalFolder() == 842724 ||
+		rec.GetMetadata().GetGoalFolder() == 681783 ||
+		rec.GetMetadata().GetGoalFolder() == 529723 ||
+		rec.GetMetadata().GetGoalFolder() == 1642995, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+}
+
+func (ls *libScheme) name() string {
+	return "twelve_width"
+}
