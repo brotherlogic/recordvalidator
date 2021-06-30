@@ -51,7 +51,8 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
 				s.repick(ctx, scheme)
 				picked = true
-			} else if r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE {
+			} else if r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE &&
+				r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_VALIDATE {
 				//This should be in pre-valid
 				s.RaiseIssue(fmt.Sprintf("%v is a Valid miss", r.GetRelease().GetTitle()), fmt.Sprintf("%v should be in prevalidate but it's actually in %v", r.GetRelease().GetInstanceId(), r.GetMetadata().GetCategory()))
 			}
