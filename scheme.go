@@ -198,5 +198,5 @@ func (ls *libScheme) filter(rec *rcpb.Record) (bool, bool) {
 }
 
 func (ls *libScheme) name() string {
-	return "twelve_width"
+	return "library_width"
 }
