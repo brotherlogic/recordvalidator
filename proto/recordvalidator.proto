@@ -14,4 +14,13 @@ message Scheme {
   repeated int32 instance_ids = 3;
   repeated int32 completed_ids = 4;
   int32 current_pick = 5;
+
+  enum Order {
+    RANDOM = 0;
+    ORDER = 1;
+    REVERSE_ORDER = 2;
+  }
+  Order order = 6;
+
+  bool unbox = 7;
 }
