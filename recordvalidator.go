@@ -70,6 +70,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &ageScheme{})
 	s.sgs = append(s.sgs, &tenScheme{})
 	s.sgs = append(s.sgs, &libScheme{})
+	s.sgs = append(s.sgs, &older{})
+	s.sgs = append(s.sgs, &newer{})
 
 	return s
 }
