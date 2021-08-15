@@ -181,7 +181,7 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 	return r.GetRecord(), nil
 }
 
-func (s *Server) update(ctx context.Context, iid int32) error {
+func (s *Server) update(ctx context.Context, iid int32, unbox bool) error {
 	s.Log(fmt.Sprintf("Updating for %v", iid))
 	if s.test {
 		return nil
@@ -193,15 +193,20 @@ func (s *Server) update(ctx context.Context, iid int32) error {
 	defer conn.Close()
 
 	client := rcpb.NewRecordCollectionServiceClient(conn)
-	_, err = client.UpdateRecord(ctx, &rcpb.UpdateRecordRequest{
+	req := &rcpb.UpdateRecordRequest{
 		Reason: "Update for validation",
 		Update: &rcpb.Record{
 			Release: &gdpb.Release{
 				InstanceId: iid,
 			},
 			Metadata: &rcpb.ReleaseMetadata{Category: rcpb.ReleaseMetadata_PRE_VALIDATE},
-		},
-	})
+		}}
+
+	if unbox {
+		req.Update.Metadata.BoxState = rcpb.ReleaseMetadata_OUT_OF_BOX
+	}
+
+	_, err = client.UpdateRecord(ctx, req)
 	if err != nil {
 		return err
 	}

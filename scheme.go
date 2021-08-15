@@ -200,3 +200,23 @@ func (ls *libScheme) filter(rec *rcpb.Record) (bool, bool) {
 func (ls *libScheme) name() string {
 	return "library_width"
 }
+
+type older struct{}
+
+func (os *older) name() string {
+	return "old_age"
+}
+
+func (os *older) filter(rec *rcpb.Record) (bool, bool) {
+	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN
+}
+
+type newer struct{}
+
+func (os *newer) name() string {
+	return "new_age"
+}
+
+func (os *newer) filter(rec *rcpb.Record) (bool, bool) {
+	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN
+}

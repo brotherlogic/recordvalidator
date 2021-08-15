@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"sort"
 	"time"
 
 	pb "github.com/brotherlogic/recordvalidator/proto"
@@ -21,8 +22,19 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	sc.CompletedIds = append(sc.CompletedIds, sc.GetCurrentPick())
 
 	// Shuffle the instance ids
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(sc.InstanceIds), func(i, j int) { sc.InstanceIds[i], sc.InstanceIds[j] = sc.InstanceIds[j], sc.InstanceIds[i] })
+	switch sc.Order {
+	case pb.Scheme_RANDOM:
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(sc.InstanceIds), func(i, j int) { sc.InstanceIds[i], sc.InstanceIds[j] = sc.InstanceIds[j], sc.InstanceIds[i] })
+	case pb.Scheme_ORDER:
+		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
+			return sc.InstanceIds[i] < sc.InstanceIds[j]
+		})
+	case pb.Scheme_REVERSE_ORDER:
+		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
+			return sc.InstanceIds[i] < sc.InstanceIds[j]
+		})
+	}
 
 	var scheme schemeGenerator
 	for _, sch := range s.sgs {
@@ -50,7 +62,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				sc.InstanceIds = in
 				sc.CompletedIds = append(sc.CompletedIds, iid)
 			} else {
-				err := s.update(ctx, iid)
+				err := s.update(ctx, iid, sc.GetUnbox())
 				if err == nil {
 					sc.CurrentPick = iid
 					return
@@ -64,6 +76,17 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 	s.Log(fmt.Sprintf("Init shceme: %v", sg.name()))
 	defer s.Log(fmt.Sprintf("Init of %v complete", sg.name()))
 	scheme := &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix()}
+
+	if sg.name() == "old_age" {
+		scheme.Unbox = true
+		scheme.Order = pb.Scheme_ORDER
+	}
+
+	if sg.name() == "new_age" {
+		scheme.Unbox = true
+		scheme.Order = pb.Scheme_REVERSE_ORDER
+	}
+
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {
 		return nil, err
