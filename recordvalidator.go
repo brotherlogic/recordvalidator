@@ -205,7 +205,7 @@ func (s *Server) update(ctx context.Context, iid int32, unbox bool) error {
 		}}
 
 	if unbox {
-		req.Update.Metadata.BoxState = rcpb.ReleaseMetadata_OUT_OF_BOX
+		req.Update.Metadata.NewBoxState = rcpb.ReleaseMetadata_OUT_OF_BOX
 	}
 
 	_, err = client.UpdateRecord(ctx, req)
