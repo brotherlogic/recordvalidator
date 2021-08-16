@@ -43,9 +43,15 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		}
 	}
 
+	for i, iid := range sc.InstanceIds {
+		if iid == 19866960 {
+			s.Log(fmt.Sprintf("Found %v at %v", 19866960, i))
+		}
+	}
+
 	if scheme != nil {
 		// Find the first instance that is still relevant
-		for _, iid := range sc.InstanceIds {
+		for i, iid := range sc.InstanceIds {
 			rec, err := s.getRecord(ctx, iid)
 			if err != nil {
 				s.Log(fmt.Sprintf("Repick load failed: %v", err))
@@ -63,6 +69,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				sc.InstanceIds = in
 				sc.CompletedIds = append(sc.CompletedIds, iid)
 			} else {
+				s.Log(fmt.Sprintf("19866960 picking %v from %v instead", iid, i))
 				err := s.update(ctx, iid, sc.GetUnbox())
 				if err == nil {
 					sc.CurrentPick = iid
