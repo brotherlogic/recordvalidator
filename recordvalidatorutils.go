@@ -52,6 +52,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 			}
 
 			_, invalid := scheme.filter(rec)
+			s.Log(fmt.Sprintf("%v is %v", iid, invalid))
 			if invalid {
 				in := []int32{}
 				for _, tg := range sc.GetInstanceIds() {
