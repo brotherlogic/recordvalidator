@@ -86,6 +86,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	if err != nil {
 		return nil, err
 	}
+	mapper := ""
 	for _, sg := range schemes.GetSchemes() {
 		inS := false
 		for _, id := range sg.GetInstanceIds() {
@@ -94,6 +95,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 		}
 
+		mapper += fmt.Sprintf(" %v -> %v", sg.GetName(), inS)
 		if !inS {
 			for _, scheme := range s.sgs {
 				if scheme.name() == sg.GetName() {
@@ -110,6 +112,8 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 		}
 	}
+
+	s.Log(fmt.Sprintf("Adjusted %v -> %v", in.GetInstanceId(), mapper))
 
 	var rerr error
 	if picked {
