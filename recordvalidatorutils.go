@@ -43,11 +43,14 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		}
 	}
 
+	found := false
 	for i, iid := range sc.InstanceIds {
 		if iid == 19866960 {
 			s.Log(fmt.Sprintf("Found %v at %v", 19866960, i))
+			found = true
 		}
 	}
+	s.Log(fmt.Sprintf("Did find %v: %v", 19866960, found))
 
 	if scheme != nil {
 		// Find the first instance that is still relevant
