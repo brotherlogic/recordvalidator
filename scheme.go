@@ -208,7 +208,7 @@ func (os *older) name() string {
 }
 
 func (os *older) filter(rec *rcpb.Record) (bool, bool) {
-	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN
+	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
 
 type newer struct{}
@@ -218,5 +218,5 @@ func (os *newer) name() string {
 }
 
 func (os *newer) filter(rec *rcpb.Record) (bool, bool) {
-	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN
+	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
