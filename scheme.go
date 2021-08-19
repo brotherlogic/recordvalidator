@@ -218,5 +218,5 @@ func (os *newer) name() string {
 }
 
 func (os *newer) filter(rec *rcpb.Record) (bool, bool) {
-	return true, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
 }
