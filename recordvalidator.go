@@ -201,7 +201,9 @@ func (s *Server) update(ctx context.Context, iid int32, unbox bool) error {
 			Release: &gdpb.Release{
 				InstanceId: iid,
 			},
-			Metadata: &rcpb.ReleaseMetadata{Category: rcpb.ReleaseMetadata_PRE_VALIDATE},
+			Metadata: &rcpb.ReleaseMetadata{
+				Category: rcpb.ReleaseMetadata_PRE_VALIDATE,
+				Dirty:    true},
 		}}
 
 	if unbox {
