@@ -95,7 +95,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 		}
 
-		mapper += fmt.Sprintf(" %v -> %v ", sg.GetName(), inS)
+		mapper += fmt.Sprintf(" %v -> %v [%v]", sg.GetName(), inS, len(sg.GetInstanceIds()))
 		if !inS {
 			for _, scheme := range s.sgs {
 				if scheme.name() == sg.GetName() {
