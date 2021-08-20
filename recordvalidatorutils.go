@@ -54,7 +54,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 
 	if scheme != nil {
 		// Find the first instance that is still relevant
-		for i, iid := range sc.InstanceIds {
+		for _, iid := range sc.InstanceIds {
 			rec, err := s.getRecord(ctx, iid)
 			if err != nil {
 				s.Log(fmt.Sprintf("Repick load failed: %v", err))
