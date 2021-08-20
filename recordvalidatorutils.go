@@ -60,7 +60,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				s.Log(fmt.Sprintf("Repick load failed: %v", err))
 			}
 
-			_, invalid := scheme.filter(rec)
+			stillMatch, invalid := scheme.filter(rec)
 			s.Log(fmt.Sprintf("%v is %v", iid, invalid))
 			if invalid {
 				in := []int32{}
@@ -71,7 +71,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				}
 				sc.InstanceIds = in
 				sc.CompletedIds = append(sc.CompletedIds, iid)
-			} else {
+			} else if stillMatch {
 				s.Log(fmt.Sprintf("Updating %v -> %v", iid, scheme.name()))
 				err := s.update(ctx, iid, sc.GetUnbox())
 				if err == nil {
