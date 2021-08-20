@@ -48,7 +48,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			marked, k := sg.filter(r)
 
-			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v -> unboxed %v", in.GetInstanceId(), scheme.GetName(), k, scheme.GetUnbox()))
+			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v (%v) -> unboxed %v", in.GetInstanceId(), scheme.GetName(), k, marked, scheme.GetUnbox()))
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
 				s.repick(ctx, scheme)
 				picked = true
