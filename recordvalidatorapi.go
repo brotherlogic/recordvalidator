@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 	"github.com/prometheus/client_golang/prometheus"
@@ -43,6 +45,10 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		if scheme.GetCurrentPick() == in.GetInstanceId() || scheme.GetCurrentPick() == 0 {
 			r, err := s.loadRecord(ctx, in.GetInstanceId())
 			if err != nil {
+				if status.Convert(err).Code() == codes.OutOfRange {
+					s.repick(ctx, scheme)
+					return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
+				}
 				return nil, err
 			}
 
@@ -84,6 +90,9 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	// See if this needs to be added
 	rec, err := s.getRecord(ctx, in.GetInstanceId())
 	if err != nil {
+		if status.Convert(err).Code() == codes.OutOfRange {
+			return &rcpb.ClientUpdateResponse{}, nil
+		}
 		return nil, err
 	}
 	mapper := ""
