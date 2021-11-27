@@ -276,7 +276,7 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 func (s *Server) GetState() []*pbg.State {
 	found := false
 	for _, scheme := range s.sgs {
-		if scheme.name() == "library_width" {
+		if scheme.name() == "twelve_inch_sell" {
 			found = true
 		}
 	}
