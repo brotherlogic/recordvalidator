@@ -112,6 +112,17 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 	if s.failSave {
 		return fmt.Errorf("Built to fail")
 	}
+
+	for _, scheme := range schemes.GetSchemes() {
+		var nums []int32
+		for _, num := range scheme.GetCompletedIds() {
+			if num > 0 {
+				nums = append(nums, num)
+			}
+		}
+		scheme.CompletedIds = nums
+	}
+
 	return s.KSclient.Save(ctx, SCHEMES, schemes)
 }
 
