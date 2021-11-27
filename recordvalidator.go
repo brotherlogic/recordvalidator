@@ -72,6 +72,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &libScheme{})
 	s.sgs = append(s.sgs, &older{})
 	s.sgs = append(s.sgs, &newer{})
+	s.sgs = append(s.sgs, &nsSleeve{})
 
 	return s
 }
@@ -183,7 +184,7 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 	return r.GetRecord(), nil
 }
 
-func (s *Server) update(ctx context.Context, iid int32, unbox bool) error {
+func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool) error {
 	s.Log(fmt.Sprintf("Updating for %v", iid))
 	if s.test {
 		return nil
@@ -209,6 +210,40 @@ func (s *Server) update(ctx context.Context, iid int32, unbox bool) error {
 	if unbox {
 		req.Update.Metadata.NewBoxState = rcpb.ReleaseMetadata_OUT_OF_BOX
 	}
+
+	if soft {
+		req.Update.Metadata.Category = rcpb.ReleaseMetadata_PRE_SOFT_VALIDATE
+	}
+
+	_, err = client.UpdateRecord(ctx, req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Server) softValidate(ctx context.Context, iid int32) error {
+	s.Log(fmt.Sprintf("Updating for %v", iid))
+	if s.test {
+		return nil
+	}
+	conn, err := s.FDialServer(ctx, "recordcollection")
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	client := rcpb.NewRecordCollectionServiceClient(conn)
+	req := &rcpb.UpdateRecordRequest{
+		Reason: "Update for validation",
+		Update: &rcpb.Record{
+			Release: &gdpb.Release{
+				InstanceId: iid,
+			},
+			Metadata: &rcpb.ReleaseMetadata{
+				Category: rcpb.ReleaseMetadata_SOFT_VALIDATED,
+				Dirty:    true},
+		}}
 
 	_, err = client.UpdateRecord(ctx, req)
 	if err != nil {

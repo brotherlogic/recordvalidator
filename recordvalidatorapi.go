@@ -56,6 +56,9 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v (%v) -> unboxed %v", in.GetInstanceId(), scheme.GetName(), k, marked, scheme.GetUnbox()))
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
+				if marked && scheme.GetSoft() {
+					s.softValidate(ctx, in.GetInstanceId())
+				}
 				s.repick(ctx, scheme)
 				picked = true
 			} else if r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE &&

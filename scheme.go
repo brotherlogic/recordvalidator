@@ -138,6 +138,16 @@ func (fs *fallScheme) name() string {
 	return "fall_width"
 }
 
+type nsSleeve struct{}
+
+func (nss *nsSleeve) filter(rec *rcpb.Record) (bool, bool) {
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH, rec.GetMetadata().GetSleeve() != rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP
+}
+
+func (nss *nsSleeve) name() string {
+	return "twelve_sleeves"
+}
+
 type cdScheme struct{}
 
 func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool) {

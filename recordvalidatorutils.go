@@ -73,7 +73,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				sc.CompletedIds = append(sc.CompletedIds, iid)
 			} else if stillMatch {
 				s.Log(fmt.Sprintf("Updating %v -> %v", iid, scheme.name()))
-				err := s.update(ctx, iid, sc.GetUnbox())
+				err := s.update(ctx, iid, sc.GetSoft(), sc.GetUnbox())
 				if err == nil {
 					sc.CurrentPick = iid
 					return

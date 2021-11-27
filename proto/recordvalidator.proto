@@ -23,4 +23,5 @@ message Scheme {
   Order order = 6;
 
   bool unbox = 7;
+  bool soft = 8;
 }
