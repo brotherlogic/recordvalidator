@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
 	rcpb "github.com/brotherlogic/recordcollection/proto"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
+	pb "github.com/brotherlogic/recordvalidator/proto"
 )
 
 var (
@@ -136,4 +137,19 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		rerr = s.save(ctx, schemes)
 	}
 	return &rcpb.ClientUpdateResponse{}, rerr
+}
+
+func (s *Server) GetScheme(ctx context.Context, req *pb.GetSchemeRequest) (*pb.GetSchemeResponse, error) {
+	schemes, err := s.load(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, scheme := range schemes.GetSchemes() {
+		if scheme.GetName() == req.GetName() {
+			return &pb.GetSchemeResponse{Scheme: scheme}, nil
+		}
+	}
+
+	return nil, fmt.Errorf("Cannot find: %v", req.GetName())
 }

@@ -25,3 +25,15 @@ message Scheme {
   bool unbox = 7;
   bool soft = 8;
 }
+
+message GetSchemeRequest {
+  string name = 1;
+}
+
+message GetSchemeResponse {
+  Scheme scheme = 1;
+}
+
+service RecordValidatorService {
+  rpc GetScheme(GetSchemeRequest) returns (GetSchemeResponse) {};
+}

@@ -224,6 +224,100 @@ func (x *Scheme) GetSoft() bool {
 	return false
 }
 
+type GetSchemeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *GetSchemeRequest) Reset() {
+	*x = GetSchemeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_recordvalidator_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetSchemeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSchemeRequest) ProtoMessage() {}
+
+func (x *GetSchemeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_recordvalidator_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSchemeRequest.ProtoReflect.Descriptor instead.
+func (*GetSchemeRequest) Descriptor() ([]byte, []int) {
+	return file_recordvalidator_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetSchemeRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetSchemeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Scheme *Scheme `protobuf:"bytes,1,opt,name=scheme,proto3" json:"scheme,omitempty"`
+}
+
+func (x *GetSchemeResponse) Reset() {
+	*x = GetSchemeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_recordvalidator_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetSchemeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSchemeResponse) ProtoMessage() {}
+
+func (x *GetSchemeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_recordvalidator_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSchemeResponse.ProtoReflect.Descriptor instead.
+func (*GetSchemeResponse) Descriptor() ([]byte, []int) {
+	return file_recordvalidator_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetSchemeResponse) GetScheme() *Scheme {
+	if x != nil {
+		return x.Scheme
+	}
+	return nil
+}
+
 var File_recordvalidator_proto protoreflect.FileDescriptor
 
 var file_recordvalidator_proto_rawDesc = []byte{
@@ -253,10 +347,24 @@ var file_recordvalidator_proto_rawDesc = []byte{
 	0x0a, 0x05, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x12, 0x0a, 0x0a, 0x06, 0x52, 0x41, 0x4e, 0x44, 0x4f,
 	0x4d, 0x10, 0x00, 0x12, 0x09, 0x0a, 0x05, 0x4f, 0x52, 0x44, 0x45, 0x52, 0x10, 0x01, 0x12, 0x11,
 	0x0a, 0x0d, 0x52, 0x45, 0x56, 0x45, 0x52, 0x53, 0x45, 0x5f, 0x4f, 0x52, 0x44, 0x45, 0x52, 0x10,
-	0x02, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
-	0x62, 0x72, 0x6f, 0x74, 0x68, 0x65, 0x72, 0x6c, 0x6f, 0x67, 0x69, 0x63, 0x2f, 0x72, 0x65, 0x63,
-	0x6f, 0x72, 0x64, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x02, 0x22, 0x26, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x65, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x44, 0x0a, 0x11, 0x47, 0x65, 0x74,
+	0x53, 0x63, 0x68, 0x65, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2f,
+	0x0a, 0x06, 0x73, 0x63, 0x68, 0x65, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17,
+	0x2e, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
+	0x2e, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x65, 0x52, 0x06, 0x73, 0x63, 0x68, 0x65, 0x6d, 0x65, 0x32,
+	0x6e, 0x0a, 0x16, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
+	0x6f, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x54, 0x0a, 0x09, 0x47, 0x65, 0x74,
+	0x53, 0x63, 0x68, 0x65, 0x6d, 0x65, 0x12, 0x21, 0x2e, 0x72, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x76,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x63, 0x68, 0x65,
+	0x6d, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x72, 0x65, 0x63, 0x6f,
+	0x72, 0x64, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x53,
+	0x63, 0x68, 0x65, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42,
+	0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x62, 0x72,
+	0x6f, 0x74, 0x68, 0x65, 0x72, 0x6c, 0x6f, 0x67, 0x69, 0x63, 0x2f, 0x72, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -272,20 +380,25 @@ func file_recordvalidator_proto_rawDescGZIP() []byte {
 }
 
 var file_recordvalidator_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_recordvalidator_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_recordvalidator_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_recordvalidator_proto_goTypes = []interface{}{
-	(Scheme_Order)(0), // 0: recordvalidator.Scheme.Order
-	(*Schemes)(nil),   // 1: recordvalidator.Schemes
-	(*Scheme)(nil),    // 2: recordvalidator.Scheme
+	(Scheme_Order)(0),         // 0: recordvalidator.Scheme.Order
+	(*Schemes)(nil),           // 1: recordvalidator.Schemes
+	(*Scheme)(nil),            // 2: recordvalidator.Scheme
+	(*GetSchemeRequest)(nil),  // 3: recordvalidator.GetSchemeRequest
+	(*GetSchemeResponse)(nil), // 4: recordvalidator.GetSchemeResponse
 }
 var file_recordvalidator_proto_depIdxs = []int32{
 	2, // 0: recordvalidator.Schemes.schemes:type_name -> recordvalidator.Scheme
 	0, // 1: recordvalidator.Scheme.order:type_name -> recordvalidator.Scheme.Order
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 2: recordvalidator.GetSchemeResponse.scheme:type_name -> recordvalidator.Scheme
+	3, // 3: recordvalidator.RecordValidatorService.GetScheme:input_type -> recordvalidator.GetSchemeRequest
+	4, // 4: recordvalidator.RecordValidatorService.GetScheme:output_type -> recordvalidator.GetSchemeResponse
+	4, // [4:5] is the sub-list for method output_type
+	3, // [3:4] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_recordvalidator_proto_init() }
@@ -318,6 +431,30 @@ func file_recordvalidator_proto_init() {
 				return nil
 			}
 		}
+		file_recordvalidator_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetSchemeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_recordvalidator_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetSchemeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -325,9 +462,9 @@ func file_recordvalidator_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_recordvalidator_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_recordvalidator_proto_goTypes,
 		DependencyIndexes: file_recordvalidator_proto_depIdxs,
