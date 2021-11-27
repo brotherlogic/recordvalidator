@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -9,9 +10,7 @@ import (
 	"github.com/brotherlogic/goserver/utils"
 
 	pbrc "github.com/brotherlogic/recordcollection/proto"
-
-	//Needed to pull in gzip encoding init
-	_ "google.golang.org/grpc/encoding/gzip"
+	pb "github.com/brotherlogic/recordvalidator/proto"
 )
 
 func main() {
@@ -32,6 +31,13 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
+	case "get":
+		sclient := pb.NewRecordValidatorServiceClient(conn)
+		scheme, err := sclient.GetScheme(ctx, &pb.GetSchemeRequest{Name: os.Args[2]})
+		if err != nil {
+			log.Fatalf("Error on GET: %v", err)
+		}
+		fmt.Printf("Scheme: %v", scheme)
 	case "fullping":
 		ctx2, cancel2 := utils.ManualContext("recordcollectioncli-"+os.Args[1], time.Hour)
 		defer cancel2()
