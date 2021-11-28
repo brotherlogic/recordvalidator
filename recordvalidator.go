@@ -45,7 +45,7 @@ var (
 		Help: "The size of the print queue",
 	}, []string{"scheme"})
 	perDay = promauto.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "recordvalidator_completion_date_v2",
+		Name: "recordvalidator_completion_per_day",
 		Help: "The size of the print queue",
 	}, []string{"scheme"})
 )
