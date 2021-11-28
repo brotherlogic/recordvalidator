@@ -44,6 +44,10 @@ var (
 		Name: "recordvalidator_completion_date_v2",
 		Help: "The size of the print queue",
 	}, []string{"scheme"})
+	perDay = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "recordvalidator_completion_date_v2",
+		Help: "The size of the print queue",
+	}, []string{"scheme"})
 )
 
 //Server main server type
@@ -103,6 +107,7 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		togo := float64(len(sc.GetInstanceIds()) - len(sc.GetCompletedIds()))
 		days := togo * compPerDay
 		ftime := time.Now().Add(time.Hour * time.Duration(24*days))
+		perDay.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(compPerDay))
 		completionDateV2.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(ftime.Unix()))
 	}
 }
