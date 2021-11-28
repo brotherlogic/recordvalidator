@@ -24,6 +24,7 @@ message Scheme {
 
   bool unbox = 7;
   bool soft = 8;
+  map<int32, int64> complete_date = 9;
 }
 
 message GetSchemeRequest {

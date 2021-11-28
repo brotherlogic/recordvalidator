@@ -20,6 +20,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	}
 	sc.InstanceIds = ntg
 	sc.CompletedIds = append(sc.CompletedIds, sc.GetCurrentPick())
+	sc.CompleteDate[sc.GetCurrentPick()] = time.Now().Unix()
 
 	// Shuffle the instance ids
 	switch sc.Order {
@@ -70,6 +71,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 					}
 				}
 				sc.InstanceIds = in
+				sc.CompleteDate[iid] = time.Now().Unix()
 				sc.CompletedIds = append(sc.CompletedIds, iid)
 			} else if stillMatch {
 				s.Log(fmt.Sprintf("Updating %v -> %v", iid, scheme.name()))

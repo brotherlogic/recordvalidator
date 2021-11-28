@@ -105,6 +105,13 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	}
 	schemes := data.(*pb.Schemes)
 	s.updateMetrics(schemes)
+
+	for _, scheme := range schemes.GetSchemes() {
+		if scheme.CompleteDate == nil {
+			scheme.CompleteDate = make(map[int32]int64)
+		}
+	}
+
 	return schemes, nil
 }
 
