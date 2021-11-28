@@ -40,6 +40,10 @@ var (
 		Name: "recordvalidator_completion_date",
 		Help: "The size of the print queue",
 	}, []string{"scheme"})
+	completionDateV2 = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "recordvalidator_completion_date_v2",
+		Help: "The size of the print queue",
+	}, []string{"scheme"})
 )
 
 //Server main server type
@@ -78,7 +82,6 @@ func Init() *Server {
 }
 
 func (s *Server) updateMetrics(schemes *pb.Schemes) {
-	time.Sleep(time.Second * 2)
 	for _, sc := range schemes.GetSchemes() {
 		prop := float64(len(sc.GetCompletedIds())) / float64(len(sc.GetInstanceIds())+len(sc.GetCompletedIds()))
 		dur := time.Now().Sub(time.Unix(sc.GetStartTime(), 0)).Seconds()
@@ -88,6 +91,19 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		doneCount.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(len(sc.GetCompletedIds())))
 		completion.With(prometheus.Labels{"scheme": sc.GetName()}).Set(prop)
 		completionDate.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(finishTime))
+
+		last14days := float64(0)
+		for _, date := range sc.GetCompleteDate() {
+			if time.Since(time.Unix(date, 0)) < time.Hour*24*14 {
+				last14days++
+			}
+		}
+
+		compPerDay := last14days / 14
+		togo := float64(len(sc.GetInstanceIds()) - len(sc.GetCompletedIds()))
+		days := togo * compPerDay
+		ftime := time.Now().Add(time.Hour * time.Duration(24*days))
+		completionDateV2.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(ftime.Unix()))
 	}
 }
 
