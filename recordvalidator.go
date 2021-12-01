@@ -143,13 +143,19 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 
 	for _, scheme := range schemes.GetSchemes() {
 		var nums []int32
+		nmap := make(map[int32]bool)
 		for _, num := range scheme.GetCompletedIds() {
 			if num > 0 {
-				nums = append(nums, num)
+				nmap[num] = true
 			}
+		}
+		for v := range nmap {
+			nums = append(nums, v)
 		}
 		scheme.CompletedIds = nums
 	}
+
+	s.updateMetrics(schemes)
 
 	return s.KSclient.Save(ctx, SCHEMES, schemes)
 }
