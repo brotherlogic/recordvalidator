@@ -141,7 +141,7 @@ func (fs *fallScheme) name() string {
 type nsSleeve struct{}
 
 func (nss *nsSleeve) filter(rec *rcpb.Record) (bool, bool) {
-	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION, rec.GetMetadata().GetSleeve() == rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION, rec.GetMetadata().GetSleeve() != rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP
 }
 
 func (nss *nsSleeve) name() string {
