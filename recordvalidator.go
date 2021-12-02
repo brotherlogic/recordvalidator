@@ -126,6 +126,16 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		data = &pb.Schemes{}
 	}
 	schemes := data.(*pb.Schemes)
+
+	mapper := make(map[string]*pb.Scheme)
+	for _, sc := range schemes.GetSchemes() {
+		mapper[sc.GetName()] = sc
+	}
+	schemes.Schemes = make([]*pb.Scheme, 0)
+	for _, sc := range mapper {
+		schemes.Schemes = append(schemes.Schemes, sc)
+	}
+
 	s.updateMetrics(schemes)
 
 	for _, scheme := range schemes.GetSchemes() {
