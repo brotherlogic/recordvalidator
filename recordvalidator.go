@@ -134,6 +134,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 		if scheme.GetName() == "twelve_inch_sleeves" {
 			scheme.CompletedIds = make([]int32, 0)
+			s.Log(fmt.Sprintf("Reset"))
 		}
 	}
 
