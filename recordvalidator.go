@@ -105,7 +105,7 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 
 		compPerDay := last14days / 14
 		togo := float64(len(sc.GetInstanceIds()) - len(sc.GetCompletedIds()))
-		days := togo * compPerDay
+		days := togo / compPerDay
 		ftime := time.Now().Add(time.Hour * time.Duration(24*days))
 		perDay.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(compPerDay))
 		completionDateV2.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(ftime.Unix()))
