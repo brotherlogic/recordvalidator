@@ -114,11 +114,9 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 
 		f, p := sg.filter(r)
 		if f {
+			scheme.InstanceIds = append(scheme.InstanceIds, iid)
 			if p {
-				scheme.InstanceIds = append(scheme.InstanceIds, iid)
 				scheme.CompletedIds = append(scheme.CompletedIds, iid)
-			} else {
-				scheme.InstanceIds = append(scheme.InstanceIds, iid)
 			}
 		}
 	}
