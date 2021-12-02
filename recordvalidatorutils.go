@@ -89,7 +89,35 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme, error) {
 	s.Log(fmt.Sprintf("Init shceme: %v", sg.name()))
 	defer s.Log(fmt.Sprintf("Init of %v complete", sg.name()))
-	scheme := &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix()}
+
+	schemes, err := s.load(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var scheme *pb.Scheme
+	var scs []*pb.Scheme
+	var seen []string
+	for _, sc := range schemes.GetSchemes() {
+		seens := false
+		for _, se := range seen {
+			if se == sc.GetName() {
+				seens = true
+			}
+		}
+
+		if sc.GetName() == sg.name() {
+			scheme = sc
+		}
+
+		if !seens {
+			scs = append(scs)
+			seen = append(seen, sc.GetName())
+		}
+	}
+
+	if scheme == nil {
+		scheme = &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix()}
+	}
 
 	if sg.name() == "old_age" {
 		scheme.Unbox = true
