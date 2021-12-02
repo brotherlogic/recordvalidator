@@ -88,7 +88,7 @@ func Init() *Server {
 func (s *Server) updateMetrics(schemes *pb.Schemes) {
 	for _, sc := range schemes.GetSchemes() {
 		prop := float64(len(sc.GetCompletedIds())) / float64(len(sc.GetInstanceIds())+len(sc.GetCompletedIds()))
-		dur := time.Now().Sub(time.Unix(sc.GetStartTime(), 0)).Seconds()
+		dur := time.Since(time.Unix(sc.GetStartTime(), 0)).Seconds()
 		extraDur := dur/prop - dur
 		finishTime := time.Now().Add(time.Second * time.Duration(extraDur)).Unix()
 
