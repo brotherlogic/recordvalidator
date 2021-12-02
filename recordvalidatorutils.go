@@ -52,7 +52,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 			found = true
 		}
 	}
-	s.Log(fmt.Sprintf("Did find %v: %v", 19866960, found))
+	s.Log(fmt.Sprintf("Did find %v: %v -> %v", 19866960, found, scheme))
 
 	if scheme != nil {
 		// Find the first instance that is still relevant
@@ -101,6 +101,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		scheme.Order = pb.Scheme_REVERSE_ORDER
 	}
 
+	//Init everything empty
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {
 		return nil, err
