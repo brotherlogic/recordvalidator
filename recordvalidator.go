@@ -156,11 +156,11 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 		}
 		scheme.CompletedIds = nums
 
-		if scheme.GetName() == "twelve_inch_sleeves" {
+		/*if scheme.GetName() == "twelve_inch_sleeves" {
 			scheme.CompletedIds = make([]int32, 0)
 			scheme.CompleteDate = make(map[int32]int64)
 			s.Log(fmt.Sprintf("Reset"))
-		}
+		}*/
 	}
 
 	s.updateMetrics(schemes)
