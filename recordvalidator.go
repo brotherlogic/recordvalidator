@@ -132,11 +132,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		if scheme.CompleteDate == nil {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
-		if scheme.GetName() == "twelve_inch_sleeves" {
-			scheme.CompletedIds = make([]int32, 0)
-			scheme.CompleteDate = make(map[int32]int64)
-			s.Log(fmt.Sprintf("Reset"))
-		}
+
 	}
 
 	return schemes, nil
@@ -159,6 +155,12 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 			nums = append(nums, v)
 		}
 		scheme.CompletedIds = nums
+
+		if scheme.GetName() == "twelve_inch_sleeves" {
+			scheme.CompletedIds = make([]int32, 0)
+			scheme.CompleteDate = make(map[int32]int64)
+			s.Log(fmt.Sprintf("Reset"))
+		}
 	}
 
 	s.updateMetrics(schemes)
