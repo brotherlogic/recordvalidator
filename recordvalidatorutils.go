@@ -87,14 +87,15 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 }
 
 func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme, error) {
+	var scheme *pb.Scheme
 	s.Log(fmt.Sprintf("Init shceme: %v", sg.name()))
-	defer s.Log(fmt.Sprintf("Init of %v complete", sg.name()))
+	defer s.Log(fmt.Sprintf("Init of %v complete -> %v", sg.name(), len(scheme.GetInstanceIds())))
 
 	schemes, err := s.load(ctx)
 	if err != nil {
 		return nil, err
 	}
-	var scheme *pb.Scheme
+
 	var scs []*pb.Scheme
 	var seen []string
 	for _, sc := range schemes.GetSchemes() {
