@@ -88,8 +88,8 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 
 func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme, error) {
 	var scheme *pb.Scheme
-	s.Log(fmt.Sprintf("Init shceme: %v", sg.name()))
-	defer s.Log(fmt.Sprintf("Init of %v complete -> %v", sg.name(), len(scheme.GetInstanceIds())))
+	s.CtxLog(ctx, fmt.Sprintf("Init shceme: %v", sg.name()))
+	defer s.CtxLog(ctx, fmt.Sprintf("Init of %v complete -> %v", sg.name(), len(scheme.GetInstanceIds())))
 
 	schemes, err := s.load(ctx)
 	if err != nil {
@@ -146,6 +146,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		}
 
 		f, p := sg.filter(r)
+		s.CtxLog(ctx, fmt.Sprintf("Found %v -> %v,%v", r.GetRelease().GetInstanceId(), f, p))
 		if f {
 			scheme.InstanceIds = append(scheme.InstanceIds, iid)
 			if p {
