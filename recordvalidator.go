@@ -225,7 +225,7 @@ func (s *Server) getAllRecords(ctx context.Context) ([]int32, error) {
 	defer conn.Close()
 
 	client := rcpb.NewRecordCollectionServiceClient(conn)
-	r, err := client.QueryRecords(ctx, &rcpb.QueryRecordsRequest{Query: &rcpb.QueryRecordsRequest_FolderId{242017}})
+	r, err := client.QueryRecords(ctx, &rcpb.QueryRecordsRequest{Query: &rcpb.QueryRecordsRequest_UpdateTime{0}})
 	if err != nil {
 		return nil, err
 	}
