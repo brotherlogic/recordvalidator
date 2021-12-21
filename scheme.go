@@ -149,6 +149,17 @@ func (nss *nsSleeve) name() string {
 	return "twelve_inch_sleeves"
 }
 
+type nsSevenSleeve struct{}
+
+func (nss *nsSevenSleeve) filter(rec *rcpb.Record) (bool, bool) {
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH && rec.GetRelease().GetFolderId() == 267116,
+		rec.GetMetadata().GetSleeve() == rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP
+}
+
+func (nss *nsSevenSleeve) name() string {
+	return "seven_inch_sleeves"
+}
+
 type cdScheme struct{}
 
 func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool) {

@@ -129,6 +129,10 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		scheme.Order = pb.Scheme_REVERSE_ORDER
 	}
 
+	if sg.name() == "seven_inch_sleeves" {
+		scheme.Soft = true
+	}
+
 	//Init everything empty
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {

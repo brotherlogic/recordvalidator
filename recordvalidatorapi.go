@@ -41,7 +41,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			continue
 		}
 
-		if scheme.GetName() == "twelve_inch_sleeves" {
+		if scheme.GetName() == "twelve_inch_sleeves" || scheme.GetName() == "seven_inch_sleeves" {
 			scheme.Soft = true
 		}
 

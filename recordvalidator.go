@@ -85,6 +85,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &older{})
 	s.sgs = append(s.sgs, &newer{})
 	s.sgs = append(s.sgs, &nsSleeve{})
+	s.sgs = append(s.sgs, &nsSevenSleeve{})
 
 	return s
 }
