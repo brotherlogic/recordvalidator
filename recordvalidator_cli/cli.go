@@ -37,7 +37,8 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
-		fmt.Printf("Scheme: %v", scheme)
+		fmt.Printf("Scheme: %v\n", scheme)
+		fmt.Printf("%v / %v\n", len(scheme.Scheme.GetCompletedIds()), len(scheme.Scheme.InstanceIds))
 	case "fullping":
 		ctx2, cancel2 := utils.ManualContext("recordcollectioncli-"+os.Args[1], time.Hour)
 		defer cancel2()
