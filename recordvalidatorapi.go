@@ -80,7 +80,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		found := false
 
 		for _, scheme := range schemes.GetSchemes() {
-			if scheme.GetName() == sg.name() && len(scheme.GetInstanceIds()) > 1 {
+			if scheme.GetName() == sg.name() { //} && len(scheme.GetInstanceIds()) > 1 {
 				found = true
 			}
 		}
