@@ -98,7 +98,7 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		finishTime := time.Now().Add(time.Second * time.Duration(extraDur)).Unix()
 
 		doneCount.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(len(sc.GetCompletedIds())))
-		toGo.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(len(sc.GetInstanceIds()) - len(sc.GetCompletedIds())))
+		toGo.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(len(sc.GetInstanceIds()) - len(sc.GetCompleteDate())))
 		completion.With(prometheus.Labels{"scheme": sc.GetName()}).Set(prop)
 		completionDate.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(finishTime))
 
