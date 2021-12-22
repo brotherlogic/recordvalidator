@@ -32,7 +32,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	for _, scheme := range schemes.GetSchemes() {
 		var sg schemeGenerator
 		for _, schemegen := range s.sgs {
-			if schemegen.name() == scheme.GetName() {
+			if schemegen.name() == scheme.GetName() && len(scheme.GetInstanceIds()) > 0 {
 				sg = schemegen
 			}
 		}
