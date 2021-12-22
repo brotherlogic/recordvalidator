@@ -110,7 +110,7 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		}
 
 		compPerDay := last14days / 14
-		togo := float64(len(sc.GetInstanceIds()) - len(sc.GetCompletedIds()))
+		togo := float64(len(sc.GetInstanceIds()))
 		days := togo / compPerDay
 		ftime := time.Now().Add(time.Hour * time.Duration(24*days))
 		s.Log(fmt.Sprintf("COMP %v: %v, %v, %v, %v", sc.GetName(), compPerDay, togo, days, ftime))
