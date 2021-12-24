@@ -38,7 +38,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		})
 	case pb.Scheme_GIVEN_ORDER:
 		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
-			return sc.Ordering[sc.InstanceIds[i]] > sc.Ordering[sc.InstanceIds[j]]
+			return sc.Ordering[sc.InstanceIds[i]] < sc.Ordering[sc.InstanceIds[j]]
 		})
 	}
 
