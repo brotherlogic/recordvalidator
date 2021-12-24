@@ -19,12 +19,14 @@ message Scheme {
     RANDOM = 0;
     ORDER = 1;
     REVERSE_ORDER = 2;
+    GIVEN_ORDER = 3;
   }
   Order order = 6;
 
   bool unbox = 7;
   bool soft = 8;
   map<int32, int64> complete_date = 9;
+  map<int32, float> ordering = 10;
 }
 
 message GetSchemeRequest {

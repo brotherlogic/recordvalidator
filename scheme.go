@@ -8,18 +8,18 @@ import (
 )
 
 type schemeGenerator interface {
-	// Does this record apply to the this filter
-	filter(rec *rcpb.Record) (bool, bool)
+	// Does this record apply to the this filter and what's the order
+	filter(rec *rcpb.Record) (bool, bool, float32)
 	name() string
 }
 
 type allTwelves struct {
 }
 
-func (fs *allTwelves) filter(rec *rcpb.Record) (bool, bool) {
+func (fs *allTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 	// Can't process these
 	if rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_PARENTS {
-		return false, true
+		return false, true, -1
 	}
 
 	marked := false
@@ -58,7 +58,9 @@ func (fs *allTwelves) filter(rec *rcpb.Record) (bool, bool) {
 	}
 
 	// Run this every five years
-	return marked, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return marked,
+		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (fs *allTwelves) name() string {
@@ -67,10 +69,10 @@ func (fs *allTwelves) name() string {
 
 type fullScheme struct{}
 
-func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	// Can't process these
 	if rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_PARENTS {
-		return false, true
+		return false, true, -1
 	}
 
 	// Sold Digital recordings should be included ehre
@@ -89,7 +91,9 @@ func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool) {
 	}
 
 	// Run this every five years
-	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) < time.Hour*24*365*5 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return marked,
+		time.Now().Sub(time.Unix(rec.GetMetadata().GetLastValidate(), 0)) < time.Hour*24*365*5 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (fs *fullScheme) name() string {
@@ -98,9 +102,11 @@ func (fs *fullScheme) name() string {
 
 type keeperScheme struct{}
 
-func (ks *keeperScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (ks *keeperScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a keeper?, doess it have a width?
-	return rec.GetMetadata().GetGoalFolder() == 2259637, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return rec.GetMetadata().GetGoalFolder() == 2259637,
+		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (ks *keeperScheme) name() string {
@@ -109,7 +115,7 @@ func (ks *keeperScheme) name() string {
 
 type ageScheme struct{}
 
-func (as *ageScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (as *ageScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	// Sold Digital recordings should be included ehre
 	marked := false
 	if rec.Metadata.GetCategory() != rcpb.ReleaseMetadata_LISTED_TO_SELL &&
@@ -120,7 +126,9 @@ func (as *ageScheme) filter(rec *rcpb.Record) (bool, bool) {
 	}
 
 	// Listen to everything every five years
-	return marked, time.Now().Sub(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*2 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return marked,
+		time.Now().Sub(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*2 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (as *ageScheme) name() string {
@@ -129,9 +137,11 @@ func (as *ageScheme) name() string {
 
 type fallScheme struct{}
 
-func (fs *fallScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (fs *fallScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a keeper?, doess it have a width?
-	return rec.GetMetadata().GetGoalFolder() == 716318, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return rec.GetMetadata().GetGoalFolder() == 716318,
+		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (fs *fallScheme) name() string {
@@ -140,9 +150,9 @@ func (fs *fallScheme) name() string {
 
 type nsSleeve struct{}
 
-func (nss *nsSleeve) filter(rec *rcpb.Record) (bool, bool) {
+func (nss *nsSleeve) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetRelease().GetFolderId() == 242017,
-		rec.GetMetadata().GetSleeve() == rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP
+		rec.GetMetadata().GetSleeve() == rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP, -1
 }
 
 func (nss *nsSleeve) name() string {
@@ -151,9 +161,9 @@ func (nss *nsSleeve) name() string {
 
 type nsSevenSleeve struct{}
 
-func (nss *nsSevenSleeve) filter(rec *rcpb.Record) (bool, bool) {
+func (nss *nsSevenSleeve) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH && rec.GetRelease().GetFolderId() == 267116,
-		rec.GetMetadata().GetSleeve() == rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP
+		rec.GetMetadata().GetSleeve() == rcpb.ReleaseMetadata_VINYL_STORAGE_DOUBLE_FLAP, -1
 }
 
 func (nss *nsSevenSleeve) name() string {
@@ -162,9 +172,11 @@ func (nss *nsSevenSleeve) name() string {
 
 type cdScheme struct{}
 
-func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a cd?, doess it have a width?
-	return rec.GetRelease().GetFolderId() == 242018, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return rec.GetRelease().GetFolderId() == 242018,
+		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (cds *cdScheme) name() string {
@@ -173,9 +185,11 @@ func (cds *cdScheme) name() string {
 
 type twScheme struct{}
 
-func (tw *twScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (tw *twScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a cd?, doess it have a width?
-	return rec.GetRelease().GetFolderId() == 242017, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return rec.GetRelease().GetFolderId() == 242017,
+		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (tw *twScheme) name() string {
@@ -184,7 +198,7 @@ func (tw *twScheme) name() string {
 
 type tenScheme struct{}
 
-func (tw *tenScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (tw *tenScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	isTen := false
 	for _, format := range rec.GetRelease().GetFormats() {
 		if strings.Contains(format.GetName(), "10") {
@@ -197,7 +211,9 @@ func (tw *tenScheme) filter(rec *rcpb.Record) (bool, bool) {
 		}
 	}
 	//Is it a cd?, doess it have a width?
-	return isTen, ((rec.GetMetadata().GetSaleId() > 0 || rec.GetMetadata().GetSoldDate() > 0) || rec.GetMetadata().GetLastValidate() > 0) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+	return isTen,
+		((rec.GetMetadata().GetSaleId() > 0 || rec.GetMetadata().GetSoldDate() > 0) || rec.GetMetadata().GetLastValidate() > 0) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (tw *tenScheme) name() string {
@@ -206,17 +222,18 @@ func (tw *tenScheme) name() string {
 
 type libScheme struct{}
 
-func (ls *libScheme) filter(rec *rcpb.Record) (bool, bool) {
+func (ls *libScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a cd?, doess it have a width?
 	return rec.GetMetadata().GetGoalFolder() == 882359 ||
-		rec.GetMetadata().GetGoalFolder() == 1281012 ||
-		rec.GetMetadata().GetGoalFolder() == 857451 ||
-		rec.GetMetadata().GetGoalFolder() == 1409151 ||
-		rec.GetMetadata().GetGoalFolder() == 823501 ||
-		rec.GetMetadata().GetGoalFolder() == 842724 ||
-		rec.GetMetadata().GetGoalFolder() == 681783 ||
-		rec.GetMetadata().GetGoalFolder() == 529723 ||
-		rec.GetMetadata().GetGoalFolder() == 1642995, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+			rec.GetMetadata().GetGoalFolder() == 1281012 ||
+			rec.GetMetadata().GetGoalFolder() == 857451 ||
+			rec.GetMetadata().GetGoalFolder() == 1409151 ||
+			rec.GetMetadata().GetGoalFolder() == 823501 ||
+			rec.GetMetadata().GetGoalFolder() == 842724 ||
+			rec.GetMetadata().GetGoalFolder() == 681783 ||
+			rec.GetMetadata().GetGoalFolder() == 529723 ||
+			rec.GetMetadata().GetGoalFolder() == 1642995, rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 func (ls *libScheme) name() string {
@@ -229,11 +246,12 @@ func (os *older) name() string {
 	return "old_age"
 }
 
-func (os *older) filter(rec *rcpb.Record) (bool, bool) {
+func (os *older) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
-		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
-		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
-		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
 }
 
 type newer struct{}
@@ -242,9 +260,24 @@ func (os *newer) name() string {
 	return "new_age"
 }
 
-func (os *newer) filter(rec *rcpb.Record) (bool, bool) {
+func (os *newer) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
-		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
-		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
-		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
+type bad_ones struct{}
+
+func (_ *bad_ones) name() string {
+	return "bad_ones"
+}
+
+func (_ *bad_ones) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.Metadata.GetOverallScore()
 }

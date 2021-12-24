@@ -36,6 +36,10 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
 			return sc.InstanceIds[i] > sc.InstanceIds[j]
 		})
+	case pb.Scheme_GIVEN_ORDER:
+		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
+			return sc.Ordering[sc.InstanceIds[i]] > sc.Ordering[sc.InstanceIds[j]]
+		})
 	}
 
 	var scheme schemeGenerator
@@ -62,7 +66,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				s.Log(fmt.Sprintf("Repick load failed: %v", err))
 			}
 
-			stillMatch, invalid := scheme.filter(rec)
+			stillMatch, invalid, _ := scheme.filter(rec)
 			s.Log(fmt.Sprintf("%v is %v", iid, invalid))
 			if invalid {
 				in := []int32{}
@@ -117,7 +121,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 	}
 
 	if scheme == nil {
-		scheme = &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix()}
+		scheme = &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix(), Ordering: make(map[int32]float32)}
 	}
 
 	if sg.name() == "old_age" {
@@ -134,6 +138,10 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		scheme.Soft = true
 	}
 
+	if sg.name() == "bad_ones" {
+		scheme.Order = pb.Scheme_GIVEN_ORDER
+	}
+
 	//Init everything empty
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {
@@ -145,7 +153,8 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 			return nil, err
 		}
 
-		f, p := sg.filter(r)
+		f, p, o := sg.filter(r)
+		scheme.Ordering[iid] = o
 		s.CtxLog(ctx, fmt.Sprintf("Found %v -> %v,%v", r.GetRelease().GetInstanceId(), f, p))
 		if f {
 			scheme.InstanceIds = append(scheme.InstanceIds, iid)

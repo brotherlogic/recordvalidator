@@ -57,7 +57,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 				return nil, err
 			}
 
-			marked, k := sg.filter(r)
+			marked, k, _ := sg.filter(r)
 
 			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v (%v) -> unboxed %v", in.GetInstanceId(), scheme.GetName(), k, marked, scheme.GetUnbox()))
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
@@ -117,7 +117,8 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		if !inS {
 			for _, scheme := range s.sgs {
 				if scheme.name() == sg.GetName() {
-					app, done := scheme.filter(rec)
+					app, done, order := scheme.filter(rec)
+					sg.Ordering[in.GetInstanceId()] = order
 					if app {
 						if done {
 							sg.CompletedIds = append(sg.CompletedIds, in.GetInstanceId())
