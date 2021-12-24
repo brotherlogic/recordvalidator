@@ -154,6 +154,9 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		}
 
 		f, p, o := sg.filter(r)
+		if scheme.Ordering == nil {
+			scheme.Ordering = make(map[int32]float32)
+		}
 		scheme.Ordering[iid] = o
 		s.CtxLog(ctx, fmt.Sprintf("Found %v -> %v,%v", r.GetRelease().GetInstanceId(), f, p))
 		if f {
