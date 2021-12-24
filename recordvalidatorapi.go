@@ -118,6 +118,9 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			for _, scheme := range s.sgs {
 				if scheme.name() == sg.GetName() {
 					app, done, order := scheme.filter(rec)
+					if sg.Ordering == nil {
+						sg.Ordering = make(map[int32]float32)
+					}
 					sg.Ordering[in.GetInstanceId()] = order
 					if app {
 						if done {
