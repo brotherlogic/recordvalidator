@@ -40,6 +40,8 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
 			return sc.Ordering[sc.InstanceIds[i]] < sc.Ordering[sc.InstanceIds[j]]
 		})
+
+		s.Log(fmt.Sprintf("GIVEN PICK %v -> %v with %v", sc.InstanceIds[0], sc.InstanceIds[len(sc.InstanceIds)-1], sc.Ordering))
 	}
 
 	var scheme schemeGenerator
