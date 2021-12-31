@@ -126,7 +126,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		scheme = &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix(), Ordering: make(map[int32]float32)}
 	}
 
-	if sg.name() == "old_age" {
+	if sg.name() == "old_age" || sg.name() == "old_age_twelves" {
 		scheme.Unbox = true
 		scheme.Order = pb.Scheme_ORDER
 	}
