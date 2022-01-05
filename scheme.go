@@ -298,11 +298,11 @@ func (os *newer) filter(rec *rcpb.Record) (bool, bool, float32) {
 
 type newerTwelves struct{}
 
-func (_ *newerTwelves) name() string {
+func (*newerTwelves) name() string {
 	return "new_age_twelves"
 }
 
-func (_ *newerTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
+func (*newerTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
@@ -313,11 +313,11 @@ func (_ *newerTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 
 type bad_ones struct{}
 
-func (_ *bad_ones) name() string {
+func (*bad_ones) name() string {
 	return "bad_ones"
 }
 
-func (_ *bad_ones) filter(rec *rcpb.Record) (bool, bool, float32) {
+func (*bad_ones) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
@@ -327,11 +327,11 @@ func (_ *bad_ones) filter(rec *rcpb.Record) (bool, bool, float32) {
 
 type bad_ones_twelve struct{}
 
-func (_ *bad_ones_twelve) name() string {
+func (*bad_ones_twelve) name() string {
 	return "bad_ones_twelves"
 }
 
-func (_ *bad_ones_twelve) filter(rec *rcpb.Record) (bool, bool, float32) {
+func (*bad_ones_twelve) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
