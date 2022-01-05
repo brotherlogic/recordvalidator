@@ -131,7 +131,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		scheme.Order = pb.Scheme_ORDER
 	}
 
-	if sg.name() == "new_age" {
+	if sg.name() == "new_age" || sg.name() == "new_age_twelves" {
 		scheme.Unbox = true
 		scheme.Order = pb.Scheme_REVERSE_ORDER
 	}
