@@ -296,6 +296,21 @@ func (os *newer) filter(rec *rcpb.Record) (bool, bool, float32) {
 		-1
 }
 
+type newerTwelves struct{}
+
+func (_ *newerTwelves) name() string {
+	return "new_age_twelves"
+}
+
+func (_ *newerTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetGoalFolder() == 242017, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
 type bad_ones struct{}
 
 func (_ *bad_ones) name() string {
@@ -307,5 +322,20 @@ func (_ *bad_ones) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.Metadata.GetOverallScore()
+}
+
+type bad_ones_twelve struct{}
+
+func (_ *bad_ones_twelve) name() string {
+	return "bad_ones_twelves"
+}
+
+func (_ *bad_ones_twelve) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetGoalFolder() == 242017, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rec.Metadata.GetOverallScore()
 }

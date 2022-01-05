@@ -89,6 +89,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &bad_ones{})
 	s.sgs = append(s.sgs, &olderTwelves{})
 	s.sgs = append(s.sgs, &tapeProc{})
+	s.sgs = append(s.sgs, &newerTwelves{})
+	s.sgs = append(s.sgs, &bad_ones_twelve{})
 
 	return s
 }
