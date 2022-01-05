@@ -144,6 +144,11 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 		scheme.Order = pb.Scheme_GIVEN_ORDER
 	}
 
+	if sg.name() == "bad_ones_twelves" {
+		scheme.Unbox = true
+		scheme.Order = pb.Scheme_GIVEN_ORDER
+	}
+
 	//Init everything empty
 	iids, err := s.getAllRecords(ctx)
 	if err != nil {
