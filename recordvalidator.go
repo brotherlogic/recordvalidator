@@ -268,7 +268,7 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 	return r.GetRecord(), nil
 }
 
-func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool) error {
+func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool, scheme string) error {
 	s.Log(fmt.Sprintf("Updating for %v", iid))
 	if s.test {
 		return nil
@@ -281,7 +281,7 @@ func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool) error 
 
 	client := rcpb.NewRecordCollectionServiceClient(conn)
 	req := &rcpb.UpdateRecordRequest{
-		Reason: "Update for validation",
+		Reason: fmt.Sprintf("Update for validation from %v", scheme),
 		Update: &rcpb.Record{
 			Release: &gdpb.Release{
 				InstanceId: iid,
