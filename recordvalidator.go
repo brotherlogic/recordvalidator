@@ -154,6 +154,16 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
 
+		if scheme.GetName() == "old_age" || scheme.GetName() == "old_age_twelves" {
+			scheme.Unbox = true
+			scheme.Order = pb.Scheme_ORDER
+		}
+
+		if scheme.GetName() == "new_age" || scheme.GetName() == "new_age_twelves" {
+			scheme.Unbox = true
+			scheme.Order = pb.Scheme_REVERSE_ORDER
+		}
+
 	}
 
 	return schemes, nil
