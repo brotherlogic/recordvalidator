@@ -164,6 +164,11 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
 
+		if scheme.GetName() == "bad_ones_twelves" {
+			scheme.Unbox = true
+			scheme.Order = pb.Scheme_GIVEN_ORDER
+		}
+
 	}
 
 	return schemes, nil
