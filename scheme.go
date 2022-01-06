@@ -163,7 +163,7 @@ type tapeProc struct{}
 
 func (_ *tapeProc) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_TAPE,
-		rec.GetMetadata().GetCdPath() != "", -1
+		rec.GetMetadata().GetCdPath() != "" && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE, -1
 }
 
 func (_ *tapeProc) name() string {
