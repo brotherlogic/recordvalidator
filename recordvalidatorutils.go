@@ -12,6 +12,7 @@ import (
 
 func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	s.Log(fmt.Sprintf("Running repick"))
+	sc.CurrentPick = 0
 	ntg := []int32{}
 
 	for _, tg := range sc.GetInstanceIds() {
