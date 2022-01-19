@@ -11,7 +11,13 @@ import (
 )
 
 func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
-	s.Log(fmt.Sprintf("Running repick"))
+	s.Log(fmt.Sprintf("Running repick with %v", len(sc.InstanceIds)))
+
+	// Don't repick if there's nothing to pick
+	if len(sc.InstanceIds) == 0 {
+		return
+	}
+
 	sc.CurrentPick = 0
 	ntg := []int32{}
 
