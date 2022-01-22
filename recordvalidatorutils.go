@@ -76,7 +76,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 			}
 
 			stillMatch, invalid, _ := scheme.filter(rec)
-			s.Log(fmt.Sprintf("%v is %v", iid, invalid))
+			s.Log(fmt.Sprintf("%v is %v (%v)", iid, invalid, stillMatch))
 			if invalid {
 				in := []int32{}
 				for _, tg := range sc.GetInstanceIds() {
