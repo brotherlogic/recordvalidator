@@ -91,6 +91,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &tapeProc{})
 	s.sgs = append(s.sgs, &newerTwelves{})
 	s.sgs = append(s.sgs, &bad_ones_twelve{})
+	s.sgs = append(s.sgs, &newerSevens{})
+	s.sgs = append(s.sgs, &olderSevens{})
 
 	return s
 }
@@ -154,12 +156,12 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
 
-		if scheme.GetName() == "old_age" || scheme.GetName() == "old_age_twelves" {
+		if scheme.GetName() == "old_age" || scheme.GetName() == "old_age_twelves" || scheme.GetName() == "old_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_ORDER
 		}
 
-		if scheme.GetName() == "new_age" || scheme.GetName() == "new_age_twelves" {
+		if scheme.GetName() == "new_age" || scheme.GetName() == "new_age_twelves" || scheme.GetName() == "new_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}

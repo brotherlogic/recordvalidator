@@ -282,6 +282,22 @@ func (os *olderTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 		-1
 }
 
+type olderSevens struct{}
+
+func (os *olderSevens) name() string {
+	return "old_age_sevens"
+}
+
+func (os *olderSevens) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetGoalFolder() == 267116,
+		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
 type newer struct{}
 
 func (os *newer) name() string {
@@ -308,6 +324,21 @@ func (*newerTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
 			rec.GetMetadata().GetGoalFolder() == 242017, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
+type newerSevens struct{}
+
+func (*newerSevens) name() string {
+	return "new_age_sevens"
+}
+
+func (*newerSevens) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetGoalFolder() == 267116, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		-1
 }
 
