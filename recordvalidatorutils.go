@@ -94,6 +94,15 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 					sc.CurrentPick = iid
 					return
 				}
+			} else {
+				//This record no longer applies
+				in := []int32{}
+				for _, tg := range sc.GetInstanceIds() {
+					if tg != iid {
+						in = append(in, tg)
+					}
+				}
+				sc.InstanceIds = in
 			}
 		}
 	}
