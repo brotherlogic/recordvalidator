@@ -174,7 +174,7 @@ type nsSevenSleeve struct{}
 
 func (nss *nsSevenSleeve) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH && rec.GetRelease().GetFolderId() == 267116,
-		rec.GetMetadata().GetSleeve() != rcpb.ReleaseMetadata_SLEEVE_UNKNOWN, -1
+		rec.GetMetadata().GetSleeve() != rcpb.ReleaseMetadata_SLEEVE_UNKNOWN && rec.GetMetadata().GetSleeve() != rcpb.ReleaseMetadata_VINYL_STORAGE_NO_INNER, -1
 }
 
 func (nss *nsSevenSleeve) name() string {
