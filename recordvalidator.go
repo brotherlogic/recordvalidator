@@ -181,6 +181,10 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
 
+		if scheme.GetName() == "sonimage" {
+			scheme.Unbox = true
+		}
+
 	}
 
 	return schemes, nil
