@@ -58,8 +58,8 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 
 			marked, k, _ := sg.filter(r)
+			s.CtxLog(ctx, fmt.Sprintf("For %v -> %v,%v", scheme.GetName(), marked, k))
 
-			s.Log(fmt.Sprintf("Found pick (%v - %v) and activation is %v (%v) -> unboxed %v", in.GetInstanceId(), scheme.GetName(), k, marked, scheme.GetUnbox()))
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
 				if marked && scheme.GetSoft() {
 					s.softValidate(ctx, in.GetInstanceId())
