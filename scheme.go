@@ -370,3 +370,28 @@ func (*bad_ones_twelve) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetGoalFolder() == 242017, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rec.Metadata.GetOverallScore()
 }
+
+type sonimage struct{}
+
+func (*sonimage) name() string {
+	return "sonimage"
+}
+
+func (*sonimage) filter(rec *rcpb.Record) (bool, bool, float32) {
+	found := false
+	for _, label := range rec.GetRelease().GetLabels() {
+		if label.GetName() == "Sonimage" {
+			found = true
+		}
+	}
+
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_HIGH_SCHOOL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_HIGH_SCHOOL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_STAGED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			found, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.Metadata.GetOverallScore()
+}

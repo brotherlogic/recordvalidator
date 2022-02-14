@@ -97,6 +97,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &bad_ones_twelve{})
 	s.sgs = append(s.sgs, &newerSevens{})
 	s.sgs = append(s.sgs, &olderSevens{})
+	s.sgs = append(s.sgs, &sonimage{})
 
 	return s
 }
