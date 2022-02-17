@@ -98,6 +98,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &newerSevens{})
 	s.sgs = append(s.sgs, &olderSevens{})
 	s.sgs = append(s.sgs, &sonimage{})
+	s.sgs = append(s.sgs, &newerND{})
+	s.sgs = append(s.sgs, &olderND{})
 
 	return s
 }
@@ -166,12 +168,18 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
 
-		if scheme.GetName() == "old_age" || scheme.GetName() == "old_age_twelves" || scheme.GetName() == "old_age_sevens" {
+		if scheme.GetName() == "old_age" ||
+			scheme.GetName() == "old_age_no_digital" ||
+			scheme.GetName() == "old_age_twelves" ||
+			scheme.GetName() == "old_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_ORDER
 		}
 
-		if scheme.GetName() == "new_age" || scheme.GetName() == "new_age_twelves" || scheme.GetName() == "new_age_sevens" {
+		if scheme.GetName() == "new_age" ||
+			scheme.GetName() == "new_age_no_digital" ||
+			scheme.GetName() == "new_age_twelves" ||
+			scheme.GetName() == "new_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
