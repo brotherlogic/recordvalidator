@@ -58,7 +58,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 
 			marked, k, _ := sg.filter(r)
-			s.CtxLog(ctx, fmt.Sprintf("For %v -> %v,%v", scheme.GetName(), marked, k))
+			s.CtxLog(ctx, fmt.Sprintf("[%v]: for %v -> %v,%v", in.GetInstanceId(), scheme.GetName(), marked, k))
 
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
 				if marked && scheme.GetSoft() {
@@ -129,6 +129,23 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 							sg.InstanceIds = append(sg.InstanceIds, in.GetInstanceId())
 						}
 						picked = true
+					}
+				}
+			}
+		} else {
+			for _, scheme := range s.sgs {
+				if scheme.name() == sg.GetName() {
+					app, done, _ := scheme.filter(rec)
+					if app && done {
+						s.CtxLog(ctx, fmt.Sprintf("Removing %v from todo list: %v,%v", in.GetInstanceId(), app, done))
+						nc := []int32{}
+						for _, iid := range sg.GetInstanceIds() {
+							if iid != in.GetInstanceId() {
+								nc = append(nc, iid)
+							}
+							sg.CompletedIds = append(sg.CompletedIds, iid)
+							sg.InstanceIds = nc
+						}
 					}
 				}
 			}
