@@ -10,6 +10,21 @@ import (
 	"golang.org/x/net/context"
 )
 
+func (s *Server) validateScheme(sc *pb.Scheme) {
+	for _, c := range sc.GetCompletedIds() {
+		found := false
+		for cd := range sc.GetCompleteDate() {
+			if cd == c {
+				found = true
+			}
+		}
+
+		if !found {
+			sc.CompleteDate[c] = time.Now().Unix()
+		}
+	}
+}
+
 func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	s.Log(fmt.Sprintf("Running repick with %v for %v", len(sc.InstanceIds), sc.GetName()))
 

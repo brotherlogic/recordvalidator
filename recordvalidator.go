@@ -164,6 +164,8 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	s.updateMetrics(schemes)
 
 	for _, scheme := range schemes.GetSchemes() {
+		s.validateScheme(scheme)
+
 		if scheme.CompleteDate == nil {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
