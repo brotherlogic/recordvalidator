@@ -145,6 +145,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 							}
 							sg.CompletedIds = append(sg.CompletedIds, iid)
 							sg.InstanceIds = nc
+							sg.CompleteDate[iid] = time.Now().Unix()
 						}
 					}
 				}
