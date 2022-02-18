@@ -164,11 +164,12 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	s.updateMetrics(schemes)
 
 	for _, scheme := range schemes.GetSchemes() {
-		s.validateScheme(scheme)
 
 		if scheme.CompleteDate == nil {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
+
+		s.validateScheme(scheme)
 
 		if scheme.GetName() == "old_age" ||
 			scheme.GetName() == "old_age_no_digital" ||
