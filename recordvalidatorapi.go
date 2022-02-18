@@ -137,7 +137,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 				if scheme.name() == sg.GetName() {
 					app, done, _ := scheme.filter(rec)
 					if app && done {
-						s.CtxLog(ctx, fmt.Sprintf("Removing %v from todo list: %v,%v", in.GetInstanceId(), app, done))
+						s.CtxLog(ctx, fmt.Sprintf("Removing %v from todo list (%v): %v,%v", in.GetInstanceId(), sg.GetName(), app, done))
 						nc := []int32{}
 						for _, iid := range sg.GetInstanceIds() {
 							if iid != in.GetInstanceId() {
