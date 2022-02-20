@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 
 	gdpb "github.com/brotherlogic/godiscogs"
 	pbg "github.com/brotherlogic/goserver/proto"
@@ -54,6 +55,11 @@ var (
 	}, []string{"scheme"})
 	toDay = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "recordvalidator_completion_today",
+		Help: "The size of the print queue",
+	}, []string{"scheme"})
+
+	configSize = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "recordvalidator_size",
 		Help: "The size of the print queue",
 	}, []string{"scheme"})
 )
@@ -164,6 +170,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	s.updateMetrics(schemes)
 
 	for _, scheme := range schemes.GetSchemes() {
+		configSize.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(proto.Size(scheme)))
 
 		if scheme.CompleteDate == nil {
 			scheme.CompleteDate = make(map[int32]int64)
