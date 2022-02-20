@@ -22,6 +22,19 @@ func (s *Server) validateScheme(sc *pb.Scheme) {
 		if !found {
 			sc.CompleteDate[c] = time.Now().Unix()
 		}
+
+		for key, _ := range sc.GetOrdering() {
+			found := false
+			for _, k := range sc.GetInstanceIds() {
+				if k == key {
+					found = true
+				}
+			}
+
+			if !found {
+				delete(sc.Ordering, key)
+			}
+		}
 	}
 }
 

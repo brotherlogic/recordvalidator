@@ -121,8 +121,9 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 					if sg.Ordering == nil {
 						sg.Ordering = make(map[int32]float32)
 					}
-					sg.Ordering[in.GetInstanceId()] = order
+
 					if app {
+						sg.Ordering[in.GetInstanceId()] = order
 						if done {
 							sg.CompletedIds = append(sg.CompletedIds, in.GetInstanceId())
 						} else {
