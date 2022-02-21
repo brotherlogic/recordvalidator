@@ -7,7 +7,16 @@ import (
 	"time"
 
 	pb "github.com/brotherlogic/recordvalidator/proto"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
+)
+
+var (
+	resets = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "recordvalidator_reset",
+		Help: "The size of the print queue",
+	}, []string{"scheme"})
 )
 
 func (s *Server) validateScheme(sc *pb.Scheme) {
@@ -21,6 +30,7 @@ func (s *Server) validateScheme(sc *pb.Scheme) {
 
 		if !found {
 			sc.CompleteDate[c] = time.Now().Unix()
+			resets.With(prometheus.Labels{"scheme": sc.GetName()}).Inc()
 		}
 
 		for key, _ := range sc.GetOrdering() {
