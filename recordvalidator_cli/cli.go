@@ -40,6 +40,11 @@ func main() {
 		fmt.Printf("Scheme: %v\n", scheme)
 		fmt.Printf("Pick: %v\n", scheme.Scheme.GetCurrentPick())
 		fmt.Printf("%v / %v\n", len(scheme.Scheme.GetCompletedIds()), len(scheme.Scheme.InstanceIds))
+		for id, date := range scheme.Scheme.GetCompleteDate() {
+			if time.Since(time.Unix(date, 0)) < time.Hour*24 {
+				fmt.Printf("%v was recorded in the last 24 hours (%v) \n", id, time.Unix(date, 0))
+			}
+		}
 	case "fullping":
 		ctx2, cancel2 := utils.ManualContext("recordcollectioncli-"+os.Args[1], time.Hour)
 		defer cancel2()

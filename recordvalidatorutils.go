@@ -20,6 +20,23 @@ var (
 )
 
 func (s *Server) validateScheme(sc *pb.Scheme) {
+
+	//Ensure we don't have something in togo and complete at the same time
+	var nc []int32
+	for _, c := range sc.GetCompletedIds() {
+		found := false
+		for _, c2 := range sc.GetInstanceIds() {
+			if c2 == c {
+				found = true
+			}
+		}
+
+		if !found {
+			nc = append(nc, c)
+		}
+	}
+	sc.CompletedIds = nc
+
 	for _, c := range sc.GetCompletedIds() {
 		found := false
 		for cd := range sc.GetCompleteDate() {
