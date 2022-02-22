@@ -37,6 +37,19 @@ func (s *Server) validateScheme(sc *pb.Scheme) {
 	}
 	sc.CompletedIds = nc
 
+	for k, _ := range sc.GetCompleteDate() {
+		found := false
+		for _, c := range sc.GetCompletedIds() {
+			if c == k {
+				found = true
+			}
+		}
+
+		if !found {
+			delete(sc.CompleteDate, k)
+		}
+	}
+
 	for _, c := range sc.GetCompletedIds() {
 		found := false
 		for cd := range sc.GetCompleteDate() {
