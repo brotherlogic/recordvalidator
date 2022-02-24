@@ -86,6 +86,11 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		return
 	}
 
+	// Don't repick if the scheme is not active
+	if !sc.GetActive() {
+		return
+	}
+
 	sc.CurrentPick = 0
 	ntg := []int32{}
 

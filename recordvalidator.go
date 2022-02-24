@@ -201,6 +201,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "sonimage" {
 			scheme.Unbox = true
+			scheme.Active = true
 		}
 
 	}
