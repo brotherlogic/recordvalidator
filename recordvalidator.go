@@ -197,6 +197,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		if scheme.GetName() == "bad_ones_twelves" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
+			scheme.Active = true
 		}
 
 		if scheme.GetName() == "sonimage" {
