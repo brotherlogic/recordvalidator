@@ -143,11 +143,12 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 						for _, iid := range sg.GetInstanceIds() {
 							if iid != in.GetInstanceId() {
 								nc = append(nc, iid)
+							} else {
+								sg.CompletedIds = append(sg.CompletedIds, iid)
+								sg.CompleteDate[iid] = time.Now().Unix()
 							}
-							sg.CompletedIds = append(sg.CompletedIds, iid)
-							sg.InstanceIds = nc
-							sg.CompleteDate[iid] = time.Now().Unix()
 						}
+						sg.InstanceIds = nc
 					}
 				}
 			}
