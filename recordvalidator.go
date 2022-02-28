@@ -106,6 +106,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &sonimage{})
 	s.sgs = append(s.sgs, &newerND{})
 	s.sgs = append(s.sgs, &olderND{})
+	s.sgs = append(s.sgs, &newerNDS{})
+	s.sgs = append(s.sgs, &olderNDS{})
 
 	return s
 }
@@ -180,6 +182,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "old_age" ||
 			scheme.GetName() == "old_age_no_digital" ||
+			scheme.GetName() == "old_age_no_digital_singles" ||
 			scheme.GetName() == "old_age_twelves" ||
 			scheme.GetName() == "old_age_sevens" {
 			scheme.Unbox = true
@@ -188,6 +191,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "new_age" ||
 			scheme.GetName() == "new_age_no_digital" ||
+			scheme.GetName() == "new_age_no_digital_singles" ||
 			scheme.GetName() == "new_age_twelves" ||
 			scheme.GetName() == "new_age_sevens" {
 			scheme.Unbox = true
@@ -206,6 +210,9 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "old_age_no_digital" || scheme.GetName() == "new_age_no_digital" {
+			scheme.Active = true
+		}
+		if scheme.GetName() == "old_age_no_digital_singles" || scheme.GetName() == "new_age_no_digital_singles" {
 			scheme.Active = true
 		}
 

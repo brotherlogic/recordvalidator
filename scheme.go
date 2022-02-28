@@ -282,6 +282,23 @@ func (os *olderND) filter(rec *rcpb.Record) (bool, bool, float32) {
 		-1
 }
 
+type olderNDS struct{}
+
+func (os *olderNDS) name() string {
+	return "old_age_no_digital_singles"
+}
+
+func (os *olderNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFormatQuantity() == 1 &&
+			rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE,
+		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
 type olderTwelves struct{}
 
 func (os *olderTwelves) name() string {
@@ -336,6 +353,22 @@ func (os *newerND) name() string {
 
 func (os *newerND) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
+type newerNDS struct{}
+
+func (os *newerNDS) name() string {
+	return "new_age_no_digital_singles"
+}
+
+func (os *newerNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFormatQuantity() == 1 &&
+			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
@@ -425,20 +458,4 @@ func (*sonimage) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
 			found, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rec.Metadata.GetOverallScore()
-}
-
-type cleaner struct{}
-
-func (os *cleaner) name() string {
-	return "old_age_no_digital"
-}
-
-func (os *cleaner) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
-			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
-			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
-			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
-			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE,
-		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
-		-1
 }
