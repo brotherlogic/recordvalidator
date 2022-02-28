@@ -426,3 +426,19 @@ func (*sonimage) filter(rec *rcpb.Record) (bool, bool, float32) {
 			found, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rec.Metadata.GetOverallScore()
 }
+
+type cleaner struct{}
+
+func (os *cleaner) name() string {
+	return "old_age_no_digital"
+}
+
+func (os *cleaner) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE,
+		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
