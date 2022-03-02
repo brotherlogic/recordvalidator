@@ -139,7 +139,6 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		togo := float64(len(sc.GetInstanceIds()))
 		days := togo / compPerDay
 		ftime := time.Now().Add(time.Hour * time.Duration(24*days))
-		s.Log(fmt.Sprintf("COMP %v: %v, %v, %v, %v", sc.GetName(), compPerDay, togo, days, ftime))
 		perDay.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(compPerDay))
 		completionDateV2.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(ftime.Unix()))
 		toDay.With(prometheus.Labels{"scheme": sc.GetName()}).Set(today)
@@ -238,12 +237,6 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 			nums = append(nums, v)
 		}
 		scheme.CompletedIds = nums
-
-		/*if scheme.GetName() == "twelve_inch_sleeves" {
-			scheme.CompletedIds = make([]int32, 0)
-			scheme.CompleteDate = make(map[int32]int64)
-			s.Log(fmt.Sprintf("Reset"))
-		}*/
 	}
 
 	s.updateMetrics(schemes)
@@ -321,7 +314,6 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 }
 
 func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool, scheme string) error {
-	s.Log(fmt.Sprintf("Updating for %v", iid))
 	if s.test {
 		return nil
 	}
@@ -359,7 +351,6 @@ func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool, scheme
 }
 
 func (s *Server) softValidate(ctx context.Context, iid int32) error {
-	s.Log(fmt.Sprintf("Updating for %v", iid))
 	if s.test {
 		return nil
 	}

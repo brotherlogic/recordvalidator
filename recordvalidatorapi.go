@@ -155,8 +155,6 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 
-	s.Log(fmt.Sprintf("Adjusted %v -> %v", in.GetInstanceId(), mapper))
-
 	var rerr error
 	if picked {
 		rerr = s.save(ctx, schemes)

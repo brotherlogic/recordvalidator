@@ -120,8 +120,6 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		sort.SliceStable(sc.InstanceIds, func(i, j int) bool {
 			return sc.Ordering[sc.InstanceIds[i]] < sc.Ordering[sc.InstanceIds[j]]
 		})
-
-		s.Log(fmt.Sprintf("GIVEN PICK %v -> %v with %v", sc.InstanceIds[0], sc.InstanceIds[len(sc.InstanceIds)-1], sc.Ordering))
 	}
 
 	var scheme schemeGenerator
@@ -131,25 +129,16 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 		}
 	}
 
-	found := false
-	for i, iid := range sc.InstanceIds {
-		if iid == 19866960 {
-			s.Log(fmt.Sprintf("Found %v at %v", 19866960, i))
-			found = true
-		}
-	}
-	s.Log(fmt.Sprintf("Did find %v: %v -> %v", 19866960, found, scheme))
-
 	if scheme != nil {
 		// Find the first instance that is still relevant
 		for _, iid := range sc.InstanceIds {
 			rec, err := s.getRecord(ctx, iid)
 			if err != nil {
-				s.Log(fmt.Sprintf("Repick load failed: %v", err))
+				s.CtxLog(ctx, fmt.Sprintf("Repick load failed: %v", err))
 			}
 
 			stillMatch, invalid, _ := scheme.filter(rec)
-			s.Log(fmt.Sprintf("%v is %v (%v)", iid, invalid, stillMatch))
+			s.CtxLog(ctx, fmt.Sprintf("%v is %v (%v) for %v", iid, invalid, stillMatch, scheme.name()))
 			if invalid {
 				in := []int32{}
 				for _, tg := range sc.GetInstanceIds() {
@@ -161,7 +150,6 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				sc.CompleteDate[iid] = time.Now().Unix()
 				sc.CompletedIds = append(sc.CompletedIds, iid)
 			} else if stillMatch {
-				s.Log(fmt.Sprintf("Updating %v -> %v", iid, scheme.name()))
 				err := s.update(ctx, iid, sc.GetSoft(), sc.GetUnbox(), scheme.name())
 				if err == nil {
 					sc.CurrentPick = iid
