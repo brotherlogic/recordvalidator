@@ -290,7 +290,7 @@ func (os *olderNDS) name() string {
 
 func (os *olderNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetRelease().GetFormatQuantity() == 1 &&
-			rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_UNKNOWN &&
+			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
