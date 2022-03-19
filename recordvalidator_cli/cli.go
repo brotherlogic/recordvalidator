@@ -31,6 +31,23 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
+	case "which":
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			log.Fatalf("Bad parse: %v", err)
+		}
+		sclient := pb.NewRecordValidatorServiceClient(conn)
+		scheme, err := sclient.GetScheme(ctx, &pb.GetSchemeRequest{InstanceId: int32(id)})
+		if err != nil {
+			log.Fatalf("Error on GET: %v", err)
+		}
+		fmt.Printf("Scheme: %v\n", scheme)
+		fmt.Printf("Pick: %v\n", scheme.Scheme.GetCurrentPick())
+		for id, date := range scheme.Scheme.GetCompleteDate() {
+			if time.Since(time.Unix(date, 0)) < time.Hour*24 {
+				fmt.Printf("%v was recorded in the last 24 hours (%v) \n", id, time.Unix(date, 0))
+			}
+		}
 	case "get":
 		sclient := pb.NewRecordValidatorServiceClient(conn)
 		scheme, err := sclient.GetScheme(ctx, &pb.GetSchemeRequest{Name: os.Args[2]})
@@ -39,7 +56,6 @@ func main() {
 		}
 		fmt.Printf("Scheme: %v\n", scheme)
 		fmt.Printf("Pick: %v\n", scheme.Scheme.GetCurrentPick())
-		fmt.Printf("%v / %v\n", len(scheme.Scheme.GetCompletedIds()), len(scheme.Scheme.InstanceIds))
 		for id, date := range scheme.Scheme.GetCompleteDate() {
 			if time.Since(time.Unix(date, 0)) < time.Hour*24 {
 				fmt.Printf("%v was recorded in the last 24 hours (%v) \n", id, time.Unix(date, 0))
