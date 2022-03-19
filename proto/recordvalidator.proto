@@ -32,6 +32,7 @@ message Scheme {
 
 message GetSchemeRequest {
   string name = 1;
+  int32 instance_id = 2;
 }
 
 message GetSchemeResponse {

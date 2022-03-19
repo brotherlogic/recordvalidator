@@ -169,8 +169,14 @@ func (s *Server) GetScheme(ctx context.Context, req *pb.GetSchemeRequest) (*pb.G
 	}
 
 	for _, scheme := range schemes.GetSchemes() {
-		if scheme.GetName() == req.GetName() {
-			return &pb.GetSchemeResponse{Scheme: scheme}, nil
+		if req.GetInstanceId() > 0 {
+			if scheme.GetCurrentPick() == req.GetInstanceId() {
+				return &pb.GetSchemeResponse{Scheme: scheme}, nil
+			}
+		} else {
+			if scheme.GetName() == req.GetName() {
+				return &pb.GetSchemeResponse{Scheme: scheme}, nil
+			}
 		}
 	}
 
