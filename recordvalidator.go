@@ -181,7 +181,9 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.CompleteDate = make(map[int32]int64)
 		}
 
+		t1 := time.Now()
 		s.validateScheme(scheme)
+		s.CtxLog(ctx, fmt.Sprintf("%v took %v to validate", scheme.GetName(), time.Since(t1)))
 
 		if scheme.GetName() == "old_age" ||
 			scheme.GetName() == "old_age_no_digital" ||
