@@ -28,6 +28,7 @@ message Scheme {
   map<int32, int64> complete_date = 9;
   map<int32, float> ordering = 10;
   bool active = 11;
+  int64 last_validation = 12;
 }
 
 message GetSchemeRequest {

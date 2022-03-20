@@ -20,6 +20,10 @@ var (
 )
 
 func (s *Server) validateScheme(sc *pb.Scheme) {
+	if time.Since(time.Unix(sc.GetLastValidation(), 0)) < time.Hour*24 {
+		return
+	}
+	sc.LastValidation = time.Now().Unix()
 
 	//Ensure we don't have something in togo and complete at the same time
 	var nc []int32
