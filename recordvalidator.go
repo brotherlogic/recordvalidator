@@ -146,6 +146,10 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 }
 
 func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
+	t := time.Now()
+	defer func() {
+		s.CtxLog(ctx, fmt.Sprintf("Loaded in %v", time.Since(t)))
+	}()
 	if s.failLoad {
 		return nil, fmt.Errorf("Bad load")
 	}
