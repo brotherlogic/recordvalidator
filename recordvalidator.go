@@ -224,7 +224,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = true
 		}
 
-		if scheme.GetName() == "twelve_inch_sleeves" {
+		if scheme.GetName() == "twelve_inch_sleeves" || scheme.GetName() == "seven_inch_sleeves" {
 			scheme.Active = true
 		}
 
