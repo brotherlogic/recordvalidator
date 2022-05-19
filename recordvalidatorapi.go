@@ -18,7 +18,7 @@ var (
 	current = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "recordvalidator_currentpick",
 		Help: "The size of the print queue",
-	}, []string{"scheme", "value"})
+	}, []string{"scheme"})
 )
 
 //ClientUpdate forces a move
@@ -45,7 +45,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			scheme.Soft = true
 		}
 
-		current.With(prometheus.Labels{"scheme": scheme.GetName(), "value": fmt.Sprintf("%v", scheme.GetCurrentPick())}).Set(1)
+		current.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(scheme.GetCurrentPick()))
 
 		if scheme.GetCurrentPick() == in.GetInstanceId() || scheme.GetCurrentPick() == 0 {
 			r, err := s.loadRecord(ctx, in.GetInstanceId())
