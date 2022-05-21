@@ -299,6 +299,24 @@ func (os *olderNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
 		-1
 }
 
+type olderNDSF struct{}
+
+func (os *olderNDSF) name() string {
+	return "old_age_no_digital_singles_filable"
+}
+
+func (os *olderNDSF) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFormatQuantity() == 1 &&
+			rec.GetMetadata().GetGoalFolder() == 242017 &&
+			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE,
+		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
 type olderTwelves struct{}
 
 func (os *olderTwelves) name() string {
@@ -368,6 +386,23 @@ func (os *newerNDS) name() string {
 
 func (os *newerNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetRelease().GetFormatQuantity() == 1 &&
+			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
+type newerNDSF struct{}
+
+func (os *newerNDSF) name() string {
+	return "new_age_no_digital_singles"
+}
+
+func (os *newerNDSF) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFormatQuantity() == 1 &&
+			rec.GetMetadata().GetGoalFolder() == 242017 &&
 			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&

@@ -108,6 +108,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &olderND{})
 	s.sgs = append(s.sgs, &newerNDS{})
 	s.sgs = append(s.sgs, &olderNDS{})
+	s.sgs = append(s.sgs, &newerNDSF{})
+	s.sgs = append(s.sgs, &olderNDSF{})
 
 	return s
 }
