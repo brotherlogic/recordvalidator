@@ -397,7 +397,7 @@ func (os *newerNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
 type newerNDSF struct{}
 
 func (os *newerNDSF) name() string {
-	return "new_age_no_digital_singles"
+	return "new_age_no_digital_singles_filable"
 }
 
 func (os *newerNDSF) filter(rec *rcpb.Record) (bool, bool, float32) {
