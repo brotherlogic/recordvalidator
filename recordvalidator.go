@@ -202,7 +202,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.GetName() == "new_age_no_digital_singles" ||
 			scheme.GetName() == "new_age_twelves" ||
 			scheme.GetName() == "new_age_sevens" ||
-			scheme.GetName() == "new_age_no_digial_singles_filable" {
+			scheme.GetName() == "new_age_no_digital_singles_filable" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
