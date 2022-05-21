@@ -54,7 +54,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
-		fmt.Printf("Scheme: %v\n", scheme)
 		fmt.Printf("Pick: %v\n", scheme.Scheme.GetCurrentPick())
 		for id, date := range scheme.Scheme.GetCompleteDate() {
 			if time.Since(time.Unix(date, 0)) < time.Hour*24 {
