@@ -504,7 +504,7 @@ func (*hudson) name() string {
 func (*hudson) filter(rec *rcpb.Record) (bool, bool, float32) {
 	found := false
 	for _, label := range rec.GetRelease().GetLabels() {
-		if label.GetName() == "Hudson" {
+		if strings.Contains(label.GetName(), "Hudson") {
 			found = true
 		}
 	}
