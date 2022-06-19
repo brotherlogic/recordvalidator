@@ -111,6 +111,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &newerNDSF{})
 	s.sgs = append(s.sgs, &olderNDSF{})
 	s.sgs = append(s.sgs, &hudson{})
+	s.sgs = append(s.sgs, &fall{})
 
 	return s
 }
@@ -214,7 +215,8 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = true
 		}
 
-		if scheme.GetName() == "sonimage" || scheme.GetName() == "hudson" {
+		if scheme.GetName() == "sonimage" || scheme.GetName() == "hudson" ||
+			scheme.GetName() == "fall" {
 			scheme.Unbox = true
 			scheme.Active = true
 		}
