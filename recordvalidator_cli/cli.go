@@ -32,7 +32,7 @@ func main() {
 			log.Fatalf("Error on GET: %v", err)
 		}
 	case "which":
-		id, err := strconv.Atoi(os.Args[2])
+		id, err := strconv.ParseInt(os.Args[2], 10, 32)
 		if err != nil {
 			log.Fatalf("Bad parse: %v", err)
 		}
