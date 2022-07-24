@@ -210,7 +210,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
 
-		if scheme.GetName() == "bad_ones_twelves" || scheme.GetName() == "bad_ones_twelves_singles" {
+		if scheme.GetName() == "bad_ones_twelves" || scheme.GetName() == "bad_ones_twelves_single" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 			scheme.Active = true
