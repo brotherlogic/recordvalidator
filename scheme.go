@@ -80,14 +80,7 @@ func (fs *fullScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	if rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_LISTED_TO_SELL ||
 		rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_STAGED_TO_SELL ||
 		rec.Metadata.GetCategory() == rcpb.ReleaseMetadata_SOLD_ARCHIVE {
-		for _, f := range rec.Release.GetFormats() {
-			if f.Name == "CD" || f.Name == "File" || f.Name == "CDr" {
-				marked = true
-				break
-			}
-
-			marked = false
-		}
+		marked = false
 	}
 
 	// Run this every five years
