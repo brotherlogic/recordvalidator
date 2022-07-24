@@ -470,6 +470,21 @@ func (*bad_ones_twelve) filter(rec *rcpb.Record) (bool, bool, float32) {
 		rec.GetMetadata().GetOverallScore()
 }
 
+type bad_ones_twelve_single struct{}
+
+func (*bad_ones_twelve_single) name() string {
+	return "bad_ones_twelves_single"
+}
+
+func (*bad_ones_twelve_single) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFormatQuantity() == 1 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetGoalFolder() == 242017, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.GetMetadata().GetOverallScore()
+}
+
 type sonimage struct{}
 
 func (*sonimage) name() string {
