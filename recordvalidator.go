@@ -112,6 +112,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &olderNDSF{})
 	s.sgs = append(s.sgs, &hudson{})
 	s.sgs = append(s.sgs, &fall{})
+	s.sgs = append(s.sgs, &bad_ones_twelve_single{})
 
 	return s
 }
@@ -209,7 +210,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
 
-		if scheme.GetName() == "bad_ones_twelves" {
+		if scheme.GetName() == "bad_ones_twelves" || scheme.GetName() == "bad_ones_twelves_singles" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 			scheme.Active = true
@@ -243,7 +244,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 	if s.failSave {
-		return fmt.Errorf("Built to fail")
+		return fmt.Errorf("built to fail")
 	}
 
 	for _, scheme := range schemes.GetSchemes() {

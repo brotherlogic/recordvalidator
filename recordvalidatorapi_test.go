@@ -60,7 +60,7 @@ func TestMissingSG(t *testing.T) {
 	}
 	s.sgs = []schemeGenerator{}
 	_, err = s.ClientUpdate(context.Background(), &rcpb.ClientUpdateRequest{})
-	if err == nil {
+	if err != nil {
 		t.Errorf("Bad update: %v", err)
 	}
 }

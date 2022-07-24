@@ -35,7 +35,7 @@ func TestRepick(t *testing.T) {
 	s := InitTest()
 	scheme := &pb.Scheme{
 		InstanceIds: []int32{1, 2, 3},
-		CurrentPick: 2,
+		CurrentPick: 1,
 	}
 
 	s.repick(context.Background(), scheme)

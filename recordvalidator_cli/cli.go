@@ -25,14 +25,14 @@ func main() {
 
 	switch os.Args[1] {
 	case "ping":
-		id, err := strconv.Atoi(os.Args[2])
+		id, _ := strconv.ParseInt(os.Args[2], 10, 32)
 		sclient := pbrc.NewClientUpdateServiceClient(conn)
 		_, err = sclient.ClientUpdate(ctx, &pbrc.ClientUpdateRequest{InstanceId: int32(id)})
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
 	case "which":
-		id, err := strconv.Atoi(os.Args[2])
+		id, err := strconv.ParseInt(os.Args[2], 10, 32)
 		if err != nil {
 			log.Fatalf("Bad parse: %v", err)
 		}
