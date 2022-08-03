@@ -113,6 +113,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &hudson{})
 	s.sgs = append(s.sgs, &fall{})
 	s.sgs = append(s.sgs, &bad_ones_twelve_single{})
+	s.sgs = append(s.sgs, &random_twelves_single{})
 
 	return s
 }
