@@ -237,6 +237,12 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = true
 		}
 
+		if scheme.GetName() == "random_twelves_single" {
+			scheme.Active = true
+			scheme.Unbox = true
+			scheme.Order = pb.Scheme_GIVEN_ORDER
+		}
+
 	}
 
 	return schemes, nil
