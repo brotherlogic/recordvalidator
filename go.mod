@@ -3,14 +3,14 @@ module github.com/brotherlogic/recordvalidator
 go 1.13
 
 require (
-	github.com/brotherlogic/discovery v0.0.0-20220515010039-ba2c1e857841 // indirect
-	github.com/brotherlogic/godiscogs v0.0.0-20220316201210-f64f94a68198
-	github.com/brotherlogic/goserver v0.0.0-20220513200259-be7cc2bfaeef
-	github.com/brotherlogic/keystore v0.0.0-20220513234718-46a4655a49c0
-	github.com/brotherlogic/recordcollection v0.0.0-20220502213146-7a955548aab6
+	github.com/brotherlogic/buildserver v0.0.0-20220817193816-243c3907fe6c // indirect
+	github.com/brotherlogic/godiscogs v0.0.0-20220814182128-f8eecacc4756
+	github.com/brotherlogic/goserver v0.0.0-20220816234214-c6c7562bbbc3
+	github.com/brotherlogic/keystore v0.0.0-20220808171152-90fd987cfec3
+	github.com/brotherlogic/recordcollection v0.0.0-20220817005343-2e25fedcd740
 	github.com/golang/protobuf v1.5.2
-	github.com/prometheus/client_golang v1.12.2
-	golang.org/x/net v0.0.0-20220513224357-95641704303c
-	google.golang.org/grpc v1.46.2
-	google.golang.org/protobuf v1.28.0
+	github.com/prometheus/client_golang v1.13.0
+	golang.org/x/net v0.0.0-20220812174116-3211cb980234
+	google.golang.org/grpc v1.48.0
+	google.golang.org/protobuf v1.28.1
 )

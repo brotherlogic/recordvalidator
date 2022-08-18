@@ -452,10 +452,10 @@ func main() {
 		log.SetOutput(ioutil.Discard)
 	}
 	server := Init()
-	server.PrepServer()
+	server.PrepServer("recordvalidator")
 	server.Register = server
 
-	err := server.RegisterServerV2("recordvalidator", false, true)
+	err := server.RegisterServerV2(false)
 	if err != nil {
 		return
 	}
