@@ -464,7 +464,7 @@ func main() {
 	//Do a load to prepopulate metrics
 	ctx, cancel := utils.ManualContext("rvsu", time.Minute)
 	if _, err := server.load(ctx); err != nil {
-		server.Log(fmt.Sprintf("Unable to load: %v", err))
+		server.CtxLog(ctx, fmt.Sprintf("Unable to load: %v", err))
 		time.Sleep(time.Second * 5)
 		return
 	}
