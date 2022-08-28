@@ -112,6 +112,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &olderNDSF{})
 	s.sgs = append(s.sgs, &hudson{})
 	s.sgs = append(s.sgs, &fall{})
+	s.sgs = append(s.sgs, &april{})
 	s.sgs = append(s.sgs, &bad_ones_twelve_single{})
 	s.sgs = append(s.sgs, &random_twelves_single{})
 
@@ -218,7 +219,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "sonimage" || scheme.GetName() == "hudson" ||
-			scheme.GetName() == "fall" {
+			scheme.GetName() == "fall" || scheme.GetName() == "april" {
 			scheme.Unbox = true
 			scheme.Active = true
 		}
