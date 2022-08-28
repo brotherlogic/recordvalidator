@@ -528,10 +528,8 @@ func (*april) name() string {
 
 func (*april) filter(rec *rcpb.Record) (bool, bool, float32) {
 	found := false
-	for _, label := range rec.GetRelease().GetLabels() {
-		if strings.Contains(label.GetName(), "April") {
-			found = true
-		}
+	if strings.Contains(rec.GetRelease().GetTitle(), "April") {
+		found = true
 	}
 
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
