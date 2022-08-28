@@ -523,7 +523,7 @@ func (*sonimage) filter(rec *rcpb.Record) (bool, bool, float32) {
 type april struct{}
 
 func (*april) name() string {
-	return "sonimage"
+	return "april"
 }
 
 func (*april) filter(rec *rcpb.Record) (bool, bool, float32) {
