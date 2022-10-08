@@ -8,6 +8,14 @@ import (
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 )
 
+func rightFormatQuantity(r *rcpb.Record) bool {
+	if r.GetRelease().GetFormatQuantity() <= 2 {
+		return true
+	}
+
+	return false
+}
+
 type schemeGenerator interface {
 	// Does this record apply to the this filter and what's the order
 	filter(rec *rcpb.Record) (bool, bool, float32)
@@ -283,7 +291,7 @@ func (os *olderNDS) name() string {
 }
 
 func (os *olderNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 &&
+	return rightFormatQuantity(rec) &&
 			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
@@ -300,7 +308,7 @@ func (os *olderNDSF) name() string {
 }
 
 func (os *olderNDSF) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 &&
+	return rightFormatQuantity(rec) &&
 			rec.GetMetadata().GetGoalFolder() == 242017 &&
 			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
@@ -379,7 +387,7 @@ func (os *newerNDS) name() string {
 }
 
 func (os *newerNDS) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 &&
+	return rightFormatQuantity(rec) &&
 			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
@@ -395,7 +403,7 @@ func (os *newerNDSF) name() string {
 }
 
 func (os *newerNDSF) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 &&
+	return rightFormatQuantity(rec) &&
 			rec.GetMetadata().GetGoalFolder() == 242017 &&
 			rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
@@ -471,7 +479,7 @@ func (*bad_ones_twelve_single) name() string {
 }
 
 func (*bad_ones_twelve_single) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+	return rightFormatQuantity(rec) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
@@ -487,7 +495,7 @@ func (*random_twelves_single) name() string {
 
 func (*random_twelves_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 	rand.Seed(time.Now().UnixNano())
-	return rec.GetRelease().GetFormatQuantity() == 1 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+	return rightFormatQuantity(rec) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
