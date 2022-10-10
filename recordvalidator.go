@@ -115,6 +115,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &april{})
 	s.sgs = append(s.sgs, &bad_ones_twelve_single{})
 	s.sgs = append(s.sgs, &random_twelves_single{})
+	s.sgs = append(s.sgs, &random_twelves_single_v2{})
 
 	return s
 }

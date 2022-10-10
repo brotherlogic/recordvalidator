@@ -503,6 +503,22 @@ func (*random_twelves_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 		rand.Float32()
 }
 
+type random_twelves_single_v2 struct{}
+
+func (*random_twelves_single_v2) name() string {
+	return "random_twelves_single_v2"
+}
+
+func (*random_twelves_single_v2) filter(rec *rcpb.Record) (bool, bool, float32) {
+	rand.Seed(time.Now().UnixNano())
+	return rightFormatQuantity(rec) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetGoalFolder() == 242017, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rand.Float32()
+}
+
 type sonimage struct{}
 
 func (*sonimage) name() string {
