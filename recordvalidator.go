@@ -116,6 +116,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &bad_ones_twelve_single{})
 	s.sgs = append(s.sgs, &random_twelves_single{})
 	s.sgs = append(s.sgs, &random_twelves_single_v2{})
+	s.sgs = append(s.sgs, &boxsets{})
 
 	return s
 }
@@ -240,7 +241,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = true
 		}
 
-		if scheme.GetName() == "random_twelves_single" || scheme.GetName() == "random_twelves_single_v2" {
+		if scheme.GetName() == "random_twelves_single" || scheme.GetName() == "random_twelves_single_v2" || scheme.GetName() == "boxsets" {
 			scheme.Active = true
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
