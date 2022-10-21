@@ -9,7 +9,7 @@ import (
 )
 
 func rightFormatQuantity(r *rcpb.Record) bool {
-	if r.GetRelease().GetFormatQuantity() <= 2 {
+	if r.GetRelease().GetFormatQuantity() <= 3 {
 		return true
 	}
 
