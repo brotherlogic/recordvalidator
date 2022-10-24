@@ -64,7 +64,7 @@ var (
 	}, []string{"scheme"})
 )
 
-//Server main server type
+// Server main server type
 type Server struct {
 	*goserver.GoServer
 	test           bool
@@ -217,32 +217,32 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		if scheme.GetName() == "bad_ones_twelves" || scheme.GetName() == "bad_ones_twelves_single" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
-			scheme.Active = true
+			scheme.Active = false
 		}
 
 		if scheme.GetName() == "sonimage" || scheme.GetName() == "hudson" ||
 			scheme.GetName() == "fall" || scheme.GetName() == "april" {
 			scheme.Unbox = true
-			scheme.Active = true
+			scheme.Active = false
 		}
 
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" {
 			scheme.Active = true
 		}
 		if scheme.GetName() == "old_age_no_digital" || scheme.GetName() == "new_age_no_digital" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 		if scheme.GetName() == "old_age_no_digital_singles" || scheme.GetName() == "new_age_no_digital_singles" ||
 			scheme.GetName() == "old_age_no_digital_singles_filable" || scheme.GetName() == "new_age_no_digital_singles_filable" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 
 		if scheme.GetName() == "twelve_inch_sleeves" || scheme.GetName() == "seven_inch_sleeves" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 
 		if scheme.GetName() == "random_twelves_single" || scheme.GetName() == "random_twelves_single_v2" || scheme.GetName() == "boxsets" {
-			scheme.Active = true
+			scheme.Active = false
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
