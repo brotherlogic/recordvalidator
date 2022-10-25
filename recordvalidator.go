@@ -175,6 +175,11 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	mapper := make(map[string]*pb.Scheme)
 	for _, sc := range schemes.GetSchemes() {
 		mapper[sc.GetName()] = sc
+		norder := make(map[int32]float32)
+		for _, iid := range sc.GetInstanceIds() {
+			norder[iid] = sc.GetOrdering()[iid]
+		}
+		sc.Ordering = norder
 	}
 	schemes.Schemes = make([]*pb.Scheme, 0)
 	for _, sc := range mapper {
