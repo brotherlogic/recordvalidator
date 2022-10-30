@@ -52,7 +52,6 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			if err != nil {
 				if status.Convert(err).Code() == codes.OutOfRange {
 					s.repick(ctx, scheme)
-					return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 				}
 				return nil, err
 			}
