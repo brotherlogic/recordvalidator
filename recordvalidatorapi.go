@@ -101,7 +101,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	rec, err := s.getRecord(ctx, in.GetInstanceId())
 	if err != nil {
 		if status.Convert(err).Code() == codes.OutOfRange {
-			return &rcpb.ClientUpdateResponse{}, nil
+			return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 		}
 		return nil, err
 	}
