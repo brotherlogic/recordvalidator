@@ -117,6 +117,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &random_twelves_single{})
 	s.sgs = append(s.sgs, &random_twelves_single_v2{})
 	s.sgs = append(s.sgs, &boxsets{})
+	s.sgs = append(s.sgs, &piecelock{})
 
 	return s
 }
@@ -231,10 +232,18 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
+		if scheme.GetName() == "piecelock" {
+			scheme.Unbox = true
+			scheme.Active = true
+		}
+
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" {
 			scheme.Active = true
 		}
 		if scheme.GetName() == "old_age_no_digital" || scheme.GetName() == "new_age_no_digital" {
+			scheme.Active = false
+		}
+		if scheme.GetName() == "old_age_no_digital_singles_filable" || scheme.GetName() == "new_age_no_digital_singles_filable" {
 			scheme.Active = true
 		}
 		if scheme.GetName() == "old_age_no_digital_singles" || scheme.GetName() == "new_age_no_digital_singles" ||
