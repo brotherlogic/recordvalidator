@@ -21,7 +21,7 @@ var (
 	}, []string{"scheme"})
 )
 
-//ClientUpdate forces a move
+// ClientUpdate forces a move
 func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest) (*rcpb.ClientUpdateResponse, error) {
 	schemes, err := s.load(ctx)
 	if err != nil {
@@ -62,7 +62,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
 				if marked && scheme.GetSoft() {
-					s.softValidate(ctx, in.GetInstanceId())
+					s.softValidate(ctx, in.GetInstanceId(), scheme.GetName())
 				}
 				s.repick(ctx, scheme)
 				picked = true
