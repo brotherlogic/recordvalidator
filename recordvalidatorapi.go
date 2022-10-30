@@ -52,6 +52,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			if err != nil {
 				if status.Convert(err).Code() == codes.OutOfRange {
 					s.repick(ctx, scheme)
+					picked = true
 				} else {
 					return nil, err
 				}
