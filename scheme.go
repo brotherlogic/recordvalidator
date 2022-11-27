@@ -279,7 +279,7 @@ func (os *olderND) name() string {
 }
 
 func (os *olderND) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 &&
+	return rightFormatQuantity(rec) &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
@@ -376,7 +376,7 @@ func (os *newerND) name() string {
 }
 
 func (os *newerND) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFormatQuantity() == 1 &&
+	return rightFormatQuantity(rec) &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
