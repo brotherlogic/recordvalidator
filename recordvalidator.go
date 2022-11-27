@@ -238,7 +238,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 		if scheme.GetName() == "old_age_no_digital" || scheme.GetName() == "new_age_no_digital" {
 			scheme.Active = true

@@ -9,6 +9,10 @@ import (
 )
 
 func rightFormatQuantity(r *rcpb.Record) bool {
+	if r.GetMetadata().GetGoalFolder() == 267116 {
+		return false
+	}
+
 	if r.GetRelease().GetFormatQuantity() == 1 {
 		return true
 	}
