@@ -9,7 +9,7 @@ import (
 )
 
 func rightFormatQuantity(r *rcpb.Record) bool {
-	if r.GetMetadata().GetGoalFolder() == 267116 {
+	if r.GetMetadata().GetGoalFolder() != 242018 {
 		return false
 	}
 
