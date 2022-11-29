@@ -79,7 +79,7 @@ func main() {
 
 		sclient := pbrc.NewClientUpdateServiceClient(conn)
 		for i, id := range ids.GetInstanceIds() {
-			log.Printf("PING %v -> %v", i, id)
+			fmt.Printf("PING %v -> %v\n", i, id)
 			ctx, cancel = utils.ManualContext("recordvalidator_cli", time.Minute*30)
 			_, err = sclient.ClientUpdate(ctx, &pbrc.ClientUpdateRequest{InstanceId: int32(id)})
 			cancel()
