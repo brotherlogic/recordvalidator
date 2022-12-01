@@ -9,7 +9,14 @@ import (
 )
 
 func rightFormatQuantity(r *rcpb.Record) bool {
-	if r.GetMetadata().GetGoalFolder() != 242018 {
+	cd := false
+	for _, format := range r.GetRelease().GetFormats() {
+		if format.GetName() == "CD" {
+			cd = true
+		}
+	}
+
+	if !cd {
 		return false
 	}
 
