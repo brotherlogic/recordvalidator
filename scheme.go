@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -506,11 +507,13 @@ func (*random_twelves_single) name() string {
 
 func (*random_twelves_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 	rand.Seed(time.Now().UnixNano())
-	return rightFormatQuantity(rec) && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+	str := fmt.Sprintf("%v", rec.GetMetadata().GetCategory())
+	inbox := strings.HasPrefix(str, "BOXED")
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE,
-		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		!inbox && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rand.Float32()
 }
 

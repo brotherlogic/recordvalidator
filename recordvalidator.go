@@ -256,7 +256,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "random_twelves_single" { //|| scheme.GetName() == "random_twelves_single_v2" || scheme.GetName() == "boxsets" {
-			scheme.Active = false
+			scheme.Active = true
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
