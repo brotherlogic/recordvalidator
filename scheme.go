@@ -507,7 +507,6 @@ func (*random_twelves_single) name() string {
 
 func (*random_twelves_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 	rand.Seed(time.Now().UnixNano())
-	str := fmt.Sprintf("%v", rec.GetMetadata().GetCategory())
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
