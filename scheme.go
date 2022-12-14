@@ -508,12 +508,11 @@ func (*random_twelves_single) name() string {
 func (*random_twelves_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 	rand.Seed(time.Now().UnixNano())
 	str := fmt.Sprintf("%v", rec.GetMetadata().GetCategory())
-	inbox := strings.HasPrefix(str, "BOXED")
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE,
-		!inbox && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rand.Float32()
 }
 
