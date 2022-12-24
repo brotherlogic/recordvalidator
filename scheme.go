@@ -20,11 +20,11 @@ func rightFormatQuantity(r *rcpb.Record) bool {
 		return false
 	}
 
-	if r.GetRelease().GetFormatQuantity() == 1 {
+	/*if r.GetRelease().GetFormatQuantity() == 1 {
 		return true
-	}
+	}*/
 
-	return false
+	return true
 }
 
 type schemeGenerator interface {
