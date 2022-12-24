@@ -123,6 +123,8 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 						sg.Ordering = make(map[int32]float32)
 					}
 
+					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v", rec.GetRelease().GetInstanceId(), sg.GetName(), app, done, order))
+
 					if app {
 						sg.Ordering[in.GetInstanceId()] = order
 						if done {
