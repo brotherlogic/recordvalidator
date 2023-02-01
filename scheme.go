@@ -669,3 +669,16 @@ func (*fall) filter(rec *rcpb.Record) (bool, bool, float32) {
 			found, rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_UNKNOWN && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		rec.Metadata.GetOverallScore()
 }
+
+type oldest struct{}
+
+func (*oldest) name() string {
+	return "oldest"
+}
+
+func (*oldest) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION,
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365*3,
+		float32(rec.GetMetadata().GetLastListenTime())
+
+}

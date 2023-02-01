@@ -118,6 +118,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &random_twelves_single_v2{})
 	s.sgs = append(s.sgs, &boxsets{})
 	s.sgs = append(s.sgs, &piecelock{})
+	s.sgs = append(s.sgs, &oldest{})
 
 	return s
 }
@@ -208,6 +209,12 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.GetName() == "old_age_no_digital_singles_filable" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_ORDER
+		}
+
+		if scheme.GetName() == "oldest" {
+			scheme.Unbox = true
+			scheme.Active = true
+			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
 
 		if scheme.GetName() == "new_age" ||
