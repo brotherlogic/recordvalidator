@@ -678,7 +678,7 @@ func (*oldest) name() string {
 
 func (*oldest) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION,
-		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365*3,
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*3,
 		float32(rec.GetMetadata().GetLastListenTime())
 
 }
