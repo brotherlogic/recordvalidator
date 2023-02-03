@@ -70,8 +70,6 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			} else if r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE &&
 				r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_SOFT_VALIDATE &&
 				r.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_VALIDATE && time.Since(time.Unix(r.GetMetadata().GetLastValidate(), 0)) > time.Hour*24*3 {
-				//This should be in pre-valid unless it's just been validatd
-				s.RaiseIssue(fmt.Sprintf("%v is a Valid miss", r.GetRelease().GetTitle()), fmt.Sprintf("%v should be in prevalidate but it's actually in %v (%v, %v and %v)", r.GetRelease().GetInstanceId(), r.GetMetadata().GetCategory(), marked, k, r.GetMetadata().GetLastValidate()))
 			}
 
 		}
