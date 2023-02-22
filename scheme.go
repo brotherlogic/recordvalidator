@@ -8,6 +8,10 @@ import (
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 )
 
+func acceptable(r *rcpb.Record) bool {
+	return r.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL
+}
+
 func rightFormatQuantity(r *rcpb.Record) bool {
 	cd := false
 	for _, format := range r.GetRelease().GetFormats() {
