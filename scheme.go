@@ -8,6 +8,10 @@ import (
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 )
 
+func acceptable(r *rcpb.Record) bool {
+	return r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH
+}
+
 func rightFormatQuantity(r *rcpb.Record) bool {
 	cd := false
 	for _, format := range r.GetRelease().GetFormats() {
@@ -679,7 +683,8 @@ func (*oldest) name() string {
 }
 
 func (*oldest) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION,
+	return rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION ||
+			rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE,
 		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*3,
 		float32(rec.GetMetadata().GetLastListenTime())
 

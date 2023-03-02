@@ -142,6 +142,12 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 			}
 
 			stillMatch, invalid, _ := scheme.filter(rec)
+
+			// Blank on digital records
+			if !acceptable(rec) {
+				stillMatch = false
+			}
+
 			s.CtxLog(ctx, fmt.Sprintf("%v is %v (%v) for %v", iid, invalid, stillMatch, scheme.name()))
 			if invalid {
 				in := []int32{}
