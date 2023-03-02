@@ -40,7 +40,7 @@ var (
 	toGo = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "recordvalidator_togo",
 		Help: "The size of the print queue",
-	}, []string{"scheme"})
+	}, []string{"scheme", "active"})
 	completionDate = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "recordvalidator_completion_date",
 		Help: "The size of the print queue",
@@ -131,7 +131,7 @@ func (s *Server) updateMetrics(schemes *pb.Schemes) {
 		finishTime := time.Now().Add(time.Second * time.Duration(extraDur)).Unix()
 
 		doneCount.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(len(sc.GetCompletedIds())))
-		toGo.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(len(sc.GetInstanceIds())))
+		toGo.With(prometheus.Labels{"scheme": sc.GetName(), "acttive": fmt.Sprintf("%v", sc.GetActive())}).Set(float64(len(sc.GetInstanceIds())))
 		completion.With(prometheus.Labels{"scheme": sc.GetName()}).Set(prop)
 		completionDate.With(prometheus.Labels{"scheme": sc.GetName()}).Set(float64(finishTime))
 
