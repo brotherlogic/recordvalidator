@@ -9,7 +9,8 @@ import (
 )
 
 func acceptable(r *rcpb.Record) bool {
-	return r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH || r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_UNKNOWN
+	return r.GetMetadata().GetGoalFolder() == 242017 &&
+		(r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH || r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_UNKNOWN)
 }
 
 func rightFormatQuantity(r *rcpb.Record) bool {
