@@ -690,3 +690,17 @@ func (*oldest) filter(rec *rcpb.Record) (bool, bool, float32) {
 		float32(rec.GetMetadata().GetLastListenTime())
 
 }
+
+type oldestSingle struct{}
+
+func (*oldestSingle) name() string {
+	return "oldest_single"
+}
+
+func (*oldestSingle) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFormatQuantity() == 1 && (rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION ||
+			rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*3,
+		float32(rec.GetMetadata().GetLastListenTime())
+
+}

@@ -119,6 +119,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &boxsets{})
 	s.sgs = append(s.sgs, &piecelock{})
 	s.sgs = append(s.sgs, &oldest{})
+	s.sgs = append(s.sgs, &oldestSingle{})
 
 	return s
 }
@@ -211,7 +212,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_ORDER
 		}
 
-		if scheme.GetName() == "oldest" {
+		if scheme.GetName() == "oldest" || scheme.GetName() == "oldest_single" {
 			scheme.Unbox = true
 			scheme.Active = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
