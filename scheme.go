@@ -711,7 +711,7 @@ func (*fastDump) name() string {
 }
 
 func (*fastDump) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetGoalFolder() == 24107,
+	return rec.GetMetadata().GetGoalFolder() == 24107 && rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_IN_THE_BOX,
 		rec.GetMetadata().GetBoxState() != rcpb.ReleaseMetadata_OUT_OF_BOX,
 		float32(rec.GetMetadata().GetLastListenTime())
 
