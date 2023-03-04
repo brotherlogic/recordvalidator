@@ -702,5 +702,17 @@ func (*oldestSingle) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
 		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*3,
 		float32(rec.GetMetadata().GetLastListenTime())
+}
+
+type fastDump struct{}
+
+func (*fastDump) name() string {
+	return "fast_dump"
+}
+
+func (*fastDump) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetGoalFolder() == 24107,
+		rec.GetMetadata().GetBoxState() != rcpb.ReleaseMetadata_OUT_OF_BOX,
+		float32(rec.GetMetadata().GetLastListenTime())
 
 }

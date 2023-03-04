@@ -120,6 +120,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &piecelock{})
 	s.sgs = append(s.sgs, &oldest{})
 	s.sgs = append(s.sgs, &oldestSingle{})
+	s.sgs = append(s.sgs, &fastDump{})
 
 	return s
 }
