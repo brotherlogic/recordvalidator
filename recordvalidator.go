@@ -120,6 +120,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &piecelock{})
 	s.sgs = append(s.sgs, &oldest{})
 	s.sgs = append(s.sgs, &oldestSingle{})
+	s.sgs = append(s.sgs, &fastDump{})
 
 	return s
 }
@@ -212,7 +213,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_ORDER
 		}
 
-		if scheme.GetName() == "oldest" || scheme.GetName() == "oldest_single" {
+		if scheme.GetName() == "oldest" || scheme.GetName() == "oldest_single" || scheme.GetName() == "fast_dump" {
 			scheme.Unbox = true
 			scheme.Active = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
