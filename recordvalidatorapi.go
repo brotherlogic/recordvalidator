@@ -132,8 +132,10 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 						sg.Ordering[in.GetInstanceId()] = order
 						if done {
 							sg.CompletedIds = append(sg.CompletedIds, in.GetInstanceId())
+							s.CtxLog(ctx, fmt.Sprintf("Added to complete %v", sg.GetName()))
 						} else {
 							sg.InstanceIds = append(sg.InstanceIds, in.GetInstanceId())
+							s.CtxLog(ctx, fmt.Sprintf("Added to go %v", sg.GetName()))
 						}
 						picked = true
 					}
