@@ -9,8 +9,7 @@ import (
 )
 
 func acceptable(r *rcpb.Record) bool {
-	return (r.GetMetadata().GetGoalFolder() == 242018 || r.GetMetadata().GetGoalFolder() == 288751) &&
-		(r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_CD || r.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_UNKNOWN)
+	return r.GetMetadata().GetGoalFolder() != 1782105
 }
 
 func rightFormatQuantity(r *rcpb.Record) bool {
