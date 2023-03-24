@@ -8,12 +8,6 @@ import (
 	rcpb "github.com/brotherlogic/recordcollection/proto"
 )
 
-func acceptable(r *rcpb.Record) bool {
-	return r.GetMetadata().GetGoalFolder() != 1782105 &&
-		r.GetMetadata().GetGoalFolder() != 565206 &&
-		r.GetMetadata().GetGoalFolder() != 267116
-}
-
 func rightFormatQuantity(r *rcpb.Record) bool {
 	cd := false
 	for _, format := range r.GetRelease().GetFormats() {

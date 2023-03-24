@@ -60,10 +60,6 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			marked, k, _ := sg.filter(r)
 
-			if !acceptable(r) {
-				marked = false
-			}
-
 			s.CtxLog(ctx, fmt.Sprintf("[%v]: for %v -> %v,%v", in.GetInstanceId(), scheme.GetName(), marked, k))
 
 			if (!marked || k) || scheme.GetCurrentPick() == 0 {
