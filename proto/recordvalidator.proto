@@ -40,6 +40,13 @@ message GetSchemeResponse {
   Scheme scheme = 1;
 }
 
+message ForceRequest {
+  string name =1;
+}
+
+message ForceResponse {}
+
 service RecordValidatorService {
   rpc GetScheme(GetSchemeRequest) returns (GetSchemeResponse) {};
+  rpc Force(ForceRequest) returns (ForceResponse) {};
 }

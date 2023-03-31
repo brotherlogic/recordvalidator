@@ -166,6 +166,22 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	return &rcpb.ClientUpdateResponse{}, rerr
 }
 
+func (s *Server) Force(ctx context.Context, req *pb.ForceRequest) (*pb.ForceResponse, error) {
+	schemes, err := s.load(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, scheme := range schemes.GetSchemes() {
+		if scheme.GetName() == req.GetName() {
+			scheme.CurrentPick = 0
+			return &pb.ForceResponse{}, s.save(ctx, schemes)
+		}
+	}
+
+	return nil, status.Errorf(codes.FailedPrecondition, "Not found")
+}
+
 func (s *Server) GetScheme(ctx context.Context, req *pb.GetSchemeRequest) (*pb.GetSchemeResponse, error) {
 	schemes, err := s.load(ctx)
 	if err != nil {
