@@ -711,3 +711,18 @@ func (*fastDump) filter(rec *rcpb.Record) (bool, bool, float32) {
 		float32(rec.GetMetadata().GetLastListenTime())
 
 }
+
+type keepers struct{}
+
+func (*keepers) name() string {
+	return "keepers"
+}
+
+func (*keepers) filter(rec *rcpb.Record) (bool, bool, float32) {
+	rand.Seed(time.Now().UnixNano())
+	return rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION &&
+			(rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_BOX_UNKNOWN || rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_OUT_OF_BOX) &&
+			time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*265,
+		rec.GetMetadata().GetKeep() == rcpb.ReleaseMetadata_KEEP_UNKNOWN,
+		rand.Float32()
+}
