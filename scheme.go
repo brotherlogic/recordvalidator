@@ -720,7 +720,8 @@ func (*keepers) name() string {
 
 func (*keepers) filter(rec *rcpb.Record) (bool, bool, float32) {
 	rand.Seed(time.Now().UnixNano())
-	return rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION &&
+	return rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
+			rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION &&
 			(rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_BOX_UNKNOWN || rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_OUT_OF_BOX) &&
 			time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*265,
 		rec.GetMetadata().GetKeep() == rcpb.ReleaseMetadata_KEEP_UNKNOWN,
