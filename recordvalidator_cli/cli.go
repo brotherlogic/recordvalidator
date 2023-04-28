@@ -31,6 +31,12 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
+	case "force":
+		sclient := pb.NewRecordValidatorServiceClient(conn)
+		_, err = sclient.Force(ctx, &pb.ForceRequest{Name: os.Args[2]})
+		if err != nil {
+			log.Fatalf("Error on FORCE: %v", err)
+		}
 	case "which":
 		id, err := strconv.ParseInt(os.Args[2], 10, 32)
 		if err != nil {
