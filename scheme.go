@@ -721,7 +721,7 @@ func (*keepers) name() string {
 func (*keepers) filter(rec *rcpb.Record) (bool, bool, float32) {
 	rand.Seed(time.Now().UnixNano())
 	return rec.GetMetadata().GetFiledUnder() != rcpb.ReleaseMetadata_FILE_DIGITAL &&
-			rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION &&
+			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE) &&
 			(rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_BOX_UNKNOWN || rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_OUT_OF_BOX),
 		rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE && time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365 && rec.GetMetadata().GetKeep() != rcpb.ReleaseMetadata_KEEP_UNKNOWN,
 		rand.Float32()
