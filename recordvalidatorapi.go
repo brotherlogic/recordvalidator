@@ -69,7 +69,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			s.CtxLog(ctx, fmt.Sprintf("[%v]: for %v -> %v,%v", in.GetInstanceId(), scheme.GetName(), marked, k))
 
-			if (!marked || k) || scheme.GetCurrentPick() == 0 {
+			if (!marked || k) || scheme.GetCurrentPick() == 0 || r.GetMetadata().GetDateArrived() == 0 {
 				if marked && scheme.GetSoft() && scheme.GetActive() {
 					s.softValidate(ctx, in.GetInstanceId(), scheme.GetName())
 				}
