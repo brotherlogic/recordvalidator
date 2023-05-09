@@ -108,7 +108,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	s.CtxLog(ctx, "Adding")
 	// See if this needs to be added
 	if rerr != nil {
-		if status.Convert(err).Code() == codes.OutOfRange {
+		if status.Convert(rerr).Code() == codes.OutOfRange {
 			return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 		}
 		return nil, rerr
