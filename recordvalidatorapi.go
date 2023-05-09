@@ -28,6 +28,14 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		return nil, err
 	}
 
+	// Don't validate records until they've arrived
+	r, rerr := s.loadRecord(ctx, in.GetInstanceId())
+	if rerr == nil {
+		if r.GetMetadata().GetDateArrived() == 0 {
+			return &rcpb.ClientUpdateResponse{}, nil
+		}
+	}
+
 	picked := false
 	for _, scheme := range schemes.GetSchemes() {
 		var sg schemeGenerator
@@ -48,8 +56,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		current.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(scheme.GetCurrentPick()))
 
 		if scheme.GetCurrentPick() == in.GetInstanceId() || scheme.GetCurrentPick() == 0 {
-			r, err := s.loadRecord(ctx, in.GetInstanceId())
-			if err != nil {
+			if rerr != nil {
 				if status.Convert(err).Code() == codes.OutOfRange {
 					s.repick(ctx, scheme)
 					picked = true
@@ -62,7 +69,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 			s.CtxLog(ctx, fmt.Sprintf("[%v]: for %v -> %v,%v", in.GetInstanceId(), scheme.GetName(), marked, k))
 
-			if (!marked || k) || scheme.GetCurrentPick() == 0 {
+			if (!marked || k) || scheme.GetCurrentPick() == 0 || r.GetMetadata().GetDateArrived() == 0 {
 				if marked && scheme.GetSoft() && scheme.GetActive() {
 					s.softValidate(ctx, in.GetInstanceId(), scheme.GetName())
 				}
@@ -97,8 +104,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	}
 
 	// See if this needs to be added
-	rec, err := s.getRecord(ctx, in.GetInstanceId())
-	if err != nil {
+	if rerr != nil {
 		if status.Convert(err).Code() == codes.OutOfRange {
 			return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 		}
@@ -117,12 +123,12 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		if !inS {
 			for _, scheme := range s.sgs {
 				if scheme.name() == sg.GetName() {
-					app, done, order := scheme.filter(rec)
+					app, done, order := scheme.filter(r)
 					if sg.Ordering == nil {
 						sg.Ordering = make(map[int32]float32)
 					}
 
-					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v", rec.GetRelease().GetInstanceId(), sg.GetName(), app, done, order))
+					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v", r.GetRelease().GetInstanceId(), sg.GetName(), app, done, order))
 
 					if app {
 						sg.Ordering[in.GetInstanceId()] = order
@@ -140,7 +146,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		} else {
 			for _, scheme := range s.sgs {
 				if scheme.name() == sg.GetName() {
-					app, done, _ := scheme.filter(rec)
+					app, done, _ := scheme.filter(r)
 					if app && done {
 						s.CtxLog(ctx, fmt.Sprintf("Removing %v from todo list (%v): %v,%v", in.GetInstanceId(), sg.GetName(), app, done))
 						nc := []int32{}
@@ -159,11 +165,11 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 
-	var rerr error
+	var nerr error
 	if picked {
-		rerr = s.save(ctx, schemes)
+		nerr = s.save(ctx, schemes)
 	}
-	return &rcpb.ClientUpdateResponse{}, rerr
+	return &rcpb.ClientUpdateResponse{}, nerr
 }
 
 func (s *Server) Force(ctx context.Context, req *pb.ForceRequest) (*pb.ForceResponse, error) {

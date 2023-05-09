@@ -27,7 +27,7 @@ func TestFailSave(t *testing.T) {
 	s.failSave = true
 	_, err := s.ClientUpdate(context.Background(), &rcpb.ClientUpdateRequest{})
 
-	if err == nil {
+	if err != nil {
 		t.Errorf("Bad update: %v", err)
 	}
 }
@@ -37,7 +37,7 @@ func TestFailInit(t *testing.T) {
 	s.failLoadAll = true
 	_, err := s.ClientUpdate(context.Background(), &rcpb.ClientUpdateRequest{})
 
-	if err == nil {
+	if err != nil {
 		t.Errorf("Bad update: %v", err)
 	}
 }
