@@ -58,7 +58,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 		if scheme.GetCurrentPick() == in.GetInstanceId() || scheme.GetCurrentPick() == 0 {
 			if rerr != nil {
-				if status.Convert(err).Code() == codes.OutOfRange {
+				if status.Convert(rerr).Code() == codes.OutOfRange {
 					s.repick(ctx, scheme)
 					picked = true
 				} else {
