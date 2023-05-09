@@ -61,7 +61,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 					s.repick(ctx, scheme)
 					picked = true
 				} else {
-					return nil, err
+					return nil, rerr
 				}
 			}
 
@@ -108,7 +108,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		if status.Convert(err).Code() == codes.OutOfRange {
 			return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 		}
-		return nil, err
+		return nil, rerr
 	}
 	mapper := ""
 	for _, sg := range schemes.GetSchemes() {
