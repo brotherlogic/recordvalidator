@@ -141,6 +141,10 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				s.CtxLog(ctx, fmt.Sprintf("Repick load failed: %v", err))
 			}
 
+			if rec.GetMetadata().GetDateArrived() == 0 {
+				continue
+			}
+
 			stillMatch, invalid, _ := scheme.filter(rec)
 
 			s.CtxLog(ctx, fmt.Sprintf("%v is %v (%v) for %v", iid, invalid, stillMatch, scheme.name()))
