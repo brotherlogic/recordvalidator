@@ -36,6 +36,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 
+	s.CtxLog(ctx, "Running through schemes")
 	picked := false
 	for _, scheme := range schemes.GetSchemes() {
 		var sg schemeGenerator
@@ -83,6 +84,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 
+	s.CtxLog(ctx, "Searching for init")
 	for _, sg := range s.sgs {
 		found := false
 
@@ -103,6 +105,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 	}
 
+	s.CtxLog(ctx, "Adding")
 	// See if this needs to be added
 	if rerr != nil {
 		if status.Convert(err).Code() == codes.OutOfRange {
