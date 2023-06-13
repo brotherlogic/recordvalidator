@@ -30,10 +30,18 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 	// Don't validate records until they've arrived
 	r, rerr := s.loadRecord(ctx, in.GetInstanceId())
+	if status.Code(rerr) == codes.OutOfRange { // Skip a deleted record
+		return &rcpb.ClientUpdateResponse{}, nil
+	}
+
 	if rerr == nil {
 		if r.GetMetadata().GetDateArrived() == 0 {
 			return &rcpb.ClientUpdateResponse{}, nil
 		}
+	}
+
+	if rerr != nil {
+		return nil, rerr
 	}
 
 	s.CtxLog(ctx, "Running through schemes")
