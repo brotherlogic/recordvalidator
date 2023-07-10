@@ -54,7 +54,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 		}
 
-		if sg == nil {
+		if sg == nil || !scheme.GetActive() {
 			continue
 		}
 
@@ -123,6 +123,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	}
 	mapper := ""
 	for _, sg := range schemes.GetSchemes() {
+
 		inS := false
 		for _, id := range sg.GetInstanceIds() {
 			if id == in.GetInstanceId() {
