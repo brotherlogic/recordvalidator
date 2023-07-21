@@ -84,6 +84,9 @@ func (s *Server) validateScheme(sc *pb.Scheme) {
 
 func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	s.CtxLog(ctx, fmt.Sprintf("Running repick with %v for %v", len(sc.InstanceIds), sc.GetName()))
+	defer func() {
+		s.CtxLog(ctx, fmt.Sprintf("Ran repick for %v -> %v", sc.GetName(), sc.GetCurrentPick()))
+	}()
 
 	// Don't repick if there's nothing to pick
 	if len(sc.InstanceIds) == 0 {
