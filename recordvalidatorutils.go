@@ -145,6 +145,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 			}
 
 			if rec.GetMetadata().GetDateArrived() == 0 {
+				s.CtxLog(ctx, fmt.Sprintf("Skipping %v because of date arrived", iid))
 				continue
 			}
 
