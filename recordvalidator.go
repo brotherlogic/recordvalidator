@@ -122,6 +122,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &oldestSingle{})
 	s.sgs = append(s.sgs, &keepers{})
 	s.sgs = append(s.sgs, &keepers_single{})
+	s.sgs = append(s.sgs, &was_parents{})
+	s.sgs = append(s.sgs, &was_parents_single{})
 
 	return s
 }
@@ -237,6 +239,10 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
+		if scheme.GetName() == "was_parents" || scheme.GetName() == "was_parents_single" {
+			scheme.Active = true
+		}
+
 		if scheme.GetName() == "sonimage" || scheme.GetName() == "hudson" ||
 			scheme.GetName() == "fall" || scheme.GetName() == "april" {
 			scheme.Unbox = true
@@ -249,7 +255,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" || scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 		if scheme.GetName() == "old_age_no_digital" || scheme.GetName() == "new_age_no_digital" {
 			scheme.Active = false
