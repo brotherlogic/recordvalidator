@@ -741,3 +741,25 @@ func (*keepers_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 		!(time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365 && rec.GetMetadata().GetKeep() == rcpb.ReleaseMetadata_KEEP_UNKNOWN),
 		rand.Float32()
 }
+
+type was_parents struct{}
+
+func (*was_parents) name() string {
+	return "was_parents"
+}
+
+func (*was_parents) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetWasParents(), rec.GetMetadata().GetLastListenTime() > 0,
+		rand.Float32()
+}
+
+type was_parents_single struct{}
+
+func (*was_parents_single) name() string {
+	return "was_parents_single"
+}
+
+func (*was_parents_single) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
+		rand.Float32()
+}

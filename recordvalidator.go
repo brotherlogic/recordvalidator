@@ -122,6 +122,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &oldestSingle{})
 	s.sgs = append(s.sgs, &keepers{})
 	s.sgs = append(s.sgs, &keepers_single{})
+	s.sgs = append(s.sgs, &was_parents{})
+	s.sgs = append(s.sgs, &was_parents_single{})
 
 	return s
 }
@@ -195,6 +197,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 	for _, scheme := range schemes.GetSchemes() {
 		configSize.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(proto.Size(scheme)))
+		scheme.Active = false
 
 		if scheme.CompleteDate == nil {
 			scheme.CompleteDate = make(map[int32]int64)
@@ -216,7 +219,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "oldest" || scheme.GetName() == "oldest_single" || scheme.GetName() == "fast_dump" {
 			scheme.Unbox = true
-			scheme.Active = true
+			scheme.Active = false
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
 
@@ -248,6 +251,10 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
+		if scheme.GetName() == "was_parents" || scheme.GetName() == "was_parents_single" {
+			scheme.Active = true
+		}
+
 		if scheme.GetName() == "sonimage" || scheme.GetName() == "hudson" ||
 			scheme.GetName() == "fall" || scheme.GetName() == "april" {
 			scheme.Unbox = true
@@ -256,14 +263,14 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "piecelock" {
 			scheme.Unbox = true
-			scheme.Active = true
+			scheme.Active = false
 		}
 
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" || scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 		if scheme.GetName() == "old_age_no_digital" || scheme.GetName() == "new_age_no_digital" {
-			scheme.Active = true
+			scheme.Active = false
 		}
 		if scheme.GetName() == "old_age_no_digital_singles_filable" || scheme.GetName() == "new_age_no_digital_singles_filable" {
 			scheme.Active = false
@@ -278,7 +285,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "random_twelves_single" { //|| scheme.GetName() == "random_twelves_single_v2" || scheme.GetName() == "boxsets" {
-			scheme.Active = true
+			scheme.Active = false
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
