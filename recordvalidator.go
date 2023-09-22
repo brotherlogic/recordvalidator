@@ -124,6 +124,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &keepers_single{})
 	s.sgs = append(s.sgs, &was_parents{})
 	s.sgs = append(s.sgs, &was_parents_single{})
+	s.sgs = append(s.sgs, &was_parents_single_2{})
 
 	return s
 }
@@ -251,7 +252,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
-		if scheme.GetName() == "was_parents" || scheme.GetName() == "was_parents_single" {
+		if scheme.GetName() == "was_parents" || scheme.GetName() == "was_parents_single" || scheme.GetName() == "was_parents_single_2" {
 			scheme.Active = true
 		}
 
