@@ -750,7 +750,18 @@ func (*was_parents) name() string {
 
 func (*was_parents) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetWasParents(), rec.GetMetadata().GetLastListenTime() > 0,
-		rand.Float32()
+		float32(rec.GetRelease().GetInstanceId())
+}
+
+type was_parents_rev struct{}
+
+func (*was_parents_rev) name() string {
+	return "was_parents_rev"
+}
+
+func (*was_parents_rev) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetWasParents(), rec.GetMetadata().GetLastListenTime() > 0,
+		float32(rec.GetRelease().GetInstanceId())
 }
 
 type was_parents_single struct{}
@@ -761,7 +772,7 @@ func (*was_parents_single) name() string {
 
 func (*was_parents_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
-		rand.Float32()
+		float32(rec.GetRelease().GetInstanceId())
 }
 
 type was_parents_single_2 struct{}
@@ -772,5 +783,5 @@ func (*was_parents_single_2) name() string {
 
 func (*was_parents_single_2) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
-		rand.Float32()
+		float32(rec.GetRelease().GetInstanceId())
 }
