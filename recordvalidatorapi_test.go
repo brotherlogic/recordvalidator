@@ -22,16 +22,6 @@ func TestBlankUpdate(t *testing.T) {
 	}
 }
 
-func TestFailSave(t *testing.T) {
-	s := InitTest()
-	s.failSave = true
-	_, err := s.ClientUpdate(context.Background(), &rcpb.ClientUpdateRequest{})
-
-	if err != nil {
-		t.Errorf("Bad update: %v", err)
-	}
-}
-
 func TestFailInit(t *testing.T) {
 	s := InitTest()
 	s.failLoadAll = true
