@@ -28,6 +28,21 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		return nil, err
 	}
 
+	// If was_parents is empty, let's go off to the storage locker
+	doneParents := false
+	for _, scheme := range schemes.GetSchemes() {
+		if scheme.GetName() == "was_parents" && len(scheme.GetInstanceIds()) == 0 {
+			s.RaiseIssue("Trip To The Storage Locker", "Need to update")
+			doneParents = true
+		}
+	}
+
+	for _, scheme := range schemes.GetSchemes() {
+		if scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {
+			scheme.Active = doneParents
+		}
+	}
+
 	// Don't validate records until they've arrived
 	r, rerr := s.loadRecord(ctx, in.GetInstanceId())
 	if status.Code(rerr) == codes.OutOfRange { // Skip a deleted record
