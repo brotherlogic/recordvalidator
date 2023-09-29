@@ -36,11 +36,15 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			doneParents = true
 		}
 	}
-
 	for _, scheme := range schemes.GetSchemes() {
 		if scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {
+			s.CtxLog(ctx, fmt.Sprintf("%v is being set to active: %v", scheme.GetName(), doneParents))
 			scheme.Active = doneParents
 		}
+	}
+	err = s.save(ctx, schemes)
+	if err != nil {
+		return nil, err
 	}
 
 	// Don't validate records until they've arrived
