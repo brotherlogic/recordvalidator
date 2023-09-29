@@ -38,6 +38,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	}
 	for _, scheme := range schemes.GetSchemes() {
 		if scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {
+			s.CtxLog(ctx, fmt.Sprintf("%v is being set to active: %v", scheme.GetName(), doneParents))
 			scheme.Active = doneParents
 		}
 	}
