@@ -199,7 +199,6 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 	for _, scheme := range schemes.GetSchemes() {
 		configSize.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(proto.Size(scheme)))
-		scheme.Active = false
 
 		if scheme.CompleteDate == nil {
 			scheme.CompleteDate = make(map[int32]int64)
