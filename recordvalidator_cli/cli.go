@@ -60,8 +60,8 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
-		fmt.Printf("Scheme: %v\n", scheme)
 		fmt.Printf("Pick: %v\n", scheme.Scheme.GetCurrentPick())
+		fmt.Printf("To Go: %v (%v)\n", len(scheme.GetScheme().GetInstanceIds()), scheme.GetScheme().GetActive())
 		for id, date := range scheme.Scheme.GetCompleteDate() {
 			if time.Since(time.Unix(date, 0)) < time.Hour*24 {
 				fmt.Printf("%v was recorded in the last 24 hours (%v) \n", id, time.Unix(date, 0))
