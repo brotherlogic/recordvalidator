@@ -760,7 +760,7 @@ func (*was_parents_rev) name() string {
 }
 
 func (*was_parents_rev) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetWasParents(), rec.GetMetadata().GetLastListenTime() > 0,
+	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() != 1, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
 
