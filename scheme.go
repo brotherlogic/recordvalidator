@@ -785,3 +785,14 @@ func (*was_parents_single_2) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
+
+type full_parents struct{}
+
+func (*full_parents) name() string {
+	return "full_parents"
+}
+
+func (*full_parents) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetRelease().GetFolderId() == 1727264 || rec.GetRelease().GetFolderId() == 6268933, rec.GetMetadata().GetLastListenTime() > 0,
+		float32(rec.GetRelease().GetInstanceId())
+}

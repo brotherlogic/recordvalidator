@@ -126,6 +126,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &was_parents_rev{})
 	s.sgs = append(s.sgs, &was_parents_single{})
 	s.sgs = append(s.sgs, &was_parents_single_2{})
+	s.sgs = append(s.sgs, &full_parents{})
 
 	return s
 }
