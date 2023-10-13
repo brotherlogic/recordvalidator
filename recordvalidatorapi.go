@@ -196,6 +196,27 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 
+	// Clean existing schemes
+	for _, sg := range schemes.GetSchemes() {
+		for _, scheme := range s.sgs {
+			if scheme.name() == sg.GetName() {
+				var niids []int32
+				for _, iid := range sg.GetInstanceIds() {
+					if iid == in.GetInstanceId() {
+						app, done, _ := scheme.filter(r)
+						if !app || done {
+							sg.CompletedIds = append(sg.CompletedIds, iid)
+							sg.CompleteDate[iid] = time.Now().Unix()
+						} else {
+							niids = append(niids, iid)
+						}
+					}
+				}
+				sg.InstanceIds = niids
+			}
+		}
+	}
+
 	var nerr error
 	if picked {
 		nerr = s.save(ctx, schemes)
