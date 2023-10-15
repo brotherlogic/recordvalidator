@@ -212,6 +212,8 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 						} else {
 							niids = append(niids, iid)
 						}
+					} else {
+						niids = append(niids, iid)
 					}
 				}
 				sg.InstanceIds = niids
