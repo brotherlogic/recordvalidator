@@ -205,11 +205,15 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 					if iid == in.GetInstanceId() {
 						app, done, _ := scheme.filter(r)
 						if !app || done {
+							s.CtxLog(ctx, fmt.Sprintf("HARD REMOVE %v from %v", iid, sg.GetName()))
 							sg.CompletedIds = append(sg.CompletedIds, iid)
 							sg.CompleteDate[iid] = time.Now().Unix()
+							picked = true
 						} else {
 							niids = append(niids, iid)
 						}
+					} else {
+						niids = append(niids, iid)
 					}
 				}
 				sg.InstanceIds = niids
