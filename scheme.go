@@ -749,7 +749,7 @@ func (*was_parents) name() string {
 }
 
 func (*was_parents) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetWasParents(), rec.GetMetadata().GetLastListenTime() > 0,
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetMetadata().GetWasParents(), rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
 
@@ -760,7 +760,7 @@ func (*was_parents_rev) name() string {
 }
 
 func (*was_parents_rev) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() != 1, rec.GetMetadata().GetLastListenTime() > 0,
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() != 1, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
 
@@ -771,7 +771,7 @@ func (*was_parents_single) name() string {
 }
 
 func (*was_parents_single) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
 
@@ -782,7 +782,7 @@ func (*was_parents_single_2) name() string {
 }
 
 func (*was_parents_single_2) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
 
@@ -793,6 +793,6 @@ func (*full_parents) name() string {
 }
 
 func (*full_parents) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetRelease().GetFolderId() == 1727264 || rec.GetRelease().GetFolderId() == 6268933, rec.GetMetadata().GetLastListenTime() > 0,
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetRelease().GetFolderId() == 1727264 || rec.GetRelease().GetFolderId() == 6268933, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
