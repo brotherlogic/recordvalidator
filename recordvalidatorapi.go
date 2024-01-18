@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	rcpb "github.com/brotherlogic/recordcollection/proto"
+	ropb "github.com/brotherlogic/recordsorganiser/proto"
 	pb "github.com/brotherlogic/recordvalidator/proto"
 )
 
@@ -32,7 +33,27 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	doneParents := false
 	for _, scheme := range schemes.GetSchemes() {
 		if scheme.GetName() == "was_parents" && len(scheme.GetInstanceIds()) == 0 {
-			s.RaiseIssue("Trip To The Storage Locker", "Need to update")
+			conn, err := s.FDialServer(ctx, "recordsorganiser")
+			if err != nil {
+				return nil, err
+			}
+			client := ropb.NewOrganiserServiceClient(conn)
+			org, err := client.GetOrganisation(ctx, &ropb.GetOrganisationRequest{Locations: []*ropb.Location{{Name: "Sale 12 Inches"}}})
+			if err != nil {
+				return nil, err
+			}
+			found := false
+			for _, loc := range org.GetLocations() {
+				for _, entry := range loc.GetReleasesLocation() {
+					if entry.GetSlot() > 1 {
+						found = true
+					}
+				}
+			}
+
+			if !found {
+				s.RaiseIssue("Trip To The Storage Locker", "Need to update")
+			}
 			doneParents = true
 		}
 	}
