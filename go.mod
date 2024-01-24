@@ -9,7 +9,7 @@ require (
 	github.com/brotherlogic/recordcollection v0.0.0-20240122202339-f68f8b6b59dd
 	github.com/prometheus/client_golang v1.18.0
 	golang.org/x/net v0.20.0
-	google.golang.org/grpc v1.60.1
+	google.golang.org/grpc v1.61.0
 	google.golang.org/protobuf v1.32.0
 )
 
