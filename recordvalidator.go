@@ -219,9 +219,9 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Order = pb.Scheme_ORDER
 		}
 
-		if scheme.GetName() == "oldest" || scheme.GetName() == "oldest_single" || scheme.GetName() == "fast_dump" {
+		if scheme.GetName() == "fast_dump" {
 			scheme.Unbox = true
-			scheme.Active = false
+			scheme.Active = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
 
