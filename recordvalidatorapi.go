@@ -39,7 +39,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			}
 			defer conn.Close()
 			client := ropb.NewOrganiserServiceClient(conn)
-			org, err := client.GetOrganisation(ctx, &ropb.GetOrganisationRequest{Locations: []*ropb.Location{{Name: "Sale 12 Inches"}}})
+			org, err := client.GetOrganisation(ctx, &ropb.GetOrganisationRequest{Locations: []*ropb.Location{{Name: "12 Inch Sales"}}})
 			if err != nil {
 				return nil, err
 			}
