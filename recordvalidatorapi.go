@@ -46,7 +46,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 			found := false
 			for _, loc := range org.GetLocations() {
 				for _, entry := range loc.GetReleasesLocation() {
-					if entry.GetSlot() > 2 {
+					if entry.GetSlot() > 3 {
 						found = true
 					}
 				}
