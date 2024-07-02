@@ -32,7 +32,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	// If was_parents is empty, let's go off to the storage locker
 	doneParents := false
 	for _, scheme := range schemes.GetSchemes() {
-		if scheme.GetName() == "was_parents" && len(scheme.GetInstanceIds()) == 0 {
+		if scheme.GetName() == "was_parents_single" && len(scheme.GetInstanceIds()) == 0 {
 			conn, err := s.FDialServer(ctx, "recordsorganiser")
 			if err != nil {
 				return nil, err
