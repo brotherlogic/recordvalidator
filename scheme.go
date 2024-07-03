@@ -796,3 +796,18 @@ func (*full_parents) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetRelease().GetFolderId() == 1727264 || rec.GetRelease().GetFolderId() == 6268933, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
+
+type keepersSeven struct{}
+
+func (*keepersSeven) name() string {
+	return "keepers_seven"
+}
+
+func (*keepersSeven) filter(rec *rcpb.Record) (bool, bool, float32) {
+	rand.Seed(time.Now().UnixNano())
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH &&
+			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE) &&
+			(rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_BOX_UNKNOWN || rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_OUT_OF_BOX),
+		!(time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365 && rec.GetMetadata().GetKeep() == rcpb.ReleaseMetadata_KEEP_UNKNOWN),
+		rand.Float32()
+}
