@@ -129,6 +129,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &was_parents_single_2{})
 	s.sgs = append(s.sgs, &full_parents{})
 	s.sgs = append(s.sgs, &fastDump{})
+	s.sgs = append(s.sgs, &oldTwelve{})
 
 	return s
 }
@@ -229,6 +230,11 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "old_age_sevens" {
 			scheme.Unbox = true
+			scheme.Order = pb.Scheme_ORDER
+			scheme.Active = true
+		}
+
+		if scheme.GetName() == "old_twelves" {
 			scheme.Order = pb.Scheme_ORDER
 			scheme.Active = true
 		}
