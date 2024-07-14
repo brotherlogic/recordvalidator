@@ -815,7 +815,7 @@ func (*keepersSeven) filter(rec *rcpb.Record) (bool, bool, float32) {
 type oldTwelve struct{}
 
 func (*oldTwelve) name() string {
-	return "old_twelves"
+	return "old_twelves0"
 }
 
 func (*oldTwelve) filter(rec *rcpb.Record) (bool, bool, float32) {
