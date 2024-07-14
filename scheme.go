@@ -811,3 +811,16 @@ func (*keepersSeven) filter(rec *rcpb.Record) (bool, bool, float32) {
 		!(time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365 && rec.GetMetadata().GetKeep() == rcpb.ReleaseMetadata_KEEP_UNKNOWN),
 		rand.Float32()
 }
+
+type oldTwelve struct{}
+
+func (*oldTwelve) name() string {
+	return "old_twelves"
+}
+
+func (*oldTwelve) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH &&
+			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365,
+		float32(rec.GetMetadata().GetLastListenTime())
+}
