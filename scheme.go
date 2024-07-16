@@ -842,6 +842,6 @@ func (*oldFall) filter(rec *rcpb.Record) (bool, bool, float32) {
 
 	return foundFall && rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH &&
 			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
-		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*365,
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365,
 		rand.Float32()
 }
