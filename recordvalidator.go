@@ -130,6 +130,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &full_parents{})
 	s.sgs = append(s.sgs, &fastDump{})
 	s.sgs = append(s.sgs, &oldTwelve{})
+	s.sgs = append(s.sgs, &oldFall{})
 
 	return s
 }
@@ -234,7 +235,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = true
 		}
 
-		if scheme.GetName() == "old_twelves" {
+		if scheme.GetName() == "old_twelves" || scheme.GetName() == "old_fall" {
 			scheme.Order = pb.Scheme_ORDER
 			scheme.Active = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
