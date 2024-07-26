@@ -50,11 +50,14 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	r, rerr := s.loadRecord(ctx, in.GetInstanceId())
 	if status.Code(rerr) == codes.OutOfRange {
 		// We need to delete this from any active validators
+		count := 0
 		for _, scheme := range schemes.GetSchemes() {
 			if scheme.GetCurrentPick() == in.GetInstanceId() {
 				scheme.CurrentPick = 0
+				count++
 			}
 		}
+		s.CtxLog(ctx, fmt.Sprintf("Deleted %v", count))
 
 		return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 	}
