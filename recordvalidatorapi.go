@@ -48,8 +48,15 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 
 	// Don't validate records until they've arrived
 	r, rerr := s.loadRecord(ctx, in.GetInstanceId())
-	if status.Code(rerr) == codes.OutOfRange { // Skip a deleted record
-		return &rcpb.ClientUpdateResponse{}, nil
+	if status.Code(rerr) == codes.OutOfRange {
+		// We need to delete this from any active validators
+		for _, scheme := range schemes.GetSchemes() {
+			if scheme.GetCurrentPick() == in.GetInstanceId() {
+				scheme.CurrentPick = 0
+			}
+		}
+
+		return &rcpb.ClientUpdateResponse{}, s.save(ctx, schemes)
 	}
 
 	if rerr == nil {
