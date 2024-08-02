@@ -849,7 +849,7 @@ func (*oldFall) filter(rec *rcpb.Record) (bool, bool, float32) {
 type was_parents_single_seven struct{}
 
 func (*was_parents_single_seven) name() string {
-	return "was_parents_single"
+	return "was_parents_single_seven"
 }
 
 func (*was_parents_single_seven) filter(rec *rcpb.Record) (bool, bool, float32) {
@@ -860,7 +860,7 @@ func (*was_parents_single_seven) filter(rec *rcpb.Record) (bool, bool, float32) 
 type was_parents_single_seven_2 struct{}
 
 func (*was_parents_single_seven_2) name() string {
-	return "was_parents_single_2"
+	return "was_parents_single_2_seven"
 }
 
 func (*was_parents_single_seven_2) filter(rec *rcpb.Record) (bool, bool, float32) {
