@@ -127,6 +127,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &was_parents_rev{})
 	s.sgs = append(s.sgs, &was_parents_single{})
 	s.sgs = append(s.sgs, &was_parents_single_2{})
+	s.sgs = append(s.sgs, &was_parents_single_seven{})
+	s.sgs = append(s.sgs, &was_parents_single_seven_2{})
 	s.sgs = append(s.sgs, &full_parents{})
 	s.sgs = append(s.sgs, &fastDump{})
 	s.sgs = append(s.sgs, &oldTwelve{})
@@ -264,7 +266,8 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "was_parents" || scheme.GetName() == "was_parents_rev" ||
-			scheme.GetName() == "was_parents_single" || scheme.GetName() == "was_parents_single_2" {
+			scheme.GetName() == "was_parents_single" || scheme.GetName() == "was_parents_single_2" ||
+			scheme.GetName() == "was_parents_single_seven" || scheme.GetName() == "was_parents_single_seven_2" {
 			scheme.Active = true
 			if scheme.GetName() == "was_parents_rev" || scheme.GetName() == "was_parents_single_2" {
 				scheme.Order = pb.Scheme_REVERSE_ORDER
