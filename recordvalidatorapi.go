@@ -232,6 +232,10 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	if picked {
 		nerr = s.save(ctx, schemes)
 	}
+
+	for _, scheme := range schemes.GetSchemes() {
+		s.CtxLog(ctx, fmt.Sprintf("Final %v -> %v", scheme.GetName(), scheme.GetActive()))
+	}
 	return &rcpb.ClientUpdateResponse{}, nerr
 }
 
