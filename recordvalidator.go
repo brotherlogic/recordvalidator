@@ -225,26 +225,26 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "fast_dump" {
 			scheme.Unbox = true
-			scheme.Active = true
+			//scheme.Active = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
 
 		if scheme.GetName() == "old_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_ORDER
-			scheme.Active = true
+			//scheme.Active = true
 		}
 
 		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" {
 			scheme.Order = pb.Scheme_ORDER
-			scheme.Active = true
+			//scheme.Active = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
 
 		if scheme.GetName() == "new_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
-			scheme.Active = true
+			//scheme.Active = true
 		}
 
 		if scheme.GetName() == "new_age" ||
