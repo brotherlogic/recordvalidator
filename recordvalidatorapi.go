@@ -36,7 +36,14 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 	for _, scheme := range schemes.GetSchemes() {
-		if scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" || scheme.GetName() == "keepers_seven" {
+		if scheme.GetName() == "keepers" ||
+			scheme.GetName() == "keepers_single" ||
+			scheme.GetName() == "keepers_seven" ||
+			scheme.GetName() == "new_age_sevens" ||
+			scheme.GetName() == "old_age_sevens" ||
+			scheme.GetName() == "old_twelves" ||
+			scheme.GetName() == "olf_fall" ||
+			scheme.GetName() == "fast_dump" {
 			s.CtxLog(ctx, fmt.Sprintf("%v is being set to active: %v", scheme.GetName(), doneParents))
 			scheme.Active = doneParents
 		}
