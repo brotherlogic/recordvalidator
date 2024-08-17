@@ -72,6 +72,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	s.CtxLog(ctx, "Running through schemes")
 	picked := false
 	for _, scheme := range schemes.GetSchemes() {
+		s.CtxLog(ctx, fmt.Sprintf("%v -> %v", scheme.GetName(), scheme.GetActive()))
 		var sg schemeGenerator
 		for _, schemegen := range s.sgs {
 			if schemegen.name() == scheme.GetName() && len(scheme.GetInstanceIds()) > 0 {
@@ -165,7 +166,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 						sg.Ordering = make(map[int32]float32)
 					}
 
-					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v", r.GetRelease().GetInstanceId(), sg.GetName(), app, done, order))
+					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v [%v]", r.GetRelease().GetInstanceId(), sg.GetName(), app, done, order, sg.GetActive()))
 
 					if app {
 						sg.Ordering[in.GetInstanceId()] = order
