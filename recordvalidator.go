@@ -237,7 +237,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" {
 			scheme.Order = pb.Scheme_ORDER
-			//scheme.Active = true
+			scheme.Active = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
 
