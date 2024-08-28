@@ -60,6 +60,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
+				fmt.Printf("Scheme: %v [%v]\n", scheme.GetScheme().GetName(), scheme.GetScheme().GetActive())	
 		fmt.Printf("Pick: %v\n", scheme.Scheme.GetCurrentPick())
 		fmt.Printf("To Go: %v (%v)\n", len(scheme.GetScheme().GetInstanceIds()), scheme.GetScheme().GetActive())
 		for id, date := range scheme.Scheme.GetCompleteDate() {
