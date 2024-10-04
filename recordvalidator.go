@@ -279,9 +279,8 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
-		if scheme.GetName() == "piecelock" {
-			scheme.Unbox = true
-			scheme.Active = false
+		if scheme.GetName() == "keepers_seven" {
+			scheme.Active = true
 		}
 
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" || scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {
