@@ -29,7 +29,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	}
 
 	// If was_parents is empty, let's go off to the storage locker
-	doneParents := false
+	doneParents := true
 	for _, scheme := range schemes.GetSchemes() {
 		if scheme.GetName() == "was_parents_single" && len(scheme.GetInstanceIds()) == 0 {
 			doneParents = true
