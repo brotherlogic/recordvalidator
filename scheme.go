@@ -821,7 +821,7 @@ func (*oldTwelve) name() string {
 func (*oldTwelve) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH &&
 			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
-		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365,
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*2*365,
 		float32(rec.GetMetadata().GetLastListenTime())
 }
 
@@ -844,4 +844,26 @@ func (*oldFall) filter(rec *rcpb.Record) (bool, bool, float32) {
 			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
 		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365,
 		rand.Float32()
+}
+
+type was_parents_single_seven struct{}
+
+func (*was_parents_single_seven) name() string {
+	return "was_parents_single_seven"
+}
+
+func (*was_parents_single_seven) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH && rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
+		float32(rec.GetRelease().GetInstanceId())
+}
+
+type was_parents_single_seven_2 struct{}
+
+func (*was_parents_single_seven_2) name() string {
+	return "was_parents_single_2_seven"
+}
+
+func (*was_parents_single_seven_2) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH && rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
+		float32(rec.GetRelease().GetInstanceId())
 }

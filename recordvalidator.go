@@ -127,6 +127,8 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &was_parents_rev{})
 	s.sgs = append(s.sgs, &was_parents_single{})
 	s.sgs = append(s.sgs, &was_parents_single_2{})
+	s.sgs = append(s.sgs, &was_parents_single_seven{})
+	s.sgs = append(s.sgs, &was_parents_single_seven_2{})
 	s.sgs = append(s.sgs, &full_parents{})
 	s.sgs = append(s.sgs, &fastDump{})
 	s.sgs = append(s.sgs, &oldTwelve{})
@@ -225,26 +227,25 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 
 		if scheme.GetName() == "fast_dump" {
 			scheme.Unbox = true
-			scheme.Active = true
+			//scheme.Active = true
 			scheme.Order = pb.Scheme_GIVEN_ORDER
 		}
 
 		if scheme.GetName() == "old_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_ORDER
-			scheme.Active = true
+			//scheme.Active = true
 		}
 
 		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" {
 			scheme.Order = pb.Scheme_ORDER
 			scheme.Active = true
-			scheme.Order = pb.Scheme_REVERSE_ORDER
 		}
 
 		if scheme.GetName() == "new_age_sevens" {
 			scheme.Unbox = true
 			scheme.Order = pb.Scheme_REVERSE_ORDER
-			scheme.Active = true
+			//scheme.Active = true
 		}
 
 		if scheme.GetName() == "new_age" ||
@@ -264,7 +265,8 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		if scheme.GetName() == "was_parents" || scheme.GetName() == "was_parents_rev" ||
-			scheme.GetName() == "was_parents_single" || scheme.GetName() == "was_parents_single_2" {
+			scheme.GetName() == "was_parents_single" || scheme.GetName() == "was_parents_single_2" ||
+			scheme.GetName() == "was_parents_single_seven" || scheme.GetName() == "was_parents_single_seven_2" {
 			scheme.Active = true
 			if scheme.GetName() == "was_parents_rev" || scheme.GetName() == "was_parents_single_2" {
 				scheme.Order = pb.Scheme_REVERSE_ORDER
@@ -277,9 +279,8 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
-		if scheme.GetName() == "piecelock" {
-			scheme.Unbox = true
-			scheme.Active = false
+		if scheme.GetName() == "keepers_seven" {
+			scheme.Active = true
 		}
 
 		if scheme.GetName() == "old_age" || scheme.GetName() == "new_age" || scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" {

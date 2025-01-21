@@ -36,7 +36,14 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 		}
 	}
 	for _, scheme := range schemes.GetSchemes() {
-		if scheme.GetName() == "keepers" || scheme.GetName() == "keepers_single" || scheme.GetName() == "keepers_seven" {
+		if scheme.GetName() == "keepers" ||
+			scheme.GetName() == "keepers_single" ||
+			scheme.GetName() == "keepers_seven" ||
+			scheme.GetName() == "new_age_sevens" ||
+			scheme.GetName() == "old_age_sevens" ||
+			scheme.GetName() == "old_twelves" ||
+			scheme.GetName() == "olf_fall" ||
+			scheme.GetName() == "fast_dump" {
 			s.CtxLog(ctx, fmt.Sprintf("%v is being set to active: %v", scheme.GetName(), doneParents))
 			scheme.Active = doneParents
 		}
@@ -75,6 +82,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	s.CtxLog(ctx, "Running through schemes")
 	picked := false
 	for _, scheme := range schemes.GetSchemes() {
+		s.CtxLog(ctx, fmt.Sprintf("%v -> %v", scheme.GetName(), scheme.GetActive()))
 		var sg schemeGenerator
 		for _, schemegen := range s.sgs {
 			if schemegen.name() == scheme.GetName() && len(scheme.GetInstanceIds()) > 0 {
@@ -168,7 +176,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 						sg.Ordering = make(map[int32]float32)
 					}
 
-					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v", r.GetRelease().GetInstanceId(), sg.GetName(), app, done, order))
+					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v [%v]", r.GetRelease().GetInstanceId(), sg.GetName(), app, done, order, sg.GetActive()))
 
 					if app {
 						sg.Ordering[in.GetInstanceId()] = order
@@ -233,6 +241,10 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	var nerr error
 	if picked {
 		nerr = s.save(ctx, schemes)
+	}
+
+	for _, scheme := range schemes.GetSchemes() {
+		s.CtxLog(ctx, fmt.Sprintf("Final %v -> %v", scheme.GetName(), scheme.GetActive()))
 	}
 	return &rcpb.ClientUpdateResponse{}, nerr
 }
