@@ -133,6 +133,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &fastDump{})
 	s.sgs = append(s.sgs, &oldTwelve{})
 	s.sgs = append(s.sgs, &oldFall{})
+	s.sgs = append(s.sgs, &project_2025{})
 
 	return s
 }
