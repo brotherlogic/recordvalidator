@@ -875,7 +875,7 @@ func (*project_2025) name() string {
 }
 
 func (*project_2025) filter(rec *rcpb.Record) (bool, bool, float32) {
-	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && time.Since(time.Unix(rec.GetMetadata().GetDateArrived(), 0)) > time.Hour*24*90,
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && (rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
 		time.Unix(rec.GetMetadata().GetLastListenTime(), 0).Year() >= 2025,
 		float32(rec.GetRelease().GetInstanceId())
 }
