@@ -867,3 +867,16 @@ func (*was_parents_single_seven_2) filter(rec *rcpb.Record) (bool, bool, float32
 	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_7_INCH && rec.GetMetadata().GetWasParents() && rec.GetRelease().GetFormatQuantity() == 1, rec.GetMetadata().GetLastListenTime() > 0,
 		float32(rec.GetRelease().GetInstanceId())
 }
+
+type project_2025 struct{}
+
+func (*project_2025) name() string {
+	return "project_2025"
+}
+
+func (*project_2025) filter(rec *rcpb.Record) (bool, bool, float32) {
+
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && (rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE),
+		time.Unix(rec.GetMetadata().GetLastListenTime(), 0).Year() >= 2025,
+		float32(rec.GetRelease().GetInstanceId())
+}
