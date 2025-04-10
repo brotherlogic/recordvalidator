@@ -199,7 +199,7 @@ type cdScheme struct{}
 func (cds *cdScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a cd?, doess it have a width?
 	return rec.GetRelease().GetFolderId() == 242018,
-		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.GetMetadata().GetRecordWidth() > 0.1 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		-1
 }
 
@@ -225,7 +225,7 @@ type twScheme struct{}
 func (tw *twScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a cd?, doess it have a width?
 	return rec.GetRelease().GetFolderId() == 242017,
-		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.GetMetadata().GetRecordWidth() > 0.1 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		-1
 }
 
