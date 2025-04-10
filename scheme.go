@@ -212,7 +212,7 @@ type seScheme struct{}
 func (tw *seScheme) filter(rec *rcpb.Record) (bool, bool, float32) {
 	//Is it a cd?, doess it have a width?
 	return rec.GetRelease().GetFolderId() == 267116,
-		rec.GetMetadata().GetRecordWidth() > 0 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		rec.GetMetadata().GetRecordWidth() > 0.2 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		-1
 }
 
