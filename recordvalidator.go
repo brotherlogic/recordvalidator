@@ -239,7 +239,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			//scheme.Active = true
 		}
 
-		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" || scheme.GetName() == "project_2025" || scheme.GetName() == "twelve_width" || scheme.GetName() == "seven_width" {
+		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" || scheme.GetName() == "project_2025" || scheme.GetName() == "twelve_width" || scheme.GetName() == "seven_width" || scheme.GetName() == "cd_width" {
 			scheme.Order = pb.Scheme_ORDER
 			scheme.Active = true
 		}
