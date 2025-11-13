@@ -135,6 +135,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &oldTwelve{})
 	s.sgs = append(s.sgs, &oldFall{})
 	s.sgs = append(s.sgs, &project_2025{})
+	s.sgs = append(s.sgs, &veryOldTwelves{})
 
 	return s
 }
@@ -281,7 +282,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
-		if scheme.GetName() == "keepers_seven" {
+		if scheme.GetName() == "keepers_seven" || scheme.GetName() == "very_old_twelves" {
 			scheme.Active = true
 		}
 
