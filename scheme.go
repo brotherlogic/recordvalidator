@@ -344,6 +344,24 @@ func (os *olderNDSF) filter(rec *rcpb.Record) (bool, bool, float32) {
 		-1
 }
 
+type veryOldAnything struct{}
+
+func (os *veryOldAnything) name() string {
+	return "very_old_anything"
+}
+
+func (os *veryOldAnything) filter(rec *rcpb.Record) (bool, bool, float32) {
+	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_LISTED_TO_SELL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_STAGED_TO_SELL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SALE_ISSUE,
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*4 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+		-1
+}
+
 type veryOldTwelves struct{}
 
 func (os *veryOldTwelves) name() string {
@@ -356,8 +374,11 @@ func (os *veryOldTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_LISTED_TO_SELL &&
-			rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH,
-		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*265*4 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_STAGED_TO_SELL &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SALE_ISSUE &&
+			rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH &&
+			rec.GetMetadata().GetGoalFolder() != 242017,
+		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*4 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		-1
 }
 
