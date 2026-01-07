@@ -377,7 +377,7 @@ func (os *veryOldTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_STAGED_TO_SELL &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SALE_ISSUE &&
 			rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH &&
-			rec.GetMetadata().GetGoalFolder() != 242017,
+			rec.GetMetadata().GetGoalFolder() == 242017,
 		time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) < time.Hour*24*365*4 && rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PRE_VALIDATE,
 		-1
 }
