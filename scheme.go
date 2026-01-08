@@ -371,6 +371,7 @@ func (os *veryOldTwelves) name() string {
 func (os *veryOldTwelves) filter(rec *rcpb.Record) (bool, bool, float32) {
 	return rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNKNOWN &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_ARRIVED &&
+			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_UNLISTENED &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_PARENTS &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_SOLD_ARCHIVE &&
 			rec.GetMetadata().GetCategory() != rcpb.ReleaseMetadata_LISTED_TO_SELL &&
