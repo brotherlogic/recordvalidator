@@ -135,6 +135,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &oldTwelve{})
 	s.sgs = append(s.sgs, &oldFall{})
 	s.sgs = append(s.sgs, &project_2025{})
+	s.sgs = append(s.sgs, &veryOldTwelves{})
 
 	return s
 }
@@ -239,7 +240,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			//scheme.Active = true
 		}
 
-		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" || scheme.GetName() == "project_2025" || scheme.GetName() == "twelve_width" || scheme.GetName() == "seven_width" {
+		if scheme.GetName() == "old_twelves" || scheme.GetName() == "olf_fall" || scheme.GetName() == "project_2025" || scheme.GetName() == "twelve_width" || scheme.GetName() == "seven_width" || scheme.GetName() == "cd_width" {
 			scheme.Order = pb.Scheme_ORDER
 			scheme.Active = true
 		}
@@ -281,7 +282,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 			scheme.Active = false
 		}
 
-		if scheme.GetName() == "keepers_seven" {
+		if scheme.GetName() == "keepers_seven" || scheme.GetName() == "very_old_twelves" || scheme.GetName() == "very_old_anything" {
 			scheme.Active = true
 		}
 
