@@ -26,7 +26,7 @@ func (s *Server) validateScheme(sc *pb.Scheme) {
 	sc.LastValidation = time.Now().Unix()
 
 	//Ensure we don't have something in togo and complete at the same time
-	var nc []int32
+	var nc []int64
 	for _, c := range sc.GetCompletedIds() {
 		found := false
 		for _, c2 := range sc.GetInstanceIds() {
@@ -99,7 +99,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 	}
 
 	sc.CurrentPick = 0
-	ntg := []int32{}
+	ntg := []int64{}
 
 	for _, tg := range sc.GetInstanceIds() {
 		if tg != sc.GetCurrentPick() {
@@ -153,7 +153,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 
 			s.CtxLog(ctx, fmt.Sprintf("%v is %v (%v) for %v", iid, invalid, stillMatch, scheme.name()))
 			if invalid {
-				in := []int32{}
+				in := []int64{}
 				for _, tg := range sc.GetInstanceIds() {
 					if tg != iid {
 						in = append(in, tg)
@@ -170,7 +170,7 @@ func (s *Server) repick(ctx context.Context, sc *pb.Scheme) {
 				}
 			} else {
 				//This record no longer applies
-				in := []int32{}
+				in := []int64{}
 				for _, tg := range sc.GetInstanceIds() {
 					if tg != iid {
 						in = append(in, tg)
@@ -213,7 +213,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 	}
 
 	if scheme == nil {
-		scheme = &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix(), Ordering: make(map[int32]float32)}
+		scheme = &pb.Scheme{Name: sg.name(), StartTime: time.Now().Unix(), Ordering: make(map[int64]float32)}
 	}
 
 	if sg.name() == "old_age" || sg.name() == "old_age_twelves" {
@@ -252,7 +252,7 @@ func (s *Server) initScheme(ctx context.Context, sg schemeGenerator) (*pb.Scheme
 
 		f, p, o := sg.filter(r)
 		if scheme.Ordering == nil {
-			scheme.Ordering = make(map[int32]float32)
+			scheme.Ordering = make(map[int64]float32)
 		}
 		scheme.Ordering[iid] = o
 		s.CtxLog(ctx, fmt.Sprintf("Found %v -> %v,%v", r.GetRelease().GetInstanceId(), f, p))

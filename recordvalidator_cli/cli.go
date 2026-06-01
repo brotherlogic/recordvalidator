@@ -27,7 +27,7 @@ func main() {
 	case "ping":
 		id, _ := strconv.ParseInt(os.Args[2], 10, 32)
 		sclient := pbrc.NewClientUpdateServiceClient(conn)
-		_, err = sclient.ClientUpdate(ctx, &pbrc.ClientUpdateRequest{InstanceId: int32(id)})
+		_, err = sclient.ClientUpdate(ctx, &pbrc.ClientUpdateRequest{InstanceId: int64(id)})
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
@@ -43,7 +43,7 @@ func main() {
 			log.Fatalf("Bad parse: %v", err)
 		}
 		sclient := pb.NewRecordValidatorServiceClient(conn)
-		scheme, err := sclient.GetScheme(ctx, &pb.GetSchemeRequest{InstanceId: int32(id)})
+		scheme, err := sclient.GetScheme(ctx, &pb.GetSchemeRequest{InstanceId: int64(id)})
 		if err != nil {
 			log.Fatalf("Error on GET: %v", err)
 		}
@@ -88,7 +88,7 @@ func main() {
 		for i, id := range ids.GetInstanceIds() {
 			fmt.Printf("PING %v -> %v\n", i, id)
 			ctx, cancel = utils.ManualContext("recordvalidator_cli", time.Minute*30)
-			_, err = sclient.ClientUpdate(ctx, &pbrc.ClientUpdateRequest{InstanceId: int32(id)})
+			_, err = sclient.ClientUpdate(ctx, &pbrc.ClientUpdateRequest{InstanceId: int64(id)})
 			cancel()
 			if err != nil {
 				log.Fatalf("Error on GET: %v", err)

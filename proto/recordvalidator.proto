@@ -11,9 +11,9 @@ message Schemes {
 message Scheme {
   string name = 1;
   int64 start_time = 2;
-  repeated int32 instance_ids = 3;
-  repeated int32 completed_ids = 4;
-  int32 current_pick = 5;
+  repeated int64 instance_ids = 3;
+  repeated int64 completed_ids = 4;
+  int64 current_pick = 5;
 
   enum Order {
     RANDOM = 0;
@@ -25,15 +25,15 @@ message Scheme {
 
   bool unbox = 7;
   bool soft = 8;
-  map<int32, int64> complete_date = 9;
-  map<int32, float> ordering = 10;
+  map<int64, int64> complete_date = 9;
+  map<int64, float> ordering = 10;
   bool active = 11;
   int64 last_validation = 12;
 }
 
 message GetSchemeRequest {
   string name = 1;
-  int32 instance_id = 2;
+  int64 instance_id = 2;
 }
 
 message GetSchemeResponse {

@@ -173,7 +173,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 				if scheme.name() == sg.GetName() {
 					app, done, order := scheme.filter(r)
 					if sg.Ordering == nil {
-						sg.Ordering = make(map[int32]float32)
+						sg.Ordering = make(map[int64]float32)
 					}
 
 					s.CtxLog(ctx, fmt.Sprintf("Trying to add %v for %v -> %v, %v, %v [%v]", r.GetRelease().GetInstanceId(), sg.GetName(), app, done, order, sg.GetActive()))
@@ -197,7 +197,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 					app, done, _ := scheme.filter(r)
 					if app && done {
 						s.CtxLog(ctx, fmt.Sprintf("Removing %v from todo list (%v): %v,%v", in.GetInstanceId(), sg.GetName(), app, done))
-						nc := []int32{}
+						nc := []int64{}
 						for _, iid := range sg.GetInstanceIds() {
 							if iid != in.GetInstanceId() {
 								nc = append(nc, iid)
@@ -217,7 +217,7 @@ func (s *Server) ClientUpdate(ctx context.Context, in *rcpb.ClientUpdateRequest)
 	for _, sg := range schemes.GetSchemes() {
 		for _, scheme := range s.sgs {
 			if scheme.name() == sg.GetName() {
-				var niids []int32
+				var niids []int64
 				for _, iid := range sg.GetInstanceIds() {
 					if iid == in.GetInstanceId() {
 						app, done, _ := scheme.filter(r)

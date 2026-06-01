@@ -34,7 +34,7 @@ func TestInitSchemeFailLoadRecord(t *testing.T) {
 func TestRepick(t *testing.T) {
 	s := InitTest()
 	scheme := &pb.Scheme{
-		InstanceIds: []int32{1, 2, 3},
+		InstanceIds: []int64{1, 2, 3},
 		CurrentPick: 1,
 	}
 
