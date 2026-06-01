@@ -194,7 +194,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 	mapper := make(map[string]*pb.Scheme)
 	for _, sc := range schemes.GetSchemes() {
 		mapper[sc.GetName()] = sc
-		norder := make(map[int32]float32)
+		norder := make(map[int64]float32)
 		for _, iid := range sc.GetInstanceIds() {
 			norder[iid] = sc.GetOrdering()[iid]
 		}
@@ -211,7 +211,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		configSize.With(prometheus.Labels{"scheme": scheme.GetName()}).Set(float64(proto.Size(scheme)))
 
 		if scheme.CompleteDate == nil {
-			scheme.CompleteDate = make(map[int32]int64)
+			scheme.CompleteDate = make(map[int64]int64)
 		}
 
 		t1 := time.Now()
@@ -321,8 +321,8 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 	}
 
 	for _, scheme := range schemes.GetSchemes() {
-		var nums []int32
-		nmap := make(map[int32]bool)
+		var nums []int64
+		nmap := make(map[int64]bool)
 		for _, num := range scheme.GetCompletedIds() {
 			if num > 0 {
 				nmap[num] = true
@@ -339,7 +339,7 @@ func (s *Server) save(ctx context.Context, schemes *pb.Schemes) error {
 	return s.KSclient.Save(ctx, SCHEMES, schemes)
 }
 
-func (s *Server) loadRecord(ctx context.Context, iid int32) (*rcpb.Record, error) {
+func (s *Server) loadRecord(ctx context.Context, iid int64) (*rcpb.Record, error) {
 	if s.failRecordLoad {
 		return nil, fmt.Errorf("Built too fail")
 	}
@@ -366,12 +366,12 @@ func (s *Server) loadRecord(ctx context.Context, iid int32) (*rcpb.Record, error
 	return r.GetRecord(), nil
 }
 
-func (s *Server) getAllRecords(ctx context.Context) ([]int32, error) {
+func (s *Server) getAllRecords(ctx context.Context) ([]int64, error) {
 	if s.failLoadAll {
 		return nil, fmt.Errorf("Built to fail")
 	}
 	if s.test {
-		return []int32{1, 2, 3}, nil
+		return []int64{1, 2, 3}, nil
 	}
 	conn, err := s.FDialServer(ctx, "recordcollection")
 	if err != nil {
@@ -387,7 +387,7 @@ func (s *Server) getAllRecords(ctx context.Context) ([]int32, error) {
 	return r.GetInstanceIds(), nil
 }
 
-func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error) {
+func (s *Server) getRecord(ctx context.Context, iid int64) (*rcpb.Record, error) {
 	if s.failLoadAll {
 		return nil, fmt.Errorf("Built to fail")
 	}
@@ -408,7 +408,7 @@ func (s *Server) getRecord(ctx context.Context, iid int32) (*rcpb.Record, error)
 	return r.GetRecord(), nil
 }
 
-func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool, scheme string) error {
+func (s *Server) update(ctx context.Context, iid int64, soft, unbox bool, scheme string) error {
 	if s.test {
 		return nil
 	}
@@ -445,7 +445,7 @@ func (s *Server) update(ctx context.Context, iid int32, soft, unbox bool, scheme
 	return nil
 }
 
-func (s *Server) softValidate(ctx context.Context, iid int32, scheme string) error {
+func (s *Server) softValidate(ctx context.Context, iid int64, scheme string) error {
 	if s.test {
 		return nil
 	}
