@@ -311,7 +311,7 @@ func (s *Server) load(ctx context.Context) (*pb.Schemes, error) {
 		}
 
 		// Ensure only keepers and very_old_twelves are active
-		scheme.Active = (scheme.GetName() == "keepers" || scheme.GetName() == "very_old_twelves")
+		scheme.Active = (scheme.GetName() == "keepers" || scheme.GetName() == "very_old_twelves" || scheme.GetName() == "keepers_single")
 	}
 
 	return schemes, nil
