@@ -796,6 +796,22 @@ func (*keepers_single) filter(rec *rcpb.Record) (bool, bool, float32) {
 		rand.Float32()
 }
 
+type keepers_12_single struct{}
+
+func (*keepers_12_single) name() string {
+	return "keepers_12_single"
+}
+
+func (*keepers_12_single) filter(rec *rcpb.Record) (bool, bool, float32) {
+	rand.Seed(time.Now().UnixNano())
+	return rec.GetMetadata().GetFiledUnder() == rcpb.ReleaseMetadata_FILE_12_INCH && rec.GetRelease().GetFormatQuantity() == 1 &&
+			(rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_IN_COLLECTION || rec.GetMetadata().GetCategory() == rcpb.ReleaseMetadata_PRE_VALIDATE) &&
+			(rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_BOX_UNKNOWN || rec.GetMetadata().GetBoxState() == rcpb.ReleaseMetadata_OUT_OF_BOX),
+		!(time.Since(time.Unix(rec.GetMetadata().GetLastListenTime(), 0)) > time.Hour*24*30 && rec.GetMetadata().GetKeep() == rcpb.ReleaseMetadata_KEEP_UNKNOWN),
+		rand.Float32()
+}
+
+
 type was_parents struct{}
 
 func (*was_parents) name() string {
