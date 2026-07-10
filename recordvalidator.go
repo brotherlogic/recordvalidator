@@ -123,6 +123,7 @@ func Init() *Server {
 	s.sgs = append(s.sgs, &oldestSingle{})
 	s.sgs = append(s.sgs, &keepers{})
 	s.sgs = append(s.sgs, &keepers_single{})
+		s.sgs = append(s.sgs, &keepers_12_single{})
 	s.sgs = append(s.sgs, &keepersSeven{})
 	s.sgs = append(s.sgs, &was_parents{})
 	s.sgs = append(s.sgs, &was_parents_rev{})
